@@ -1,10 +1,14 @@
 <section id="featured" class="featured-section">
   <div class="section-container">
-    <div class="section-tag">PREMIERE EPISODE #1</div>
-    <h2 class="section-title">Recursion & Samsara: <span class="gradient-gold">The Infinite Call Stack</span></h2>
-    <p class="section-sub">
-      Why does a recursive function without a base case crash your server with a Stack Overflow, exactly like a process trapped in an infinite loop?
-    </p>
+    <div class="section-header">
+      <div class="section-tag tag-gold">PREMIERE SHORT // EPISODE 01</div>
+      <h2 class="section-title">
+        Recursion & Call Stacks: <span class="gradient-gold">The Infinite Loop Invariant</span>
+      </h2>
+      <p class="section-sub">
+        Why does a recursive function without a base case crash your server with a Stack Overflow? Explore the mechanics of frame allocation and stack unwinding.
+      </p>
+    </div>
 
     <div class="featured-grid">
       <!-- Interactive Spiral Simulator Card -->
@@ -12,74 +16,99 @@
         <div class="card-bar">
           <div class="bar-left">
             <span class="pulse-indicator"></span>
-            <span class="bar-title">LIVE SIMULATION • CALL STACK EXECUTION</span>
+            <span class="bar-title">LIVE SIMULATION • CALL STACK EXPANSION</span>
           </div>
           <div class="bar-right">
-            <button id="btn-spiral-step" class="btn-ctrl">Next Stack Frame</button>
-            <button id="btn-spiral-reset" class="btn-ctrl">Reset Stack</button>
+            <button id="btn-spiral-step" class="btn-ctrl primary">Push Frame</button>
+            <button id="btn-spiral-reset" class="btn-ctrl">Reset</button>
           </div>
         </div>
+
         <div class="canvas-box">
-          <canvas id="samsara-canvas" width="600" height="440"></canvas>
+          <canvas id="samsara-canvas" width="600" height="440" aria-label="Recursive Call Stack Spiral Animation"></canvas>
           <div class="samsara-hud">
             <span id="stack-depth-label">Stack Depth: 1</span>
             <span id="stack-state-label">State: Pushing Frame</span>
           </div>
         </div>
+
         <div class="canvas-footer-caption">
           <span class="caption-icon">⚡</span>
-          <span>Without an explicit Base Case (halting condition), each recursive invocation consumes memory until the stack overflows. The Base Case unwinds the stack cleanly.</span>
+          <span>Without an explicit Base Case boundary, each recursive invocation consumes memory until the stack overflows. The Base Case unwinds the stack cleanly.</span>
         </div>
       </div>
 
       <!-- Dialogue Breakdown & Character Insight -->
       <div class="dialogue-breakdown-card">
         <div class="dialogue-header">
-          <h3>The Mentor-Engineer Dialogue</h3>
-          <span class="sanskrit-title">प्रत्यावर्तनम् एवं अनन्त-चक्रम्</span>
+          <div class="header-text-group">
+            <span class="dialogue-sub">ARCHITECTURAL DISCOURSE</span>
+            <h3>The Mentor-Engineer Dialogue</h3>
+          </div>
+          <span class="dialogue-topic-pill">T(n) = T(n-1) + O(1)</span>
         </div>
 
         <div class="dialogue-scroll-box">
           <!-- Turn 1 -->
           <div class="dialogue-turn anvay-turn">
-            <img src="{{ site.characters.anvay.avatar | relative_url }}" alt="Anvay" class="dialogue-avatar">
+            <div class="dialogue-avatar-wrap">
+              <img src="{{ site.data.characters.anvay.avatar | relative_url }}" 
+                   alt="Anvay" 
+                   class="dialogue-avatar"
+                   onerror="this.src='{{ site.data.characters.anvay.vector_avatar | relative_url }}'">
+            </div>
             <div class="turn-content">
-              <div class="speaker-label speaker-anvay">{{ site.characters.anvay.symbol }} {{ site.characters.anvay.name }}</div>
+              <div class="speaker-label speaker-anvay">💡 ANVAY • SOFTWARE ENGINEER</div>
               <p>"Acharya, yesterday my recursive function crashed our production server with a Stack Overflow error! Why did memory run out so fast?"</p>
             </div>
           </div>
 
           <!-- Turn 2 -->
           <div class="dialogue-turn acharya-turn">
-            <img src="{{ site.characters.acharya.avatar | relative_url }}" alt="Acharya" class="dialogue-avatar">
+            <div class="dialogue-avatar-wrap">
+              <img src="{{ site.data.characters.acharya.avatar | relative_url }}" 
+                   alt="Acharya" 
+                   class="dialogue-avatar"
+                   onerror="this.src='{{ site.data.characters.acharya.vector_avatar | relative_url }}'">
+            </div>
             <div class="turn-content">
-              <div class="speaker-label speaker-acharya">{{ site.characters.acharya.symbol }} {{ site.characters.acharya.name }}</div>
-              <p>"Anvay, your function had no Base Case. Each call pushed a new stack frame onto limited memory. In philosophy, that endless trap is called Samsara—cycling infinitely without a termination condition."</p>
+              <div class="speaker-label speaker-acharya">🎓 ACHARYA • SYSTEMS ARCHITECT</div>
+              <p>"Anvay, your function lacked a Base Case. Each invocation pushed a new stack frame onto limited memory. Without an exit boundary, execution expands until hardware halts it."</p>
             </div>
           </div>
 
           <!-- Turn 3 -->
           <div class="dialogue-turn anvay-turn">
-            <img src="{{ site.characters.anvay.avatar | relative_url }}" alt="Anvay" class="dialogue-avatar">
+            <div class="dialogue-avatar-wrap">
+              <img src="{{ site.data.characters.anvay.avatar | relative_url }}" 
+                   alt="Anvay" 
+                   class="dialogue-avatar"
+                   onerror="this.src='{{ site.data.characters.anvay.vector_avatar | relative_url }}'">
+            </div>
             <div class="turn-content">
-              <div class="speaker-label speaker-anvay">{{ site.characters.anvay.symbol }} {{ site.characters.anvay.name }}</div>
+              <div class="speaker-label speaker-anvay">💡 ANVAY • SOFTWARE ENGINEER</div>
               <p>"So without a base case, the computer doesn't know when to halt, and stack memory explodes?"</p>
             </div>
           </div>
 
           <!-- Turn 4 -->
           <div class="dialogue-turn acharya-turn">
-            <img src="{{ site.characters.acharya.avatar | relative_url }}" alt="Acharya" class="dialogue-avatar">
+            <div class="dialogue-avatar-wrap">
+              <img src="{{ site.data.characters.acharya.avatar | relative_url }}" 
+                   alt="Acharya" 
+                   class="dialogue-avatar"
+                   onerror="this.src='{{ site.data.characters.acharya.vector_avatar | relative_url }}'">
+            </div>
             <div class="turn-content">
-              <div class="speaker-label speaker-acharya">{{ site.characters.acharya.symbol }} {{ site.characters.acharya.name }}</div>
-              <p>"Exactly. The Base Case is the boundary condition. The moment it triggers, the call stack unwinds, freeing memory back to baseline. In software and in life, clear boundaries prevent infinite loops."</p>
+              <div class="speaker-label speaker-acharya">🎓 ACHARYA • SYSTEMS ARCHITECT</div>
+              <p>"Exactly. The Base Case is the boundary condition. The moment it evaluates to true, the call stack unwinds, freeing memory back to baseline. In software and in life, clear boundaries prevent infinite loops."</p>
             </div>
           </div>
         </div>
 
         <div class="dialogue-footer">
-          <a href="{{ site.author.youtube_url }}" target="_blank" class="btn-watch-short">
-            <span>▶ Watch Short on YouTube @AlgoSorcerer</span>
+          <a href="{{ site.author.youtube_url }}" target="_blank" rel="noopener noreferrer" class="btn-watch-short">
+            <span>▶ Watch Episode on YouTube @AlgoSorcerer</span>
           </a>
         </div>
       </div>

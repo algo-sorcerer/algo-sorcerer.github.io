@@ -1,0 +1,62 @@
+<section id="chronicles" class="chronicles-section">
+  <div class="section-container">
+    <div class="section-header">
+      <div class="section-tag tag-cyan">HIGH-LEVEL SYSTEM ARCHITECTURE</div>
+      <h2 class="section-title">
+        The Architecture <span class="gradient-cyan">Chronicles.</span>
+      </h2>
+      <p class="section-sub">
+        Explore how atomic algorithmic principles scale into resilient distributed systems. From consistent hashing rings to consensus quorums, witness the architectural patterns that govern cloud-scale engineering.
+      </p>
+    </div>
+
+    <!-- Chronicles Interactive Console & Architecture Canvas -->
+    <div class="chronicles-grid">
+      <!-- Left: Interactive Architecture Visualizer -->
+      <div class="architecture-visual-stage">
+        <div class="stage-topbar">
+          <span class="stage-tag" id="arch-stage-tag">TOPOLOGY // CONSISTENT HASHING RING</span>
+          <span class="stage-metric" id="arch-stage-metric">Throughput: 10M Req/s • Latency: &lt;12ms</span>
+        </div>
+
+        <div class="arch-canvas-wrap">
+          <canvas id="architecture-diagram-canvas" width="600" height="420" aria-label="Interactive System Architecture Topology Diagram"></canvas>
+          <div class="arch-hud-readout" id="arch-hud-readout">
+            <span>Click any chronicle to inspect its architecture flow</span>
+          </div>
+        </div>
+
+        <div class="arch-rule-card">
+          <div class="rule-icon">📐</div>
+          <div class="rule-content">
+            <span class="rule-label">ARCHITECTURAL AXIOM:</span>
+            <p class="rule-text" id="arch-rule-text">
+              Never let single nodes bear unbound load; decouple traffic ingestion from execution via hashing rings.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Chronicle Cards Grid -->
+      <div class="chronicles-cards-list">
+        {% for c in site.data.chronicles %}
+        <div class="chronicle-card {% if forloop.first %}active{% endif %}" data-chronicle="{{ c.id }}">
+          <div class="chronicle-card-top">
+            <span class="chronicle-num">{{ c.num }}</span>
+            <span class="chronicle-cat">{{ c.category }}</span>
+          </div>
+
+          <h3 class="chronicle-title">{{ c.title }}</h3>
+          <p class="chronicle-concept"><code>{{ c.concept }}</code></p>
+          <p class="chronicle-summary">{{ c.summary }}</p>
+
+          <div class="chronicle-card-footer">
+            <span class="chronicle-model"><strong>Model:</strong> {{ c.mental_model }}</span>
+            <span class="chronicle-stat">{{ c.key_metrics }}</span>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>

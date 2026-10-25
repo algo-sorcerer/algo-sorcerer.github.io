@@ -1,24 +1,74 @@
-<section id="topics" class="topics-section">
+<section id="curriculum" class="curriculum-section">
   <div class="section-container">
-    <div class="section-tag">CURRICULUM & ROADMAP</div>
-    <h2 class="section-title">The 6 Core <span class="gradient-gold">Algorithmic Mental Models</span></h2>
-    <p class="section-sub">
-      Master how core data structures, system boundaries, and algorithmic complexity connect to intuitive cognitive engineering models.
-    </p>
+    <div class="section-header text-center">
+      <div class="section-tag tag-gold">KNOWLEDGE ARCHIVE & CURRICULUM</div>
+      <h2 class="section-title">
+        Six Mental Models. <span class="gradient-gold">One Deeper Way of Thinking.</span>
+      </h2>
+      <p class="section-sub">
+        Algorithms are not isolated tricks for coding interviews. They are universal models of boundary conditions, network reflexivity, state caching, and entropy reduction.
+      </p>
+    </div>
 
-    <div class="topics-grid">
+    <!-- The Connected Curriculum Roadmap -->
+    <div class="curriculum-roadmap">
       {% for ep in site.data.episodes %}
-      <div class="topic-box">
-        <div class="topic-num">{{ ep.num }}</div>
-        <div class="topic-meta-header">
-          <span class="badge-tag">{{ ep.cs_concept }}</span>
-          <span class="school-name">{{ ep.school }}</span>
+      <div class="curriculum-chapter-node" id="chapter-{{ ep.num }}">
+        <!-- Chapter Header Strip -->
+        <div class="chapter-strip">
+          <div class="chapter-badge-group">
+            <span class="chapter-num">{{ ep.chapter }}</span>
+            <span class="chapter-school">{{ ep.school }}</span>
+          </div>
+          <div class="chapter-complexity">
+            <span class="complexity-pill time">T: {{ ep.time_complexity }}</span>
+            <span class="complexity-pill space">S: {{ ep.space_complexity }}</span>
+          </div>
         </div>
-        <h4>{{ ep.title }}</h4>
-        <p>{{ ep.core }}</p>
-        <div class="topic-footer">
-          <code>{{ ep.equation }}</code>
+
+        <!-- Main Chapter Body -->
+        <div class="chapter-body-grid">
+          <div class="chapter-main-info">
+            <div class="chapter-icon-title">
+              <span class="chapter-glyph">{{ ep.icon }}</span>
+              <h3 class="chapter-title">{{ ep.title }}</h3>
+            </div>
+            
+            <p class="chapter-hook"><em>“{{ ep.hook }}”</em></p>
+            <p class="chapter-core-text">{{ ep.core }}</p>
+
+            <!-- Visual Metaphor & Mathematical Expression -->
+            <div class="chapter-meta-row">
+              <div class="meta-item metaphor">
+                <span class="meta-label">VISUAL METAPHOR:</span>
+                <span class="meta-val">{{ ep.metaphor }}</span>
+              </div>
+              <div class="meta-item formula">
+                <span class="meta-label">GOVERNING INVARIANT:</span>
+                <code class="meta-code">{{ ep.equation }}</code>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chapter Action & Direct Lab Launch -->
+          <div class="chapter-side-action">
+            <a href="#labs" class="btn-launch-lab" data-target-lab="{{ ep.lab_id }}">
+              <span class="launch-icon">⚡</span>
+              <span>Launch Lab {{ ep.num }}</span>
+            </a>
+          </div>
         </div>
+
+        <!-- Systemic Connector Line to Next Chapter -->
+        {% unless forloop.last %}
+        <div class="chapter-interconnect">
+          <div class="interconnect-line"></div>
+          <div class="interconnect-bridge">
+            <span class="bridge-glyph">↓</span>
+            <span class="bridge-text">{{ ep.connector_to_next }}</span>
+          </div>
+        </div>
+        {% endunless %}
       </div>
       {% endfor %}
     </div>

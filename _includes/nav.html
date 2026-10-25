@@ -1,25 +1,52 @@
-<header class="navbar">
+<header class="navbar" id="site-nav">
   <div class="nav-container">
-    <a href="{{ '/' | relative_url }}" class="brand-link">
-      <img src="{{ '/assets/brand/logo.svg' | relative_url }}" alt="AlgoSorcerer Logo" class="nav-logo">
+    <a href="{{ '/' | relative_url }}" class="brand-link" aria-label="AlgoSorcerer Home">
+      <div class="brand-emblem-wrap">
+        <img src="{{ '/assets/brand/logo.svg' | relative_url }}" alt="AlgoSorcerer Emblem" class="nav-logo">
+      </div>
       <div class="brand-name-group">
         <span class="nav-brand-title">ALGOSORCERER</span>
-        <span class="nav-brand-sub">COMPUTER SCIENCE • SYSTEMS • ALGORITHMS</span>
+        <span class="nav-brand-sub">ANCIENT WISDOM • ALGORITHMIC THINKING</span>
       </div>
     </a>
 
-    <nav class="nav-menu">
-      <a href="#featured" class="nav-item">Featured Episode</a>
-      <a href="#labs" class="nav-item">Algorithm Labs</a>
-      <a href="#characters" class="nav-item">Mentor & Engineer</a>
-      <a href="#topics" class="nav-item">The 6 CS Models</a>
-      <a href="#ecosystem" class="nav-item">Ecosystem</a>
+    <nav class="nav-menu" id="nav-menu" aria-label="Main Navigation">
+      <a href="#hero" class="nav-item active" data-section="hero">Discover</a>
+      <a href="#labs" class="nav-item" data-section="labs">Interactive Labs</a>
+      <a href="#characters" class="nav-item" data-section="characters">Characters</a>
+      <a href="#curriculum" class="nav-item" data-section="curriculum">Curriculum</a>
+      <a href="#chronicles" class="nav-item" data-section="chronicles">Chronicles</a>
+      <a href="#archive" class="nav-item" data-section="archive">Archive</a>
+      <a href="#hub" class="nav-item" data-section="hub">Hub</a>
     </nav>
 
-    <div class="nav-cta-group">
-      <a href="{{ site.author.youtube_url }}" target="_blank" rel="noopener noreferrer" class="btn-yt-subscribe">
-        <span class="yt-play-icon">▶</span>
-        <span>Subscribe {{ site.author.handle }}</span>
+    <div class="nav-actions">
+      <a href="#labs" class="btn-enter-lab">
+        <span class="lab-glyph">⚡</span>
+        <span>Enter the Lab</span>
+      </a>
+
+      <!-- Mobile Hamburger Toggle -->
+      <button class="nav-mobile-toggle" id="nav-mobile-toggle" aria-label="Toggle Navigation Menu" aria-expanded="false">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Drawer Menu -->
+  <div class="nav-mobile-drawer" id="nav-mobile-drawer" aria-hidden="true">
+    <div class="mobile-drawer-links">
+      <a href="#hero" class="mobile-nav-link">Discover</a>
+      <a href="#labs" class="mobile-nav-link">Interactive Labs</a>
+      <a href="#characters" class="mobile-nav-link">Characters (Acharya & Anvay)</a>
+      <a href="#curriculum" class="mobile-nav-link">Curriculum (6 Mental Models)</a>
+      <a href="#chronicles" class="mobile-nav-link">Architecture Chronicles</a>
+      <a href="#archive" class="mobile-nav-link">The Algorithm Chronicle</a>
+      <a href="#hub" class="mobile-nav-link">Open-Source Hub</a>
+      <a href="{{ site.author.youtube_url }}" target="_blank" rel="noopener noreferrer" class="mobile-nav-link yt-link">
+        ▶ YouTube @AlgoSorcerer
       </a>
     </div>
   </div>

@@ -1,0 +1,248 @@
+// ==============================================================================
+// AlgoSorcerer World — System Architecture Chronicles Styles
+// ==============================================================================
+
+.chronicles-section {
+  background: radial-gradient(circle at 10% 50%, rgba(100, 232, 255, 0.04) 0%, transparent 60%),
+              radial-gradient(circle at 90% 50%, rgba(199, 166, 106, 0.04) 0%, transparent 60%),
+              $color-obsidian;
+  border-bottom: 1px solid $border-subtle;
+}
+
+.chronicles-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 36px;
+  align-items: start;
+
+  @media (max-width: 1040px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Architecture Stage (Left)
+.architecture-visual-stage {
+  background: $bg-card;
+  border: 1px solid $border-cyan;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  box-shadow: $shadow-md;
+  display: flex;
+  flex-direction: column;
+}
+
+.stage-topbar {
+  padding: 16px 20px;
+  background: rgba(8, 9, 13, 0.95);
+  border-bottom: 1px solid $border-subtle;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+
+  .stage-tag {
+    font-family: $font-code;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: $color-cyan;
+  }
+
+  .stage-metric {
+    font-family: $font-code;
+    font-size: 10.5px;
+    color: $color-gold-bright;
+  }
+}
+
+.arch-canvas-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  max-height: 420px;
+  background: #040508;
+
+  canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+
+  .arch-hud-readout {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+    right: 12px;
+    padding: 6px 12px;
+    border-radius: $radius-xs;
+    background: rgba(8, 9, 13, 0.85);
+    border: 1px solid $border-subtle;
+    font-family: $font-code;
+    font-size: 10px;
+    color: $text-secondary;
+    text-align: center;
+    pointer-events: none;
+  }
+}
+
+.arch-rule-card {
+  padding: 18px 22px;
+  background: rgba(8, 9, 13, 0.95);
+  border-top: 1px solid $border-subtle;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+
+  .rule-icon {
+    font-size: 20px;
+    line-height: 1;
+    margin-top: 2px;
+  }
+
+  .rule-content {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+
+    .rule-label {
+      font-family: $font-code;
+      font-size: 9.5px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: $color-gold;
+      text-transform: uppercase;
+    }
+
+    .rule-text {
+      font-size: 13.5px;
+      color: $color-parchment;
+      line-height: 1.55;
+    }
+  }
+}
+
+// Chronicles List (Right)
+.chronicles-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-height: 640px;
+  overflow-y: auto;
+  padding-right: 6px;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 4px;
+  }
+}
+
+.chronicle-card {
+  padding: 20px 22px;
+  background: $bg-card;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-md;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  cursor: pointer;
+  transition: all $transition-smooth;
+
+  &:hover {
+    background: $bg-card-hover;
+    border-color: rgba(100, 232, 255, 0.3);
+    transform: translateX(4px);
+  }
+
+  &.active {
+    background: rgba(16, 26, 44, 0.95);
+    border-color: $border-cyan;
+    box-shadow: $shadow-sm, 0 0 16px rgba(100, 232, 255, 0.15);
+
+    .chronicle-title {
+      color: $color-cyan;
+    }
+
+    .chronicle-num {
+      color: $color-cyan;
+      border-color: $border-cyan;
+    }
+  }
+
+  .chronicle-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .chronicle-num {
+      font-family: $font-code;
+      font-size: 10px;
+      font-weight: 700;
+      color: $color-gold;
+      padding: 2px 6px;
+      border: 1px solid $border-subtle;
+      border-radius: $radius-xs;
+    }
+
+    .chronicle-cat {
+      font-family: $font-code;
+      font-size: 9.5px;
+      color: $text-muted;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+  }
+
+  .chronicle-title {
+    font-family: $font-display;
+    font-size: 16px;
+    font-weight: 700;
+    color: $text-primary;
+    line-height: 1.3;
+    transition: color $transition-fast;
+  }
+
+  .chronicle-concept {
+    font-size: 11.5px;
+
+    code {
+      font-family: $font-code;
+      color: $color-gold-bright;
+      background: rgba(199, 166, 106, 0.1);
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+  }
+
+  .chronicle-summary {
+    font-size: 13px;
+    color: $text-secondary;
+    line-height: 1.6;
+  }
+
+  .chronicle-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 10px;
+    border-top: 1px solid $border-subtle;
+    margin-top: 4px;
+    font-size: 11px;
+    color: $text-muted;
+    flex-wrap: wrap;
+    gap: 8px;
+
+    .chronicle-model strong {
+      color: $color-parchment;
+    }
+
+    .chronicle-stat {
+      font-family: $font-code;
+      color: $color-cyan;
+    }
+  }
+}

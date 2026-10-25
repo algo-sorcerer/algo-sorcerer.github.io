@@ -1,23 +1,70 @@
 <footer class="site-footer">
-  <div class="footer-container">
-    <div class="footer-brand">
-      <img src="{{ site.author.avatar | relative_url }}" alt="AlgoSorcerer Logo" class="footer-logo">
-      <div>
-        <h4>ALGOSORCERER WORLD</h4>
-        <p>{{ site.tagline }}</p>
+  <!-- Closing Callout Banner -->
+  <div class="footer-callout">
+    <div class="section-container text-center">
+      <div class="callout-emblem-wrap">
+        <img src="{{ '/assets/brand/logo.svg' | relative_url }}" alt="AlgoSorcerer Emblem" class="footer-emblem">
+      </div>
+      <h2 class="callout-title">
+        Understand the Pattern. <span class="gradient-gold">Master the System.</span>
+      </h2>
+      <p class="callout-sub">
+        Keep exploring the ideas that make computation possible. Join our community of curious engineers, researchers, and systems thinkers.
+      </p>
+      <div class="callout-actions">
+        <a href="{{ site.author.youtube_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+          <span class="btn-icon">▶</span>
+          <span>Subscribe to @AlgoSorcerer</span>
+        </a>
+        <a href="#labs" class="btn btn-secondary">
+          <span class="btn-icon">⚡</span>
+          <span>Back to Algorithm Labs</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Navigation & Legal -->
+  <div class="footer-main">
+    <div class="section-container footer-content-grid">
+      <div class="footer-brand-col">
+        <div class="footer-brand-title">ALGOSORCERER</div>
+        <p class="footer-brand-tagline">
+          Ancient wisdom. Algorithmic thinking. Infinite possibilities. Exploring computer science through cinematic narratives and interactive laboratory simulations.
+        </p>
+        <div class="footer-brand-meta">
+          <span>HOSTED ON GITHUB PAGES</span>
+          <span>•</span>
+          <span>OPEN SOURCE ECOSYSTEM</span>
+        </div>
+      </div>
+
+      <div class="footer-links-col">
+        <span class="footer-col-heading">EXPLORE</span>
+        <a href="#hero">The Knowledge Universe</a>
+        <a href="#labs">Interactive Labs</a>
+        <a href="#curriculum">The 6 Mental Models</a>
+        <a href="#characters">Acharya & Anvay</a>
+      </div>
+
+      <div class="footer-links-col">
+        <span class="footer-col-heading">ARCHIVES</span>
+        <a href="#chronicles">Architecture Chronicles</a>
+        <a href="#archive">The Algorithm Chronicle</a>
+        <a href="#hub">Open Source Repositories</a>
+      </div>
+
+      <div class="footer-links-col">
+        <span class="footer-col-heading">CHANNELS</span>
+        <a href="{{ site.author.youtube_url }}" target="_blank" rel="noopener noreferrer">YouTube @AlgoSorcerer</a>
+        <a href="{{ site.author.github_url }}" target="_blank" rel="noopener noreferrer">GitHub @algo-sorcerer</a>
+        <a href="https://github.com/algo-sorcerer/algo-sorcerer.github.io" target="_blank" rel="noopener noreferrer">Website Source</a>
       </div>
     </div>
 
-    <div class="footer-links">
-      <a href="{{ site.author.youtube_url }}" target="_blank" rel="noopener noreferrer">YouTube: {{ site.author.handle }}</a>
-      <a href="{{ site.author.github_url }}" target="_blank" rel="noopener noreferrer">GitHub: @algo-sorcerer</a>
-      <a href="#featured">Episode #1: Recursion</a>
-      <a href="#labs">Interactive Labs</a>
-      <a href="#characters">Mentor & Engineer</a>
-    </div>
-
-    <div class="footer-copy">
-      © 2026 AlgoSorcerer World. High-performance Computer Science & Algorithmic Mental Models. Hosted on GitHub Pages with Jekyll & Sass.
+    <div class="section-container footer-bottom-bar">
+      <p>© 2026 AlgoSorcerer World. Crafted with high-performance Computer Science, Systems Architecture, and Algorithmic Thinking.</p>
+      <span class="footer-status-pill">ALL SYSTEMS NOMINAL • 60 FPS CANVAS</span>
     </div>
   </div>
 </footer>

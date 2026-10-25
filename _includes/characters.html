@@ -1,56 +1,133 @@
 <section id="characters" class="characters-section">
   <div class="section-container">
-    <div class="section-tag">MEET THE ARCHITECT & ENGINEER</div>
-    <h2 class="section-title">The Engineering Minds of <span class="gradient-gold">AlgoSorcerer</span></h2>
-    <p class="section-sub">
-      Every discussion deconstructs complex computer science concepts into intuitive, unforgettable algorithmic mental models.
-    </p>
+    <div class="section-header text-center">
+      <div class="section-tag tag-lavender">EDITORIAL FEATURE // THE VOICES OF ALGOSORCERER</div>
+      <h2 class="section-title">
+        The Architect & <span class="gradient-gold">The Engineer.</span>
+      </h2>
+      <p class="section-sub">
+        Every algorithm conceals a philosophy; every software architecture reflects how humans think. Meet the two recurring voices bridging mathematical foundations with real-world engineering.
+      </p>
+    </div>
 
-    <div class="characters-grid">
-      <!-- Acharya Card -->
-      <div class="char-profile-card acharya-card">
-        <div class="char-avatar-container">
-          <img src="{{ site.data.characters.acharya.avatar | relative_url }}" alt="{{ site.data.characters.acharya.name }}" class="profile-avatar">
-          <div class="char-halo gold-halo"></div>
-        </div>
-        <div class="char-details">
-          <span class="role-pill gold-pill">{{ site.data.characters.acharya.role }}</span>
-          <h3 class="char-fullname">{{ site.data.characters.acharya.name }}</h3>
-          <p class="char-desc">
-            Senior Systems Architect and CS Mentor. Specializes in distributed systems, memory models, and computational logic. Synthesizes low-level algorithmic realities into clean, high-level architecture principles.
-          </p>
-          <div class="char-attributes">
-            {% for tag in site.data.characters.acharya.tags %}
-            <span class="attr-tag">{{ tag }}</span>
-            {% endfor %}
+    <!-- Editorial Split-Screen Character Feature -->
+    <div class="characters-split-editorial">
+      <!-- Acharya Vidyadhar Portrait & Dossier -->
+      <div class="char-dossier acharya-dossier">
+        <div class="dossier-visual-wrap">
+          <div class="portrait-halo gold-halo"></div>
+          <div class="portrait-frame">
+            <img src="{{ site.data.characters.acharya.avatar | relative_url }}" 
+                 alt="{{ site.data.characters.acharya.name }}" 
+                 class="portrait-img"
+                 onerror="this.src='{{ site.data.characters.acharya.vector_avatar | relative_url }}'">
           </div>
-          <div class="signature-quote">
-            "{{ site.data.characters.acharya.quote }}"
+          <div class="dossier-pill gold">{{ site.data.characters.acharya.badge }}</div>
+        </div>
+
+        <div class="dossier-body">
+          <h3 class="dossier-name">{{ site.data.characters.acharya.name }}</h3>
+          <span class="dossier-role">{{ site.data.characters.acharya.role }}</span>
+          <p class="dossier-bio">{{ site.data.characters.acharya.bio }}</p>
+
+          <blockquote class="dossier-quote gold-quote">
+            <span class="quote-mark">“</span>
+            <p>{{ site.data.characters.acharya.quote }}</p>
+          </blockquote>
+
+          <div class="dossier-domains">
+            <span class="domains-title">CORE ARCHITECTURAL DOMAINS:</span>
+            <div class="domain-tags">
+              {% for d in site.data.characters.acharya.domains %}
+              <div class="domain-chip gold-chip" title="{{ d.desc }}">
+                <strong>{{ d.title }}</strong>
+                <span class="chip-desc">{{ d.desc }}</span>
+              </div>
+              {% endfor %}
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Anvay Card -->
-      <div class="char-profile-card anvay-card">
-        <div class="char-avatar-container">
-          <img src="{{ site.data.characters.anvay.avatar | relative_url }}" alt="{{ site.data.characters.anvay.name }}" class="profile-avatar">
-          <div class="char-halo cyan-halo"></div>
-        </div>
-        <div class="char-details">
-          <span class="role-pill cyan-pill">{{ site.data.characters.anvay.role }}</span>
-          <h3 class="char-fullname">{{ site.data.characters.anvay.name }}</h3>
-          <p class="char-desc">
-            Junior Software Engineer and competitive programmer. Curious, sharp, and relentlessly debugging production crashes, recursion limits, memory bottlenecks, and algorithmic efficiency.
-          </p>
-          <div class="char-attributes">
-            {% for tag in site.data.characters.anvay.tags %}
-            <span class="attr-tag">{{ tag }}</span>
-            {% endfor %}
+      <!-- Anvay Portrait & Dossier -->
+      <div class="char-dossier anvay-dossier">
+        <div class="dossier-visual-wrap">
+          <div class="portrait-halo cyan-halo"></div>
+          <div class="portrait-frame">
+            <img src="{{ site.data.characters.anvay.avatar | relative_url }}" 
+                 alt="{{ site.data.characters.anvay.name }}" 
+                 class="portrait-img"
+                 onerror="this.src='{{ site.data.characters.anvay.vector_avatar | relative_url }}'">
           </div>
-          <div class="signature-quote">
-            "{{ site.data.characters.anvay.quote }}"
+          <div class="dossier-pill cyan">{{ site.data.characters.anvay.badge }}</div>
+        </div>
+
+        <div class="dossier-body">
+          <h3 class="dossier-name">{{ site.data.characters.anvay.name }}</h3>
+          <span class="dossier-role">{{ site.data.characters.anvay.role }}</span>
+          <p class="dossier-bio">{{ site.data.characters.anvay.bio }}</p>
+
+          <blockquote class="dossier-quote cyan-quote">
+            <span class="quote-mark">“</span>
+            <p>{{ site.data.characters.anvay.quote }}</p>
+          </blockquote>
+
+          <div class="dossier-domains">
+            <span class="domains-title">ENGINEERING FOCUS AREAS:</span>
+            <div class="domain-tags">
+              {% for d in site.data.characters.anvay.domains %}
+              <div class="domain-chip cyan-chip" title="{{ d.desc }}">
+                <strong>{{ d.title }}</strong>
+                <span class="chip-desc">{{ d.desc }}</span>
+              </div>
+              {% endfor %}
+            </div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Interactive Dialogue Console: Mentor & Engineer Discussion -->
+    <div class="character-dialogue-console">
+      <div class="console-header">
+        <div class="console-title-wrap">
+          <span class="console-label">INTERACTIVE DIALOGUE TRANSCRIPT</span>
+          <h4 class="console-topic" id="dialogue-active-topic">The Mystery of the Call Stack Crash</h4>
+        </div>
+
+        <div class="dialogue-scenario-selector" role="tablist">
+          {% for d in site.data.characters.dialogues %}
+          <button class="btn-scenario {% if forloop.first %}active{% endif %}" 
+                  data-dialogue-id="{{ d.id }}"
+                  role="tab"
+                  aria-selected="{% if forloop.first %}true{% else %}false{% endif %}">
+            <span>{{ d.title }}</span>
+          </button>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="console-viewport" id="console-transcript-stream">
+        {% assign initial_dialogue = site.data.characters.dialogues.first %}
+        {% for turn in initial_dialogue.turns %}
+        <div class="transcript-turn turn-{{ turn.speaker }}">
+          <div class="turn-speaker-badge">
+            {% if turn.speaker == 'acharya' %}
+            <span class="speaker-tag gold">🎓 ACHARYA</span>
+            {% else %}
+            <span class="speaker-tag cyan">💡 ANVAY</span>
+            {% endif %}
+          </div>
+          <div class="turn-bubble">
+            <p>{{ turn.text }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <div class="console-footer" id="console-takeaway-bar">
+        <span class="takeaway-badge">KEY ARCHITECTURAL TAKEAWAY:</span>
+        <span class="takeaway-text" id="dialogue-takeaway-text">{{ initial_dialogue.takeaway }}</span>
       </div>
     </div>
   </div>

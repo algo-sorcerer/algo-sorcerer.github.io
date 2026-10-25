@@ -1,45 +1,71 @@
 // ==============================================================================
-// AlgoSorcerer World — Sass Design Tokens & Variables
+// AlgoSorcerer World — Design System Tokens & Color Variables
+// "Ancient wisdom. Algorithmic thinking. Infinite possibilities."
 // ==============================================================================
 
-// Palette: Cosmic Void & Sacred Hues
-$bg-deep-void: #050611;
-$bg-surface: #090c22;
-$bg-card: rgba(13, 17, 44, 0.78);
-$bg-card-hover: rgba(22, 28, 68, 0.92);
+// Core Palette
+$color-obsidian: #08090d;          // Deepest background
+$color-midnight: #101521;          // Secondary surfaces & card backdrop
+$color-parchment: #e9dfc8;         // Editorial text, parchment accents
+$color-gold: #c7a66a;              // Wisdom, discovery, editorial accents
+$color-gold-bright: #e2c288;       // Highlight gold
+$color-gold-dark: #916f39;         // Deep shadow gold
+$color-cyan: #64e8ff;              // Active computation, interactive controls
+$color-cyan-glow: rgba(100, 232, 255, 0.4);
+$color-lavender: #9a8cff;          // Abstract mathematical concepts
+$color-lavender-glow: rgba(154, 140, 255, 0.35);
 
-$border-subtle: rgba(255, 255, 255, 0.08);
-$border-gold: rgba(245, 158, 11, 0.35);
-$border-cyan: rgba(6, 182, 212, 0.35);
+// Text Hierarchy
+$text-primary: #f0f4fc;            // High contrast body & headers
+$text-secondary: #a3a9b8;          // Secondary body & descriptions
+$text-muted: #6b7280;              // Subtle technical metadata
+$text-parchment: #e9dfc8;          // Editorial headlines & pull quotes
+$text-gold: #c7a66a;
+$text-cyan: #64e8ff;
 
-// Gold & Saffron (Acharya / Vedic Wisdom)
-$gold-primary: #f59e0b;
-$gold-glow: #fbbf24;
-$gold-dark: #b45309;
-$gold-soft: #fef08a;
+// Borders & Dividers
+$border-subtle: rgba(233, 223, 200, 0.08);
+$border-medium: rgba(233, 223, 200, 0.16);
+$border-gold: rgba(199, 166, 106, 0.35);
+$border-gold-subtle: rgba(199, 166, 106, 0.18);
+$border-cyan: rgba(100, 232, 255, 0.35);
+$border-cyan-subtle: rgba(100, 232, 255, 0.18);
+$border-lavender: rgba(154, 140, 255, 0.35);
 
-// Mana Cyan & Teal (Anvay / Algorithmic Inquiry)
-$cyan-primary: #06b6d4;
-$cyan-glow: #22d3ee;
-$cyan-dark: #0e7490;
-$cyan-soft: #cffafe;
+// Background Surfaces
+$bg-body: $color-obsidian;
+$bg-card: rgba(16, 21, 33, 0.82);
+$bg-card-hover: rgba(22, 29, 46, 0.94);
+$bg-card-elevated: #131a2b;
+$bg-input: rgba(8, 9, 13, 0.75);
 
-// Typography Colors
-$text-main: #f8fafc;
-$text-muted: #94a3b8;
-$text-dark: #64748b;
+// Typography
+$font-editorial: 'Playfair Display', Georgia, serif;
+$font-display: 'Cinzel', 'Cinzel Decorative', Georgia, serif;
+$font-body: 'Outfit', 'Inter', -apple-system, sans-serif;
+$font-code: 'Fira Code', 'JetBrains Mono', monospace;
 
-// Font Families
-$font-display: 'Cinzel', serif;
-$font-body: 'Outfit', sans-serif;
-$font-code: 'Fira Code', monospace;
+// Layout & Spacing
+$max-width-site: 1240px;
+$max-width-editorial: 960px;
+$nav-height: 76px;
 
-// Radii & Shadows
+// Radii
+$radius-xs: 4px;
 $radius-sm: 8px;
 $radius-md: 14px;
-$radius-lg: 24px;
+$radius-lg: 20px;
 $radius-full: 9999px;
 
-$shadow-gold: 0 0 30px rgba(245, 158, 11, 0.25);
-$shadow-cyan: 0 0 30px rgba(6, 182, 212, 0.25);
-$shadow-card: 0 15px 40px rgba(0, 0, 0, 0.6);
+// Shadows & Glows
+$shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.5);
+$shadow-md: 0 8px 24px rgba(0, 0, 0, 0.65);
+$shadow-lg: 0 16px 48px rgba(0, 0, 0, 0.8);
+$glow-gold: 0 0 25px rgba(199, 166, 106, 0.25);
+$glow-cyan: 0 0 25px rgba(100, 232, 255, 0.25);
+$glow-lavender: 0 0 25px rgba(154, 140, 255, 0.25);
+
+// Transitions
+$transition-fast: 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+$transition-smooth: 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+$transition-slow: 0.6s cubic-bezier(0.16, 1, 0.3, 1);

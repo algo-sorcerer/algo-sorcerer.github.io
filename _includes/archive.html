@@ -1,0 +1,81 @@
+<section id="archive" class="archive-section">
+  <div class="section-container">
+    <!-- Editorial Journal Broadside Container -->
+    <div class="newspaper-broadside">
+      <!-- Masthead & Journal Header -->
+      <header class="masthead">
+        <div class="masthead-top-rule"></div>
+        <div class="masthead-meta-bar">
+          <span>{{ site.data.archive.publication.volume }} • {{ site.data.archive.publication.issue }}</span>
+          <span>{{ site.data.archive.publication.edition }}</span>
+          <span>{{ site.data.archive.publication.date }}</span>
+          <span>{{ site.data.archive.publication.price }}</span>
+        </div>
+        <div class="masthead-rule"></div>
+
+        <div class="masthead-title-wrap">
+          <h2 class="masthead-title">{{ site.data.archive.publication.title }}</h2>
+          <span class="masthead-subtitle">{{ site.data.archive.publication.subtitle }}</span>
+          <span class="masthead-motto">“{{ site.data.archive.publication.motto }}”</span>
+        </div>
+
+        <div class="masthead-rule-bottom"></div>
+      </header>
+
+      <!-- Front-Page Layout Grid -->
+      <div class="newspaper-frontpage-grid">
+        <!-- Main Lead Story (Left & Center) -->
+        <article class="lead-story">
+          <div class="story-kicker">{{ site.data.archive.lead_story.kicker }}</div>
+          <h3 class="lead-headline">{{ site.data.archive.lead_story.headline }}</h3>
+          <h4 class="lead-subhead">{{ site.data.archive.lead_story.subheadline }}</h4>
+
+          <div class="story-byline-bar">
+            <span class="byline">{{ site.data.archive.lead_story.author }}</span>
+            <span class="dateline">{{ site.data.archive.lead_story.dateline }}</span>
+          </div>
+
+          <div class="lead-text-columns">
+            {% for para in site.data.archive.lead_story.paragraphs %}
+            <p>{{ para }}</p>
+            {% endfor %}
+          </div>
+
+          <!-- Editorial Pull Quote -->
+          <div class="newspaper-pullquote">
+            <p>“{{ site.data.archive.editorial_quote.text }}”</p>
+            <span class="quote-author">— {{ site.data.archive.editorial_quote.attribution }}</span>
+          </div>
+        </article>
+
+        <!-- Secondary Side Columns (Right) -->
+        <aside class="newspaper-sidebar">
+          <div class="sidebar-header">
+            <span>EDITORIAL DISPATCHES</span>
+          </div>
+
+          <div class="dispatch-articles-list">
+            {% for col in site.data.archive.columns %}
+            <article class="dispatch-item">
+              <span class="dispatch-cat">{{ col.category }}</span>
+              <h4 class="dispatch-title">{{ col.title }}</h4>
+              <h5 class="dispatch-sub">{{ col.subtitle }}</h5>
+              <p class="dispatch-snippet">{{ col.snippet }}</p>
+              <div class="dispatch-footer">
+                <span class="dispatch-byline">{{ col.author }}</span>
+                <span class="dispatch-time">{{ col.read_time }}</span>
+              </div>
+            </article>
+            {% endfor %}
+          </div>
+        </aside>
+      </div>
+
+      <!-- Newspaper Bottom Bar -->
+      <footer class="broadside-footer">
+        <span>THE ALGORITHM CHRONICLE IS PUBLISHED BY ALGOSORCERER STUDIO</span>
+        <span>PEER-REVIEWED INVARIANTS • CODE ARCHITECTURE • COMPUTATIONAL PHILOSOPHY</span>
+      </footer>
+    </div>
+  </div>
+</section>

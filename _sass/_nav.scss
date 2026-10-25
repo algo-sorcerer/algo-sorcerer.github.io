@@ -1,98 +1,302 @@
 // ==============================================================================
-// AlgoSorcerer World — Navigation Styles
+// AlgoSorcerer World — Navigation Bar Styles
 // ==============================================================================
 
 .navbar {
-  position: sticky;
+  position: fixed;
   top: 0;
-  z-index: 1000;
-  background: rgba(5, 6, 17, 0.88);
-  backdrop-filter: blur(20px);
+  left: 0;
+  width: 100%;
+  height: $nav-height;
+  background: rgba(8, 9, 13, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid $border-subtle;
-  padding: 16px 0;
+  z-index: 1000;
+  transition: background-color $transition-smooth, border-color $transition-smooth, transform $transition-smooth;
+
+  &.nav-scrolled {
+    background: rgba(8, 9, 13, 0.96);
+    border-bottom-color: rgba(199, 166, 106, 0.2);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
+  }
 }
 
 .nav-container {
-  max-width: 1280px;
+  max-width: $max-width-site;
+  height: 100%;
   margin: 0 auto;
   padding: 0 32px;
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  @media (max-width: 640px) {
+    padding: 0 20px;
+  }
 }
 
+// Brand Group
 .brand-link {
   display: flex;
   align-items: center;
   gap: 14px;
   text-decoration: none;
+  group: focus;
+}
+
+.brand-emblem-wrap {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 50%;
+    border: 1px solid rgba(199, 166, 106, 0.25);
+    pointer-events: none;
+  }
 }
 
 .nav-logo {
-  width: 44px;
-  height: 44px;
-  filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.6));
-  transition: transform 0.4s ease;
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 8px rgba(199, 166, 106, 0.3));
+  transition: transform $transition-fast;
+
+  .brand-link:hover & {
+    transform: rotate(15deg) scale(1.05);
+  }
 }
 
-.brand-link:hover .nav-logo {
-  transform: rotate(30deg) scale(1.08);
+.brand-name-group {
+  display: flex;
+  flex-direction: column;
 }
 
 .nav-brand-title {
   font-family: $font-display;
-  font-size: 20px;
+  font-size: 17px;
   font-weight: 800;
-  letter-spacing: 2px;
-  color: #fff;
-  display: block;
+  letter-spacing: 2.5px;
+  color: $text-primary;
+  transition: color $transition-fast;
+
+  .brand-link:hover & {
+    color: $color-gold-bright;
+  }
 }
 
 .nav-brand-sub {
-  font-size: 9px;
-  font-weight: 600;
-  letter-spacing: 2px;
-  color: $cyan-primary;
-  display: block;
+  font-family: $font-code;
+  font-size: 8.5px;
+  font-weight: 500;
+  letter-spacing: 1.5px;
+  color: $color-gold;
+  opacity: 0.85;
+
+  @media (max-width: 900px) {
+    display: none;
+  }
 }
 
+// Navigation Menu
 .nav-menu {
   display: flex;
-  gap: 28px;
+  align-items: center;
+  gap: 24px;
+
+  @media (max-width: 1080px) {
+    gap: 16px;
+  }
+
+  @media (max-width: 960px) {
+    display: none;
+  }
 }
 
 .nav-item {
-  color: $text-muted;
+  position: relative;
+  font-family: $font-body;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: $text-secondary;
   text-decoration: none;
-  font-size: 14.5px;
-  font-weight: 600;
-  transition: color 0.2s ease;
+  padding: 8px 0;
+  transition: color $transition-fast;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: $color-gold;
+    box-shadow: 0 0 6px $color-gold;
+    transition: width $transition-smooth, left $transition-smooth;
+  }
 
   &:hover {
-    color: $gold-glow;
+    color: $color-parchment;
+
+    &::after {
+      width: 100%;
+      left: 0;
+    }
+  }
+
+  &.active {
+    color: $color-gold-bright;
+    font-weight: 600;
+
+    &::after {
+      width: 100%;
+      left: 0;
+      background: $color-cyan;
+      box-shadow: 0 0 6px $color-cyan;
+    }
   }
 }
 
-.btn-yt-subscribe {
+// Actions & Enter Lab Button
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.btn-enter-lab {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 9px 20px;
-  background: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
-  color: #fff;
-  text-decoration: none;
-  font-size: 13.5px;
-  font-weight: 700;
+  padding: 10px 20px;
   border-radius: $radius-full;
-  box-shadow: 0 4px 18px rgba(225, 29, 72, 0.4);
-  transition: all 0.25s ease;
+  background: rgba(100, 232, 255, 0.08);
+  border: 1px solid $border-cyan;
+  color: $color-cyan;
+  font-family: $font-code;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-decoration: none;
+  transition: all $transition-smooth;
+
+  .lab-glyph {
+    font-size: 13px;
+    color: $color-gold-bright;
+    transition: transform $transition-fast;
+  }
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 24px rgba(225, 29, 72, 0.6);
+    background: rgba(100, 232, 255, 0.18);
+    box-shadow: $glow-cyan;
+    transform: translateY(-1px);
+
+    .lab-glyph {
+      transform: scale(1.2);
+    }
+  }
+
+  @media (max-width: 480px) {
+    padding: 8px 14px;
+    font-size: 11px;
   }
 }
 
-.yt-play-icon {
-  font-size: 11px;
+// Mobile Hamburger Button
+.nav-mobile-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 38px;
+  height: 38px;
+  background: transparent;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-sm;
+  cursor: pointer;
+  padding: 8px;
+  outline: none;
+
+  .bar {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: $text-primary;
+    border-radius: 1px;
+    transition: transform $transition-fast, opacity $transition-fast;
+  }
+
+  &.is-active {
+    .bar:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+    .bar:nth-child(2) {
+      opacity: 0;
+    }
+    .bar:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
+    }
+  }
+
+  @media (max-width: 960px) {
+    display: flex;
+  }
+}
+
+// Mobile Drawer
+.nav-mobile-drawer {
+  position: absolute;
+  top: $nav-height;
+  left: 0;
+  width: 100%;
+  background: rgba(10, 12, 18, 0.98);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid $border-gold-subtle;
+  padding: 24px 32px 32px;
+  transform: translateY(-120%);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform $transition-smooth, opacity $transition-smooth;
+  z-index: 999;
+
+  &.is-open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
+
+.mobile-drawer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .mobile-nav-link {
+    font-family: $font-body;
+    font-size: 16px;
+    color: $text-primary;
+    text-decoration: none;
+    padding: 10px 0;
+    border-bottom: 1px solid $border-subtle;
+    transition: color $transition-fast;
+
+    &:hover {
+      color: $color-gold-bright;
+    }
+
+    &.yt-link {
+      color: #ef4444;
+      font-weight: 600;
+      border-bottom: none;
+      margin-top: 8px;
+    }
+  }
 }

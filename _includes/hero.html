@@ -1,55 +1,80 @@
-<section class="hero-section">
-  <div class="hero-container">
+<section id="hero" class="hero-section">
+  <div class="section-container hero-grid">
     <div class="hero-content">
       <div class="hero-badge">
         <span class="badge-dot"></span>
-        <span>COMPUTER SCIENCE & ALGORITHMIC MENTAL MODELS</span>
+        <span class="badge-text">ANCIENT WISDOM • ALGORITHMIC THINKING • INFINITE POSSIBILITIES</span>
       </div>
+
       <h1 class="hero-title">
-        Where Computer Science Meets <span class="gradient-gold">Deep Thinking</span>
+        Where Computer Science Meets <span class="gradient-gold">Deep Thinking.</span>
       </h1>
+
       <p class="hero-description">
-        What if recursion is the algorithmic model of <em>Samsara</em>? What if binary search is the ancient logical framework of <em>Neti-Neti</em>? Join <strong>Acharya</strong> (Senior CS Architect) and <strong>Anvay</strong> (Junior Engineer) as they dissect high-performance algorithms, system architecture, and mental models for engineers.
+        Explore the hidden connections between algorithms, system architecture, mathematics, and timeless philosophical ideas. Step inside a digital universe where computation becomes a living, observable reality.
       </p>
 
       <div class="hero-actions">
-        <a href="{{ site.author.youtube_url }}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-          <span class="btn-icon">⚡</span> Watch on YouTube {{ site.author.handle }}
+        <a href="#curriculum" class="btn btn-primary">
+          <span>Explore the Universe</span>
+          <span class="btn-arrow">→</span>
         </a>
         <a href="#labs" class="btn btn-secondary">
-          <span class="btn-icon">🌀</span> Explore Interactive Labs
+          <span class="btn-icon">⚡</span>
+          <span>Enter Interactive Labs</span>
         </a>
       </div>
 
+      <!-- Verified Actual Website Metrics -->
       <div class="hero-stats">
         <div class="stat-item">
-          <span class="stat-number">6+</span>
-          <span class="stat-label">Algorithmic Labs</span>
+          <span class="stat-number">6</span>
+          <span class="stat-label">Interactive Labs</span>
         </div>
         <div class="stat-divider"></div>
         <div class="stat-item">
-          <span class="stat-number">4K / 60</span>
-          <span class="stat-label">Code Visualizations</span>
+          <span class="stat-number">6</span>
+          <span class="stat-label">Mental Models</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-number">6</span>
+          <span class="stat-label">Architecture Chronicles</span>
         </div>
         <div class="stat-divider"></div>
         <div class="stat-item">
           <span class="stat-number">100%</span>
-          <span class="stat-label">Open-Source Code</span>
+          <span class="stat-label">Open Source</span>
         </div>
       </div>
     </div>
 
-    <!-- Hero Visual: Portal & Rotating Sacred Mandala -->
-    <div class="hero-visual">
-      <div class="portal-wrapper">
-        <div class="mandala-ring ring-outer"></div>
-        <div class="mandala-ring ring-middle"></div>
-        <div class="mandala-ring ring-inner"></div>
-        <canvas id="hero-mini-canvas" width="460" height="460"></canvas>
-        <div class="portal-center-core">
-          <img src="{{ site.author.avatar | relative_url }}" alt="Core Mandala" class="core-logo">
-        </div>
+    <!-- Centerpiece: Mathematical Mandala & Computational Artifact -->
+    <div class="hero-visual" id="hero-artifact-wrap">
+      <div class="artifact-ambient-glow"></div>
+      <canvas id="hero-portal-canvas" width="560" height="560" aria-label="Rotating Mathematical Computational Mandala"></canvas>
+      
+      <!-- Subtle Floating Technical Annotations -->
+      <div class="hero-annotation top-right">
+        <span class="ann-label">INVARIANT:</span>
+        <span class="ann-value">T(n) = T(n/2) + O(1)</span>
+      </div>
+      <div class="hero-annotation bottom-left">
+        <span class="ann-label">STATE:</span>
+        <span class="ann-value">H(X) → Minimal Entropy</span>
+      </div>
+      <div class="hero-annotation bottom-right">
+        <span class="ann-label">TOPOLOGY:</span>
+        <span class="ann-value">DAG Interdependence</span>
       </div>
     </div>
+  </div>
+
+  <!-- Scroll Down Indicator -->
+  <div class="hero-scroll-cue">
+    <a href="#featured" class="scroll-cue-link" aria-label="Scroll to featured episode">
+      <span class="cue-text">SCROLL TO DISCOVER</span>
+      <span class="cue-line"></span>
+    </a>
   </div>
 </section>

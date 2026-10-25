@@ -1,51 +1,119 @@
 <section id="labs" class="labs-section">
   <div class="section-container">
-    <div class="section-tag">BROWSER-BASED EXPERIMENTS</div>
-    <h2 class="section-title">The Interactive <span class="gradient-cyan">Algorithm Sandbox</span></h2>
-    <p class="section-sub">
-      Explore each algorithmic principle in real-time. Select a simulation below to interact directly with call stacks, graph topologies, and memory caches.
-    </p>
+    <div class="section-header">
+      <div class="section-tag tag-cyan">INTERACTIVE ALGORITHM LABORATORY</div>
+      <h2 class="section-title">
+        Don't Just Learn Algorithms. <span class="gradient-cyan">Witness Them.</span>
+      </h2>
+      <p class="section-sub">
+        Experiment with the invisible mechanics that power computation. Every interaction below produces a deterministic state change, exposing the low-level data structures and algorithmic complexity.
+      </p>
+    </div>
 
-    <div class="labs-interactive-grid">
-      <!-- Left: Master Simulation Stage -->
-      <div class="main-lab-stage">
-        <div class="stage-header">
-          <div>
-            <span class="stage-badge" id="current-lab-badge">RECURSION & CALL STACKS</span>
-            <h3 id="current-lab-title">The Logarithmic Spiral of Call Stacks</h3>
+    <!-- Main Laboratory Station -->
+    <div class="lab-station-grid">
+      <!-- Left: Simulation Canvas & Control Deck -->
+      <div class="lab-main-deck">
+        <!-- Station Header & Telemetry -->
+        <div class="deck-header">
+          <div class="deck-title-group">
+            <span class="deck-badge" id="current-lab-badge">LAB A // RECURSION & CALL STACKS</span>
+            <h3 class="deck-title" id="current-lab-title">Call Stack Expansion & Halting Invariants</h3>
           </div>
-          <div class="stage-actions">
-            <button id="btn-lab-toggle" class="btn-ctrl">Pause / Play</button>
-            <button id="btn-lab-reset" class="btn-ctrl">Reset</button>
+          
+          <div class="deck-telemetry">
+            <div class="telemetry-chip">
+              <span class="telemetry-label">TIME:</span>
+              <span class="telemetry-val" id="hud-time-complexity">O(N)</span>
+            </div>
+            <div class="telemetry-chip">
+              <span class="telemetry-label">SPACE:</span>
+              <span class="telemetry-val" id="hud-space-complexity">O(N)</span>
+            </div>
+            <div class="telemetry-chip">
+              <span class="telemetry-label">STATE:</span>
+              <span class="telemetry-val highlight" id="hud-runtime-state">EXECUTING</span>
+            </div>
           </div>
         </div>
 
-        <div class="lab-canvas-container">
-          <canvas id="master-lab-canvas" width="800" height="480"></canvas>
-          <div class="lab-live-legend" id="lab-live-legend">
-            <span class="legend-chip">Active Frame</span>
-            <span class="legend-chip">Time: O(N)</span>
-            <span class="legend-chip">Space: O(N)</span>
+        <!-- Master Simulation Canvas Viewport -->
+        <div class="deck-viewport">
+          <canvas id="master-lab-canvas" width="840" height="480" aria-label="Interactive Algorithm Simulation Viewport"></canvas>
+          
+          <!-- Live Interactive HUD Overlay -->
+          <div class="viewport-hud-overlay" id="viewport-hud-overlay">
+            <span class="hud-item" id="hud-counter-1">Stack Depth: 1 / 6</span>
+            <span class="hud-item" id="hud-counter-2">Operation: Frame Push</span>
           </div>
         </div>
 
-        <div class="stage-explanation" id="stage-explanation-text">
-          Watch the recursive call stack expand as a logarithmic spiral. Without the explicit base case boundary condition, recursive invocations exhaust stack memory.
+        <!-- Dynamic Lab Control Bar -->
+        <div class="deck-controls" id="deck-controls-container">
+          <!-- Common Play / Pause & Reset -->
+          <div class="control-group">
+            <button id="btn-lab-toggle" class="btn-ctrl primary" aria-label="Pause or resume simulation">
+              <span class="ctrl-icon">⏸</span>
+              <span class="ctrl-text">Pause</span>
+            </button>
+            <button id="btn-lab-step" class="btn-ctrl" aria-label="Step forward one frame or operation">
+              <span class="ctrl-icon">⏯</span>
+              <span class="ctrl-text">Step Forward</span>
+            </button>
+            <button id="btn-lab-reset" class="btn-ctrl" aria-label="Reset simulation to initial state">
+              <span class="ctrl-icon">↺</span>
+              <span class="ctrl-text">Reset</span>
+            </button>
+          </div>
+
+          <!-- Lab-Specific Dynamic Action Buttons Container -->
+          <div class="dynamic-lab-actions" id="dynamic-lab-actions">
+            <!-- Populated via script.js based on activeLabKey -->
+          </div>
+        </div>
+
+        <!-- Scientific Concept Breakdown Card -->
+        <div class="deck-explanation">
+          <div class="explanation-icon">💡</div>
+          <div class="explanation-text-group">
+            <strong id="stage-explanation-heading">Algorithmic Invariant:</strong>
+            <p id="stage-explanation-text">
+              Watch recursive invocations allocate stack frames sequentially. Without an explicit Base Case boundary, memory expands infinitely until hardware stack limits trigger a terminal overflow.
+            </p>
+          </div>
         </div>
       </div>
 
-      <!-- Right: Topic Selection List from _data/episodes.yml -->
-      <div class="lab-topic-selector">
-        {% for ep in site.data.episodes %}
-        <div class="lab-card-item {% if forloop.first %}active{% endif %}" data-sim="{{ ep.id }}">
-          <div class="lab-icon">{{ ep.icon }}</div>
-          <div class="lab-item-info">
-            <h4>{{ ep.title }}</h4>
-            <p>{{ ep.cs_concept }} • {{ ep.mental_model }}</p>
-            <span class="school-tag">{{ ep.school }}</span>
-          </div>
+      <!-- Right: Lab Selector List -->
+      <div class="lab-sidebar-selector">
+        <div class="selector-header">
+          <span class="selector-title">SELECT ACTIVE EXPERIMENT</span>
+          <span class="selector-count">6 LABS AVAILABLE</span>
         </div>
-        {% endfor %}
+
+        <div class="lab-selector-list" role="tablist">
+          {% for ep in site.data.episodes %}
+          <button class="lab-select-card {% if forloop.first %}active{% endif %}" 
+                  data-sim="{{ ep.lab_id }}"
+                  role="tab" 
+                  aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                  id="tab-{{ ep.lab_id }}">
+            <div class="card-num-icon">
+              <span class="lab-num">{{ ep.num }}</span>
+              <span class="lab-icon">{{ ep.icon }}</span>
+            </div>
+            <div class="card-meta">
+              <div class="card-cat">{{ ep.school }}</div>
+              <h4 class="card-name">{{ ep.title }}</h4>
+              <div class="card-specs">
+                <span class="spec-tag">{{ ep.time_complexity }}</span>
+                <span class="spec-tag">{{ ep.sub_concept }}</span>
+              </div>
+            </div>
+            <div class="card-active-indicator"></div>
+          </button>
+          {% endfor %}
+        </div>
       </div>
     </div>
   </div>

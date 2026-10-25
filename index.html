@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AlgoSorcerer — Where Computer Science Meets Ancient Wisdom</title>
+  <meta name="description" content="Explore the deep convergence of Computer Science fundamentals and ancient Indian philosophy through dialogues between Acharya and Anvay. Live simulations and YouTube Shorts.">
+  <link rel="icon" type="image/svg+xml" href="assets/brand/logo.svg">
+
+  <!-- Google Typography: Cinzel, Outfit, Fira Code -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Fira+Code:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient Cosmic Particle Canvas -->
+  <canvas id="cosmic-bg"></canvas>
+
+  <!-- Sticky Cyber-Vedic Navigation -->
+  <header class="navbar">
+    <div class="nav-container">
+      <a href="#" class="brand-link">
+        <img src="assets/brand/logo.svg" alt="AlgoSorcerer Logo" class="nav-logo">
+        <div class="brand-name-group">
+          <span class="nav-brand-title">ALGOSORCERER</span>
+          <span class="nav-brand-sub">CODE • CONSCIOUSNESS • DARSHANA</span>
+        </div>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="#featured" class="nav-item">Premiere Short</a>
+        <a href="#labs" class="nav-item">Interactive Labs</a>
+        <a href="#characters" class="nav-item">Guru & Pupil</a>
+        <a href="#topics" class="nav-item">The 6 Darshanas</a>
+        <a href="#ecosystem" class="nav-item">Open Source</a>
+      </nav>
+
+      <div class="nav-cta-group">
+        <a href="https://www.youtube.com/@AlgoSorcerer" target="_blank" rel="noopener noreferrer" class="btn-yt-subscribe">
+          <span class="yt-play-icon">▶</span>
+          <span>Subscribe @AlgoSorcerer</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================== -->
+  <!-- 1. HERO SECTION                            -->
+  <!-- ========================================== -->
+  <section class="hero-section">
+    <div class="hero-container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          <span>THE CONVERGENCE OF CODE & SACRED PHILOSOPHY</span>
+        </div>
+        <h1 class="hero-title">
+          Where Algorithms Meet <span class="gradient-gold">Ancient Wisdom</span>
+        </h1>
+        <p class="hero-description">
+          What if recursion is the algorithmic law of <em>Samsara</em>? What if binary search is the ancient Upanishadic method of <em>Neti-Neti</em>? Join <strong>Acharya</strong> (the Guru) and <strong>Anvay</strong> (the Pupil) as they decode reality through Computer Science and Indian philosophy.
+        </p>
+
+        <div class="hero-actions">
+          <a href="https://www.youtube.com/@AlgoSorcerer" target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+            <span class="btn-icon">🔮</span> Watch on YouTube @AlgoSorcerer
+          </a>
+          <a href="#labs" class="btn btn-secondary">
+            <span class="btn-icon">🌀</span> Explore Interactive Labs
+          </a>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-number">6+</span>
+            <span class="stat-label">Core Darshana Labs</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number">4K / 60</span>
+            <span class="stat-label">Procedural Visuals</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number">100%</span>
+            <span class="stat-label">Open-Source Code</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hero Visual: Rotating Cyber-Vedic Mandala & Particle Simulation -->
+      <div class="hero-visual">
+        <div class="portal-wrapper">
+          <div class="mandala-ring ring-outer"></div>
+          <div class="mandala-ring ring-middle"></div>
+          <div class="mandala-ring ring-inner"></div>
+          <canvas id="hero-mini-canvas" width="460" height="460"></canvas>
+          <div class="portal-center-core">
+            <img src="assets/brand/logo.svg" alt="Core Mandala" class="core-logo">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 2. FEATURED PREMIERE: RECURSION & SAMSARA  -->
+  <!-- ========================================== -->
+  <section id="featured" class="featured-section">
+    <div class="section-container">
+      <div class="section-tag">PREMIERE EPISODE #1</div>
+      <h2 class="section-title">Recursion & Samsara: <span class="gradient-gold">The Cosmic Call Stack</span></h2>
+      <p class="section-sub">
+        Why does a recursive function without a base case crash your computer, exactly like a soul cycling endlessly through rebirth?
+      </p>
+
+      <div class="featured-grid">
+        <!-- Interactive Spiral Simulator Card -->
+        <div class="featured-canvas-card">
+          <div class="card-bar">
+            <div class="bar-left">
+              <span class="pulse-indicator"></span>
+              <span class="bar-title">LIVE SIMULATION • THE CALL STACK OF REBIRTH</span>
+            </div>
+            <div class="bar-right">
+              <button id="btn-spiral-step" class="btn-ctrl">Next Stack Frame</button>
+              <button id="btn-spiral-reset" class="btn-ctrl">Reset Cycle</button>
+            </div>
+          </div>
+          <div class="canvas-box">
+            <canvas id="samsara-canvas" width="600" height="440"></canvas>
+            <div class="samsara-hud">
+              <span id="stack-depth-label">Stack Depth: 1</span>
+              <span id="stack-state-label">Cycle: Active Rebirth</span>
+            </div>
+          </div>
+          <div class="canvas-footer-caption">
+            <span class="caption-icon">🕉️</span>
+            <span><em>"पुनरपि जननं पुनरपि मरणम्"</em> — Without a Base Case to halt the recursion, the call stack overflows into suffering. The Base Case is Moksha (Liberation).</span>
+          </div>
+        </div>
+
+        <!-- Dialogue Breakdown & Character Insight -->
+        <div class="dialogue-breakdown-card">
+          <div class="dialogue-header">
+            <h3>The Guru-Shishya Dialogue</h3>
+            <span class="sanskrit-title">संसार चक्र एवं प्रत्यावर्तनम्</span>
+          </div>
+
+          <div class="dialogue-scroll-box">
+            <!-- Turn 1 -->
+            <div class="dialogue-turn anvay-turn">
+              <img src="assets/brand/anvay_avatar.svg" alt="Anvay" class="dialogue-avatar">
+              <div class="turn-content">
+                <div class="speaker-label speaker-anvay">💡 Anvay (Pupil)</div>
+                <p>"Acharya, yesterday my recursive code froze my computer with a Stack Overflow error! Why does an algorithm eat its own memory?"</p>
+              </div>
+            </div>
+
+            <!-- Turn 2 -->
+            <div class="dialogue-turn acharya-turn">
+              <img src="assets/brand/acharya_avatar.svg" alt="Acharya" class="dialogue-avatar">
+              <div class="turn-content">
+                <div class="speaker-label speaker-acharya">🕉️ Acharya (Guru)</div>
+                <p>"Anvay, your code forgot its Base Case. In Vedanta, this endless loop is called Samsara—the soul repeating lifetimes without awakening."</p>
+              </div>
+            </div>
+
+            <!-- Turn 3 -->
+            <div class="dialogue-turn anvay-turn">
+              <img src="assets/brand/anvay_avatar.svg" alt="Anvay" class="dialogue-avatar">
+              <div class="turn-content">
+                <div class="speaker-label speaker-anvay">💡 Anvay (Pupil)</div>
+                <p>"So every function call is like another birth, stacking karmic debt upon debt?"</p>
+              </div>
+            </div>
+
+            <!-- Turn 4 -->
+            <div class="dialogue-turn acharya-turn">
+              <img src="assets/brand/acharya_avatar.svg" alt="Acharya" class="dialogue-avatar">
+              <div class="turn-content">
+                <div class="speaker-label speaker-acharya">🕉️ Acharya (Guru)</div>
+                <p>"Precisely. When the problem reaches its simplest truth, the Base Case fires. That is Moksha—liberation! The call stack unwinds, and total memory returns to peace."</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="dialogue-footer">
+            <a href="https://www.youtube.com/@AlgoSorcerer" target="_blank" class="btn-watch-short">
+              <span>▶ Watch Full Short on YouTube</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 3. INTERACTIVE DARSHANA LABS (ALL 6 TOPICS)-->
+  <!-- ========================================== -->
+  <section id="labs" class="labs-section">
+    <div class="section-container">
+      <div class="section-tag">BROWSER-BASED EXPERIMENTS</div>
+      <h2 class="section-title">The Interactive <span class="gradient-cyan">Darshana Sandbox</span></h2>
+      <p class="section-sub">
+        Explore each algorithmic principle in real-time. Select a simulation below to interact directly with the mathematics and philosophy.
+      </p>
+
+      <div class="labs-interactive-grid">
+        <!-- Left: Master Simulation Stage -->
+        <div class="main-lab-stage">
+          <div class="stage-header">
+            <div>
+              <span class="stage-badge" id="current-lab-badge">RECURSION & SAMSARA</span>
+              <h3 id="current-lab-title">The Logarithmic Spiral of Call Stacks</h3>
+            </div>
+            <div class="stage-actions">
+              <button id="btn-lab-toggle" class="btn-ctrl">Pause / Play</button>
+              <button id="btn-lab-reset" class="btn-ctrl">Reset</button>
+            </div>
+          </div>
+
+          <div class="lab-canvas-container">
+            <canvas id="master-lab-canvas" width="800" height="480"></canvas>
+            <div class="lab-live-legend" id="lab-live-legend">
+              <span class="legend-chip">Active Frame</span>
+              <span class="legend-chip">Time: O(N)</span>
+              <span class="legend-chip">Space: O(N)</span>
+            </div>
+          </div>
+
+          <div class="stage-explanation" id="stage-explanation-text">
+            Watch the recursive call stack expand as a golden spiral. Without the central 'Moksha' base case, the stack exhausts all available mental heap memory.
+          </div>
+        </div>
+
+        <!-- Right: Topic Selection List -->
+        <div class="lab-topic-selector">
+          <div class="lab-card-item active" data-sim="recursion_samsara">
+            <div class="lab-icon">🌀</div>
+            <div class="lab-item-info">
+              <h4>Recursion & Samsara</h4>
+              <p>Call stacks, base cases & cosmic rebirth</p>
+              <span class="school-tag">Advaita Vedanta</span>
+            </div>
+          </div>
+
+          <div class="lab-card-item" data-sim="binary_search_neti">
+            <div class="lab-icon">🎯</div>
+            <div class="lab-item-info">
+              <h4>Binary Search & Neti-Neti</h4>
+              <p>Eliminating Maya in O(log N) time</p>
+              <span class="school-tag">Upanishads</span>
+            </div>
+          </div>
+
+          <div class="lab-card-item" data-sim="indras_net_graphs">
+            <div class="lab-icon">🕸️</div>
+            <div class="lab-item-info">
+              <h4>Indra's Net & Graph Theory</h4>
+              <p>Reflective jewel vertices & PageRank</p>
+              <span class="school-tag">Avatamsaka Sutra</span>
+            </div>
+          </div>
+
+          <div class="lab-card-item" data-sim="aparigraha_gc">
+            <div class="lab-icon">🧹</div>
+            <div class="lab-item-info">
+              <h4>Garbage Collection & Aparigraha</h4>
+              <p>Mark-and-Sweep memory liberation</p>
+              <span class="school-tag">Patanjali Yoga</span>
+            </div>
+          </div>
+
+          <div class="lab-card-item" data-sim="dynamic_programming_karma">
+            <div class="lab-icon">📿</div>
+            <div class="lab-item-info">
+              <h4>Dynamic Programming & Karma</h4>
+              <p>Memoizing past lessons into O(N) peace</p>
+              <span class="school-tag">Karma Yoga</span>
+            </div>
+          </div>
+
+          <div class="lab-card-item" data-sim="three_gunas_sorting">
+            <div class="lab-icon">⚖️</div>
+            <div class="lab-item-info">
+              <h4>The Three Gunas & Sorting</h4>
+              <p>From Tamas (chaos) to Sattva (harmony)</p>
+              <span class="school-tag">Samkhya Darshana</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 4. MEET THE CHARACTERS: ACHARYA & ANVAY    -->
+  <!-- ========================================== -->
+  <section id="characters" class="characters-section">
+    <div class="section-container">
+      <div class="section-tag">MEET THE TEACHER & SEEKER</div>
+      <h2 class="section-title">The Voices of <span class="gradient-gold">AlgoSorcerer</span></h2>
+      <p class="section-sub">
+        Every dialogue brings ancient metaphysical insight into harmony with rigorous software engineering.
+      </p>
+
+      <div class="characters-grid">
+        <!-- Acharya Card -->
+        <div class="char-profile-card acharya-card">
+          <div class="char-avatar-container">
+            <img src="assets/brand/acharya_avatar.svg" alt="Acharya Vidyadhar" class="profile-avatar">
+            <div class="char-halo gold-halo"></div>
+          </div>
+          <div class="char-details">
+            <span class="role-pill gold-pill">THE GURU • PRECEPTOR 🕉️</span>
+            <h3 class="char-fullname">Acharya Vidyadhar</h3>
+            <p class="char-desc">
+              Venerable preceptor of ancient Indian philosophy, mathematical logic, and metaphysical order (Rita). Speaks with calm, resonant authority, guiding students to see the eternal Brahman behind code and computation.
+            </p>
+            <div class="char-attributes">
+              <span class="attr-tag">Deep Wisdom</span>
+              <span class="attr-tag">Advaita Vedanta</span>
+              <span class="attr-tag">Mathematical Logic</span>
+              <span class="attr-tag">Serene Voice</span>
+            </div>
+            <div class="signature-quote">
+              "When you eliminate all that is false, Anvay, what remains is the immutable Self."
+            </div>
+          </div>
+        </div>
+
+        <!-- Anvay Card -->
+        <div class="char-profile-card anvay-card">
+          <div class="char-avatar-container">
+            <img src="assets/brand/anvay_avatar.svg" alt="Anvay" class="profile-avatar">
+            <div class="char-halo cyan-halo"></div>
+          </div>
+          <div class="char-details">
+            <span class="role-pill cyan-pill">THE PUPIL • SEEKER 💡</span>
+            <h3 class="char-fullname">Anvay (The Seeker)</h3>
+            <p class="char-desc">
+              An inquisitive, brilliant young computer scientist and seeker. Curious, analytical, and relentless in asking the questions that every modern coder and human wrestles with: memory leaks, complexity, exhaustion, and purpose.
+            </p>
+            <div class="char-attributes">
+              <span class="attr-tag">Analytical Mind</span>
+              <span class="attr-tag">Data Structures</span>
+              <span class="attr-tag">Inquisitive Query</span>
+              <span class="attr-tag">Youthful Energy</span>
+            </div>
+            <div class="signature-quote">
+              "So my code's memory leak is just clinging to dead references? Like uncollected attachments in Yoga?"
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 5. THE 6 DARSHANA EPISODES ROADMAP         -->
+  <!-- ========================================== -->
+  <section id="topics" class="topics-section">
+    <div class="section-container">
+      <div class="section-tag">CURRICULUM & ROADMAP</div>
+      <h2 class="section-title">The 6 Core <span class="gradient-gold">Algorithmic Darshanas</span></h2>
+      <p class="section-sub">
+        Explore how fundamental data structures and algorithmic complexity mirror ancient Indian philosophical doctrines.
+      </p>
+
+      <div class="topics-grid">
+        <!-- Episode 1 -->
+        <div class="topic-box">
+          <div class="topic-num">01</div>
+          <div class="topic-meta-header">
+            <span class="badge-tag">RECURSION</span>
+            <span class="school-name">Advaita Vedanta</span>
+          </div>
+          <h4>Recursion & Samsara</h4>
+          <p>The call stack as the cycle of rebirth. Without the Base Case of Moksha, memory overflows into suffering.</p>
+          <div class="topic-footer">
+            <code>T(n) = T(n-1) + O(1)</code>
+          </div>
+        </div>
+
+        <!-- Episode 2 -->
+        <div class="topic-box">
+          <div class="topic-num">02</div>
+          <div class="topic-meta-header">
+            <span class="badge-tag">DIVIDE & CONQUER</span>
+            <span class="school-name">Upanishads</span>
+          </div>
+          <h4>Binary Search & Neti-Neti</h4>
+          <p>Eliminating half the search space of illusions at each step. Truth is discovered in O(log N) logarithmic clarity.</p>
+          <div class="topic-footer">
+            <code>T(n) = T(n/2) + O(1)</code>
+          </div>
+        </div>
+
+        <!-- Episode 3 -->
+        <div class="topic-box">
+          <div class="topic-num">03</div>
+          <div class="topic-meta-header">
+            <span class="badge-tag">GRAPH THEORY</span>
+            <span class="school-name">Avatamsaka Sutra</span>
+          </div>
+          <h4>Indra's Net & Graphs</h4>
+          <p>Cosmic lattice of reflective jewel vertices. A node's true essence is the reflection of all connected nodes.</p>
+          <div class="topic-footer">
+            <code>PR(u) = \sum PR(v)/L(v)</code>
+          </div>
+        </div>
+
+        <!-- Episode 4 -->
+        <div class="topic-box">
+          <div class="topic-num">04</div>
+          <div class="topic-meta-header">
+            <span class="badge-tag">MEMORY MANAGEMENT</span>
+            <span class="school-name">Patanjali Yoga</span>
+          </div>
+          <h4>Garbage Collection & Aparigraha</h4>
+          <p>Mark-and-sweep algorithm for life. Releasing dead pointers and attachments to free internal mental heap space.</p>
+          <div class="topic-footer">
+            <code>Heap_{free} = Heap_{total} - LiveRefs</code>
+          </div>
+        </div>
+
+        <!-- Episode 5 -->
+        <div class="topic-box">
+          <div class="topic-num">05</div>
+          <div class="topic-meta-header">
+            <span class="badge-tag">DYNAMIC PROGRAMMING</span>
+            <span class="school-name">Karma Yoga</span>
+          </div>
+          <h4>DP & Sanchita Karma</h4>
+          <p>Memoizing overlapping subproblems. Those who remember past karmic lessons solve existence in linear time.</p>
+          <div class="topic-footer">
+            <code>O(2^n) \to O(n)</code>
+          </div>
+        </div>
+
+        <!-- Episode 6 -->
+        <div class="topic-box">
+          <div class="topic-num">06</div>
+          <div class="topic-meta-header">
+            <span class="badge-tag">SORTING & ENTROPY</span>
+            <span class="school-name">Samkhya Darshana</span>
+          </div>
+          <h4>The Three Gunas & Sorting</h4>
+          <p>An unsorted array is Tamas (inertia). QuickSort applies Rajas (dynamic focus) until equilibrium settles into Sattva.</p>
+          <div class="topic-footer">
+            <code>H(X) = -\sum P(x) \log P(x)</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- 6. ECOSYSTEM & OPEN-SOURCE ARCHITECTURE    -->
+  <!-- ========================================== -->
+  <section id="ecosystem" class="ecosystem-section">
+    <div class="section-container">
+      <div class="section-tag">OPEN SOURCE ARCHITECTURE</div>
+      <h2 class="section-title">The <span class="gradient-cyan">AlgoSorcerer Hub</span></h2>
+      <p class="section-sub">
+        Explore companion repositories and production pipelines under <code>@algo-sorcerer</code>.
+      </p>
+
+      <div class="ecosystem-card">
+        <div class="eco-left">
+          <div class="repo-badge">PARENT REPOSITORY (PRIVATE)</div>
+          <h3>algosorcerer-world</h3>
+          <p>
+            The centralized production studio hub: dual-voice neural speech synthesis (Acharya & Anvay), Playwright accelerated frame capture, FFmpeg subtitle composition, and YouTube Data API v3 publishing pipelines.
+          </p>
+          <div class="tech-stack-row">
+            <span class="tech-badge">Python 3.12</span>
+            <span class="tech-badge">uv</span>
+            <span class="tech-badge">Edge-TTS</span>
+            <span class="tech-badge">Playwright</span>
+            <span class="tech-badge">FFmpeg 7</span>
+            <span class="tech-badge">GitHub Actions</span>
+          </div>
+        </div>
+
+        <div class="eco-right">
+          <div class="repo-link-item">
+            <span class="link-icon">🌐</span>
+            <div>
+              <strong>algo-sorcerer.github.io</strong>
+              <p>Official Public Website & Interactive Companion Labs</p>
+            </div>
+          </div>
+          <div class="repo-link-item">
+            <span class="link-icon">🎬</span>
+            <div>
+              <strong>YouTube @AlgoSorcerer</strong>
+              <p>Daily algorithmic wisdom shorts & educational breakdowns</p>
+            </div>
+          </div>
+          <div class="repo-link-item">
+            <span class="link-icon">⚙️</span>
+            <div>
+              <strong>Production Pipeline CI/CD</strong>
+              <p>Automated cloud video rendering on macOS runner</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================== -->
+  <!-- FOOTER                                     -->
+  <!-- ========================================== -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div class="footer-brand">
+        <img src="assets/brand/logo.svg" alt="AlgoSorcerer Logo" class="footer-logo">
+        <div>
+          <h4>ALGOSORCERER WORLD</h4>
+          <p>Where Computer Science Meets Ancient Indian Wisdom</p>
+        </div>
+      </div>
+
+      <div class="footer-links">
+        <a href="https://www.youtube.com/@AlgoSorcerer" target="_blank" rel="noopener noreferrer">YouTube: @AlgoSorcerer</a>
+        <a href="https://github.com/algo-sorcerer" target="_blank" rel="noopener noreferrer">GitHub: @algo-sorcerer</a>
+        <a href="#featured">Episode #1: Samsara</a>
+        <a href="#labs">Interactive Labs</a>
+      </div>
+
+      <div class="footer-copy">
+        © 2026 AlgoSorcerer World. Crafted with reverence for algorithms and timeless consciousness.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="script.js"></script>
+</body>
+</html>

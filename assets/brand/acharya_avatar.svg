@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240">
+  <defs>
+    <radialGradient id="acharyaAura" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffedd5" stop-opacity="0.9"/>
+      <stop offset="40%" stop-color="#f59e0b" stop-opacity="0.6"/>
+      <stop offset="80%" stop-color="#b45309" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#18181b" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="robeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#b45309"/>
+    </linearGradient>
+    <filter id="softGlow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Aura Background -->
+  <circle cx="120" cy="120" r="115" fill="#0d0e1a"/>
+  <circle cx="120" cy="100" r="90" fill="url(#acharyaAura)"/>
+  <circle cx="120" cy="120" r="116" fill="none" stroke="#f59e0b" stroke-width="2" stroke-dasharray="3,5" opacity="0.6"/>
+
+  <!-- Halo of Knowledge -->
+  <circle cx="120" cy="85" r="50" fill="none" stroke="#fef08a" stroke-width="2" filter="url(#softGlow)" opacity="0.8"/>
+
+  <!-- Guru Head & Beard Silhouette -->
+  <!-- Shoulders / Robe -->
+  <path d="M 40 220 Q 80 160, 120 165 Q 160 160, 200 220 Z" fill="url(#robeGrad)"/>
+  <path d="M 120 165 L 120 220" stroke="#78350f" stroke-width="2"/>
+  <path d="M 75 190 Q 120 215, 165 190" fill="none" stroke="#fef08a" stroke-width="1.5" opacity="0.7"/>
+
+  <!-- Neck -->
+  <rect x="108" y="130" width="24" height="25" rx="5" fill="#fed7aa"/>
+
+  <!-- Head -->
+  <ellipse cx="120" cy="98" rx="28" ry="32" fill="#fed7aa"/>
+
+  <!-- Wise Hair / Bun (Topknot / Jata) -->
+  <ellipse cx="120" cy="62" rx="16" ry="14" fill="#3f3f46"/>
+  <circle cx="120" cy="55" r="7" fill="#f59e0b" filter="url(#softGlow)"/>
+
+  <!-- Flowing White / Silver Beard -->
+  <path d="M 98 105 Q 120 170, 120 170 Q 120 170, 142 105 Q 135 125, 120 140 Q 105 125, 98 105 Z" fill="#e4e4e7" stroke="#d4d4d8" stroke-width="1"/>
+
+  <!-- Calm Meditative Eyes -->
+  <path d="M 106 95 Q 112 99, 115 95" fill="none" stroke="#27272a" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 125 95 Q 128 99, 134 95" fill="none" stroke="#27272a" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Tilak (Third Eye of Algorithmic Insight) -->
+  <line x1="120" y1="78" x2="120" y2="88" stroke="#ef4444" stroke-width="2.5" stroke-linecap="round"/>
+  <circle cx="120" cy="88" r="1.5" fill="#f59e0b"/>
+
+  <!-- Rudraksha / Mala bead on necklace -->
+  <circle cx="120" cy="155" r="4" fill="#92400e"/>
+  <circle cx="106" cy="158" r="3.5" fill="#92400e"/>
+  <circle cx="134" cy="158" r="3.5" fill="#92400e"/>
+
+  <!-- Tag / Name Badge -->
+  <rect x="50" y="212" width="140" height="24" rx="12" fill="#18181b" stroke="#f59e0b" stroke-width="1.5"/>
+  <text x="120" y="228" font-family="'Cinzel', 'Outfit', serif" font-size="12" font-weight="bold" fill="#f59e0b" text-anchor="middle" letter-spacing="2">ACHARYA</text>
+</svg>

@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240">
+  <defs>
+    <radialGradient id="anvayAura" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#cffafe" stop-opacity="0.9"/>
+      <stop offset="40%" stop-color="#06b6d4" stop-opacity="0.6"/>
+      <stop offset="80%" stop-color="#0891b2" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#0e1726" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="studentRobe" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0ea5e9"/>
+      <stop offset="100%" stop-color="#0369a1"/>
+    </linearGradient>
+    <filter id="cyanGlow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Aura Background -->
+  <circle cx="120" cy="120" r="115" fill="#0d1117"/>
+  <circle cx="120" cy="100" r="90" fill="url(#anvayAura)"/>
+  <circle cx="120" cy="120" r="116" fill="none" stroke="#06b6d4" stroke-width="2" stroke-dasharray="3,5" opacity="0.6"/>
+
+  <!-- Inquisitive Orbit Ring -->
+  <ellipse cx="120" cy="85" rx="52" ry="42" fill="none" stroke="#67e8f9" stroke-width="1.5" stroke-dasharray="4,4" filter="url(#cyanGlow)" opacity="0.7"/>
+
+  <!-- Shoulders / Cyber-Vedic Student Stole -->
+  <path d="M 45 220 Q 80 162, 120 168 Q 160 162, 195 220 Z" fill="url(#studentRobe)"/>
+  <path d="M 60 195 L 120 168 L 180 195" fill="none" stroke="#bae6fd" stroke-width="2" opacity="0.8"/>
+
+  <!-- Neck -->
+  <rect x="110" y="132" width="20" height="22" rx="4" fill="#fed7aa"/>
+
+  <!-- Head -->
+  <ellipse cx="120" cy="100" rx="26" ry="30" fill="#fed7aa"/>
+
+  <!-- Youthful Hair (Modern / Traditional mix) -->
+  <path d="M 94 92 C 92 68, 148 68, 146 92 C 140 76, 100 76, 94 92 Z" fill="#1e293b"/>
+  <path d="M 94 88 Q 120 70, 146 88 Q 130 76, 110 78 Z" fill="#334155"/>
+
+  <!-- Bright Inquisitive Eyes -->
+  <ellipse cx="110" cy="98" rx="4" ry="4.5" fill="#0f172a"/>
+  <circle cx="111" cy="96.5" r="1.5" fill="#ffffff"/>
+  <ellipse cx="130" cy="98" rx="4" ry="4.5" fill="#0f172a"/>
+  <circle cx="131" cy="96.5" r="1.5" fill="#ffffff"/>
+
+  <!-- Expressive Inquiring Eyebrows -->
+  <path d="M 104 90 Q 110 87, 116 89" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round"/>
+  <path d="M 124 88 Q 130 86, 136 91" fill="none" stroke="#334155" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Slight smile / wonder -->
+  <path d="M 115 114 Q 120 118, 125 114" fill="none" stroke="#9a3412" stroke-width="1.8" stroke-linecap="round"/>
+
+  <!-- Floating Query / Algorithmic Orb near pupil -->
+  <circle cx="178" cy="75" r="12" fill="#0891b2" opacity="0.3" filter="url(#cyanGlow)"/>
+  <circle cx="178" cy="75" r="7" fill="#67e8f9" filter="url(#cyanGlow)"/>
+  <text x="178" y="79" font-family="'Courier New', monospace" font-size="11" font-weight="bold" fill="#0f172a" text-anchor="middle">?</text>
+
+  <!-- Tag / Name Badge -->
+  <rect x="55" y="212" width="130" height="24" rx="12" fill="#0f172a" stroke="#06b6d4" stroke-width="1.5"/>
+  <text x="120" y="228" font-family="'Cinzel', 'Outfit', sans-serif" font-size="12" font-weight="bold" fill="#38bdf8" text-anchor="middle" letter-spacing="2">ANVAY</text>
+</svg>

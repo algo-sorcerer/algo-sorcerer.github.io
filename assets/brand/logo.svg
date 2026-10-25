@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="500" height="500">
+  <defs>
+    <radialGradient id="bgGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1e1b4b" stop-opacity="1"/>
+      <stop offset="60%" stop-color="#0f0c29" stop-opacity="1"/>
+      <stop offset="100%" stop-color="#050510" stop-opacity="1"/>
+    </radialGradient>
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffe066"/>
+      <stop offset="50%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#d97706"/>
+    </linearGradient>
+    <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a5f3fc"/>
+      <stop offset="50%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#0891b2"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Background Circle -->
+  <circle cx="250" cy="250" r="240" fill="url(#bgGlow)" stroke="#f59e0b" stroke-width="3" stroke-opacity="0.4"/>
+
+  <!-- Outer Sacred Geometry Ring -->
+  <circle cx="250" cy="250" r="215" fill="none" stroke="url(#goldGrad)" stroke-width="1.5" stroke-dasharray="4,6" opacity="0.7"/>
+  <circle cx="250" cy="250" r="190" fill="none" stroke="#06b6d4" stroke-width="1" stroke-dasharray="2,4" opacity="0.6"/>
+
+  <!-- 12-petaled Algorithmic Lotus Mandala -->
+  <g transform="translate(250, 250)" filter="url(#glow)">
+    <!-- Rotating rays -->
+    <g stroke="url(#goldGrad)" stroke-width="1.5" opacity="0.5">
+      <line x1="0" y1="-210" x2="0" y2="210" />
+      <line x1="-210" y1="0" x2="210" y2="0" />
+      <line x1="-148" y1="-148" x2="148" y2="148" />
+      <line x1="-148" y1="148" x2="148" y2="-148" />
+    </g>
+
+    <!-- Circuit nodes at vertices -->
+    <circle cx="0" cy="-190" r="4" fill="#06b6d4" />
+    <circle cx="190" cy="0" r="4" fill="#06b6d4" />
+    <circle cx="0" cy="190" r="4" fill="#06b6d4" />
+    <circle cx="-190" cy="0" r="4" fill="#06b6d4" />
+    <circle cx="134" cy="134" r="3.5" fill="#f59e0b" />
+    <circle cx="-134" cy="-134" r="3.5" fill="#f59e0b" />
+    <circle cx="134" cy="-134" r="3.5" fill="#f59e0b" />
+    <circle cx="-134" cy="134" r="3.5" fill="#f59e0b" />
+
+    <!-- Hexagram / Shatkona (Balance of Logic & Spirit) -->
+    <polygon points="0,-130 112,65 -112,65" fill="none" stroke="url(#goldGrad)" stroke-width="2.5" opacity="0.85"/>
+    <polygon points="0,130 112,-65 -112,-65" fill="none" stroke="url(#cyanGrad)" stroke-width="2.5" opacity="0.85"/>
+
+    <!-- Inner Core: Algorithmic Code Glyphs and Central Bindu -->
+    <circle cx="0" cy="0" r="50" fill="#0f0c29" stroke="url(#goldGrad)" stroke-width="2.5" />
+    <circle cx="0" cy="0" r="8" fill="#ffe066" filter="url(#glow)"/>
+
+    <!-- Curly Braces { } Symbolizing Algorithmic Scope -->
+    <text x="-32" y="15" font-family="'Courier New', monospace" font-size="52" font-weight="bold" fill="url(#cyanGrad)" text-anchor="middle">{</text>
+    <text x="32" y="15" font-family="'Courier New', monospace" font-size="52" font-weight="bold" fill="url(#goldGrad)" text-anchor="middle">}</text>
+  </g>
+
+  <!-- Typography Arc / Brand Title -->
+  <text x="250" y="445" font-family="'Cinzel', 'Outfit', sans-serif" font-size="24" font-weight="800" fill="#f59e0b" text-anchor="middle" letter-spacing="6">ALGOSORCERER</text>
+  <text x="250" y="468" font-family="'Inter', sans-serif" font-size="11" font-weight="500" fill="#a5f3fc" text-anchor="middle" letter-spacing="3">CODE • CONSCIOUSNESS • DARSHANA</text>
+</svg>

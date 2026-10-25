@@ -1,9 +1,9 @@
 <section id="labs" class="labs-section">
   <div class="section-container">
     <div class="section-tag">BROWSER-BASED EXPERIMENTS</div>
-    <h2 class="section-title">The Interactive <span class="gradient-cyan">Darshana Sandbox</span></h2>
+    <h2 class="section-title">The Interactive <span class="gradient-cyan">Algorithm Sandbox</span></h2>
     <p class="section-sub">
-      Explore each algorithmic principle in real-time. Select a simulation below to interact directly with the mathematics and philosophy.
+      Explore each algorithmic principle in real-time. Select a simulation below to interact directly with call stacks, graph topologies, and memory caches.
     </p>
 
     <div class="labs-interactive-grid">
@@ -11,7 +11,7 @@
       <div class="main-lab-stage">
         <div class="stage-header">
           <div>
-            <span class="stage-badge" id="current-lab-badge">RECURSION & SAMSARA</span>
+            <span class="stage-badge" id="current-lab-badge">RECURSION & CALL STACKS</span>
             <h3 id="current-lab-title">The Logarithmic Spiral of Call Stacks</h3>
           </div>
           <div class="stage-actions">
@@ -30,7 +30,7 @@
         </div>
 
         <div class="stage-explanation" id="stage-explanation-text">
-          Watch the recursive call stack expand as a golden spiral. Without the central 'Moksha' base case, the stack exhausts all available mental memory.
+          Watch the recursive call stack expand as a logarithmic spiral. Without the explicit base case boundary condition, recursive invocations exhaust stack memory.
         </div>
       </div>
 
@@ -41,7 +41,7 @@
           <div class="lab-icon">{{ ep.icon }}</div>
           <div class="lab-item-info">
             <h4>{{ ep.title }}</h4>
-            <p>{{ ep.cs_concept }} & {{ ep.vedic_philosophy }}</p>
+            <p>{{ ep.cs_concept }} • {{ ep.mental_model }}</p>
             <span class="school-tag">{{ ep.school }}</span>
           </div>
         </div>

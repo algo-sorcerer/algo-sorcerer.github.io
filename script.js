@@ -1,109 +1,142 @@
 /**
- * AlgoSorcerer World — Public Showcase & Interactive Darshana Engines
+ * AlgoSorcerer World — Public Showcase & Interactive Algorithm Engines
+ * Pure Computer Science, System Architecture & Algorithmic Mental Models
  */
 
 (function () {
-  // 1. Ambient Cosmic Particle Engine
-  const cosmicCanvas = document.getElementById('cosmic-bg');
-  if (cosmicCanvas) {
-    const ctx = cosmicCanvas.getContext('2d');
-    let width = (cosmicCanvas.width = window.innerWidth);
-    let height = (cosmicCanvas.height = window.innerHeight);
+  'use strict';
+
+  // 1. Ambient Background Particle Matrix
+  const ambientCanvas = document.getElementById('ambient-canvas');
+  if (ambientCanvas) {
+    const ctx = ambientCanvas.getContext('2d');
+    let width = (ambientCanvas.width = window.innerWidth);
+    let height = (ambientCanvas.height = window.innerHeight);
 
     window.addEventListener('resize', () => {
-      width = cosmicCanvas.width = window.innerWidth;
-      height = cosmicCanvas.height = window.innerHeight;
+      width = ambientCanvas.width = window.innerWidth;
+      height = ambientCanvas.height = window.innerHeight;
     });
 
     const particles = [];
-    for (let i = 0; i < 70; i++) {
+    const count = Math.min(65, Math.floor(width / 22));
+
+    for (let i = 0; i < count; i++) {
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.35,
-        vy: (Math.random() - 0.5) * 0.35,
-        radius: Math.random() * 2 + 0.8,
-        color: i % 2 === 0 ? 'rgba(245, 158, 11, ' : 'rgba(6, 182, 212, ',
-        alpha: Math.random() * 0.6 + 0.2,
+        vx: (Math.random() - 0.5) * 0.45,
+        vy: (Math.random() - 0.5) * 0.45,
+        radius: Math.random() * 2 + 1,
+        color: Math.random() > 0.4 ? 'rgba(6, 182, 212, ' : 'rgba(245, 158, 11, ',
+        alpha: Math.random() * 0.5 + 0.15,
       });
     }
 
-    function renderCosmic() {
+    function animateAmbient() {
       ctx.clearRect(0, 0, width, height);
+
+      // Draw Network Edges
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < 110) {
+            ctx.strokeStyle = `rgba(56, 189, 248, ${0.12 * (1 - dist / 110)})`;
+            ctx.lineWidth = 0.8;
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      // Draw Vertices
       particles.forEach((p) => {
         p.x += p.vx;
         p.y += p.vy;
+
         if (p.x < 0) p.x = width;
         if (p.x > width) p.x = 0;
         if (p.y < 0) p.y = height;
         if (p.y > height) p.y = 0;
 
-        ctx.fillStyle = `${p.color}${p.alpha})`;
+        ctx.fillStyle = p.color + p.alpha + ')';
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
         ctx.fill();
       });
-      requestAnimationFrame(renderCosmic);
+
+      requestAnimationFrame(animateAmbient);
     }
-    renderCosmic();
+    animateAmbient();
   }
 
-  // 2. Hero Mini-Canvas Rotating Aura
-  const heroCanvas = document.getElementById('hero-mini-canvas');
-  if (heroCanvas) {
-    const ctx = heroCanvas.getContext('2d');
-    const cx = heroCanvas.width / 2;
-    const cy = heroCanvas.height / 2;
-    let heroT = 0;
+  // 2. Hero Interactive Cyber-Lattice Portal
+  const heroPortalCanvas = document.getElementById('hero-portal-canvas');
+  if (heroPortalCanvas) {
+    const ctx = heroPortalCanvas.getContext('2d');
+    let t = 0;
 
-    function renderHero() {
-      ctx.clearRect(0, 0, heroCanvas.width, heroCanvas.height);
-      heroT += 0.015;
+    function renderHeroPortal() {
+      const w = heroPortalCanvas.width;
+      const h = heroPortalCanvas.height;
+      ctx.clearRect(0, 0, w, h);
 
-      // Rotating gold rays
+      const cx = w / 2;
+      const cy = h / 2;
+      t += 0.018;
+
       ctx.save();
       ctx.translate(cx, cy);
-      ctx.rotate(heroT * 0.25);
 
-      for (let i = 0; i < 12; i++) {
-        const ang = (i / 12) * Math.PI * 2;
-        const r1 = 80;
-        const r2 = 180 + Math.sin(heroT * 2 + i) * 15;
-
-        ctx.strokeStyle = i % 2 === 0 ? 'rgba(245, 158, 11, 0.4)' : 'rgba(6, 182, 212, 0.4)';
-        ctx.lineWidth = 1.5;
+      // Rotating Algorithmic Geometry Rings
+      for (let r = 50; r <= 180; r += 32) {
+        ctx.strokeStyle = `rgba(245, 158, 11, ${0.18 + (r / 200) * 0.25})`;
+        ctx.lineWidth = 1.2;
         ctx.beginPath();
-        ctx.moveTo(Math.cos(ang) * r1, Math.sin(ang) * r1);
-        ctx.lineTo(Math.cos(ang) * r2, Math.sin(ang) * r2);
+        ctx.arc(0, 0, r, 0, Math.PI * 2);
         ctx.stroke();
-
-        ctx.fillStyle = i % 2 === 0 ? '#f59e0b' : '#06b6d4';
-        ctx.beginPath();
-        ctx.arc(Math.cos(ang) * r2, Math.sin(ang) * r2, 3, 0, Math.PI * 2);
-        ctx.fill();
       }
-      ctx.restore();
 
-      requestAnimationFrame(renderHero);
+      // Rotating Polygonal Matrices
+      ctx.rotate(t * 0.5);
+      for (let i = 0; i < 8; i++) {
+        ctx.strokeStyle = 'rgba(6, 182, 212, 0.45)';
+        ctx.lineWidth = 1.4;
+        ctx.beginPath();
+        ctx.rotate((Math.PI * 2) / 8);
+        ctx.moveTo(0, 45);
+        ctx.lineTo(95, 135);
+        ctx.lineTo(135, 95);
+        ctx.closePath();
+        ctx.stroke();
+      }
+
+      ctx.restore();
+      requestAnimationFrame(renderHeroPortal);
     }
-    renderHero();
+    renderHeroPortal();
   }
 
-  // 3. Featured Episode: Samsara Spiral Interactive Canvas
+  // 3. Featured Episode #1: Recursion & Call Stack Spiral
   const samsaraCanvas = document.getElementById('samsara-canvas');
   const btnSpiralStep = document.getElementById('btn-spiral-step');
   const btnSpiralReset = document.getElementById('btn-spiral-reset');
   const stackDepthLabel = document.getElementById('stack-depth-label');
   const stackStateLabel = document.getElementById('stack-state-label');
 
-  let samsaraStep = 1;
-  const maxStack = 8;
-  let samsaraAnimTime = 0;
-
   if (samsaraCanvas) {
     const ctx = samsaraCanvas.getContext('2d');
     const w = samsaraCanvas.width;
     const h = samsaraCanvas.height;
+
+    let samsaraStep = 1;
+    const maxStack = 6;
+    let samsaraAnimTime = 0;
 
     function renderSamsara() {
       samsaraAnimTime += 0.02;
@@ -116,9 +149,9 @@
       ctx.save();
       ctx.translate(cx, cy);
 
-      const isMoksha = samsaraStep >= maxStack;
+      const isBaseCase = samsaraStep >= maxStack;
 
-      // Draw Recursive Spiral Nodes
+      // Draw Recursive Spiral Stack Frames
       for (let i = 0; i < samsaraStep; i++) {
         const r = 160 * Math.pow(0.76, i);
         const rot = samsaraAnimTime * 0.6 + i * 0.6;
@@ -135,23 +168,23 @@
         ctx.fillStyle = '#fff';
         ctx.font = '11px Outfit, sans-serif';
         ctx.textAlign = 'center';
-        ctx.fillText(`Stack #${i + 1}`, x, y + 4);
+        ctx.fillText(`Frame #${i + 1}`, x, y + 4);
       }
 
-      // Central Moksha Bindu
+      // Central Base Case Node
       const glow = Math.sin(samsaraAnimTime * 4) * 8 + 20;
-      ctx.fillStyle = isMoksha ? '#4ade80' : '#fef08a';
-      ctx.shadowColor = isMoksha ? '#22c55e' : '#f59e0b';
-      ctx.shadowBlur = isMoksha ? 30 : glow;
+      ctx.fillStyle = isBaseCase ? '#4ade80' : '#fef08a';
+      ctx.shadowColor = isBaseCase ? '#22c55e' : '#f59e0b';
+      ctx.shadowBlur = isBaseCase ? 30 : glow;
       ctx.beginPath();
-      ctx.arc(0, 0, isMoksha ? 22 : 14, 0, Math.PI * 2);
+      ctx.arc(0, 0, isBaseCase ? 24 : 14, 0, Math.PI * 2);
       ctx.fill();
       ctx.shadowBlur = 0;
 
       ctx.fillStyle = '#0f172a';
       ctx.font = 'bold 9px Outfit, sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText(isMoksha ? 'MOKSHA!' : 'BINDu', 0, 3);
+      ctx.fillText(isBaseCase ? 'BASE CASE' : 'ENTRY', 0, 3);
 
       ctx.restore();
       requestAnimationFrame(renderSamsara);
@@ -180,12 +213,12 @@
       if (stackDepthLabel) stackDepthLabel.textContent = `Stack Depth: ${samsaraStep}`;
       if (stackStateLabel) {
         stackStateLabel.textContent =
-          samsaraStep >= maxStack ? 'Cycle: Base Case (Moksha Reached)' : 'Cycle: Active Rebirth';
+          samsaraStep >= maxStack ? 'State: Base Case Met (Unwinding Stack)' : 'State: Pushing Stack Frame';
       }
     }
   }
 
-  // 4. Master Interactive Darshana Labs
+  // 4. Master Interactive Algorithm Labs
   const masterCanvas = document.getElementById('master-lab-canvas');
   const labItems = document.querySelectorAll('.lab-card-item');
   const currentLabBadge = document.getElementById('current-lab-badge');
@@ -200,34 +233,34 @@
 
   const labExplanations = {
     recursion_samsara: {
-      badge: 'RECURSION & SAMSARA',
-      title: 'The Logarithmic Spiral of Call Stacks & Base Cases',
-      desc: "Watch the recursive call stack expand as a golden spiral. Without the central 'Moksha' base case, the stack exhausts all available mental memory.",
+      badge: 'RECURSION & CALL STACKS',
+      title: 'The Logarithmic Spiral of Call Stacks & Halting Invariants',
+      desc: 'Watch the recursive call stack expand as a logarithmic spiral. Without the explicit base case boundary condition, recursive invocations exhaust available stack memory into a crash.',
     },
     binary_search_neti: {
-      badge: 'BINARY SEARCH & NETI-NETI',
-      title: 'Logarithmic O(log N) Elimination of Illusions',
-      desc: "In the Upanishads, the sage eliminates Maya with 'Neti-Neti' (Not this, not this). Binary search discards half the falsehoods at each step until truth shines.",
+      badge: 'BINARY SEARCH & LOGARITHMIC PRUNING',
+      title: 'O(log N) Divide-and-Conquer State Pruning',
+      desc: 'Binary search discards half of the candidate search space at every comparison, pinpointing target keys in 30 steps among 1 billion elements.',
     },
     indras_net_graphs: {
-      badge: "INDRA'S NET & GRAPH THEORY",
-      title: 'The Infinite Lattice of Reflective Jewel Vertices',
-      desc: 'Every node in existence reflects every other connected node. Graph centrality, PageRank, and resonance show that no being exists in isolation.',
+      badge: 'GRAPH THEORY & DISTRIBUTED DAGs',
+      title: 'Distributed Network Topology & PageRank Reflexivity',
+      desc: 'Graph Theory models nodes connected by directed dependencies. In microservices and distributed topologies, system health depends on eliminating cyclic bottlenecks.',
     },
     aparigraha_gc: {
-      badge: 'GARBAGE COLLECTION & APARIGRAHA',
-      title: 'Mark-and-Sweep Mental Heap Liberation',
-      desc: 'Trace back to your live root: pure awareness. Obsolete desires with no active connection to Dharma are swept away to reclaim mental heap space.',
+      badge: 'GARBAGE COLLECTION & HEAP OPTIMIZATION',
+      title: 'Mark-and-Sweep Memory Reclaiming & Leak Prevention',
+      desc: 'Trace live objects from root pointers. Dormant, unreferenced instances are systematically swept to reclaim heap memory and prevent production memory exhaustion.',
     },
     dynamic_programming_karma: {
-      badge: 'DYNAMIC PROGRAMMING & KARMA',
-      title: 'Sanchita Karma Memoization Table',
-      desc: 'Why repeat identical suffering? Memoize past karmic lessons into a conscious lookup table, converting exponential agony O(2^N) into linear flow O(N).',
+      badge: 'DYNAMIC PROGRAMMING & MEMOIZATION',
+      title: 'Subproblem Caching: O(2^N) to O(N) Lookup Acceleration',
+      desc: 'Avoid recomputing identical subproblems. Memoize evaluated states into an O(1) hash lookup table, converting exponential combinatorial explosions into fast linear throughput.',
     },
     three_gunas_sorting: {
-      badge: 'THE THREE GUNAS & SORTING',
-      title: 'From Chaos (Tamas) through Focus (Rajas) to Sattva',
-      desc: 'An unsorted array is Tamas (inert disorder). QuickSort applies Rajasic focus around a pivot until the whole system settles into tranquil Sattvic harmony.',
+      badge: 'SORTING ALGORITHMS & SHANNON ENTROPY',
+      title: 'QuickSort Partitioning: Dissipating Disorder into Sorted Order',
+      desc: 'An unsorted array holds maximum entropy. QuickSort selects a pivot, applies active partitioning swaps, and recursively settles the array into minimal entropy equilibrium.',
     },
   };
 
@@ -266,42 +299,51 @@
     const h = masterCanvas.height;
 
     function renderMasterLab() {
-      if (isLabPlaying) labTime += 0.018;
+      if (isLabPlaying) {
+        labTime += 0.02;
+      }
 
-      // Dark Cosmic Void
-      const bgGrad = ctx.createRadialGradient(w / 2, h / 2, 50, w / 2, h / 2, Math.max(w, h) * 0.65);
-      bgGrad.addColorStop(0, '#0d1028');
-      bgGrad.addColorStop(0.5, '#070918');
-      bgGrad.addColorStop(1, '#020308');
-      ctx.fillStyle = bgGrad;
+      ctx.fillStyle = '#060814';
       ctx.fillRect(0, 0, w, h);
 
-      // Rotating Sacred Geometry
-      ctx.save();
-      ctx.translate(w / 2, h / 2);
-      ctx.rotate(labTime * 0.08);
-      ctx.strokeStyle = 'rgba(245, 158, 11, 0.12)';
-      ctx.lineWidth = 1.5;
-      ctx.setLineDash([4, 6]);
-      ctx.beginPath();
-      ctx.arc(0, 0, Math.min(w, h) * 0.36, 0, Math.PI * 2);
-      ctx.stroke();
-      ctx.setLineDash([]);
-      ctx.restore();
+      // Grid Backdrop
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
+      ctx.lineWidth = 1;
+      for (let x = 0; x < w; x += 40) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, h);
+        ctx.stroke();
+      }
+      for (let y = 0; y < h; y += 40) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
+        ctx.stroke();
+      }
 
-      // Render Active Simulation
-      if (activeLabKey === 'recursion_samsara') {
-        drawSamsaraLab(ctx, w, h, labTime);
-      } else if (activeLabKey === 'binary_search_neti') {
-        drawNetiLab(ctx, w, h, labTime);
-      } else if (activeLabKey === 'indras_net_graphs') {
-        drawIndrasNetLab(ctx, w, h, labTime);
-      } else if (activeLabKey === 'aparigraha_gc') {
-        drawAparigrahaLab(ctx, w, h, labTime);
-      } else if (activeLabKey === 'dynamic_programming_karma') {
-        drawKarmaDPLab(ctx, w, h, labTime);
-      } else {
-        drawThreeGunasLab(ctx, w, h, labTime);
+      // Dispatch to specific CS simulation renderer
+      switch (activeLabKey) {
+        case 'recursion_samsara':
+          drawRecursionLab(ctx, w, h, labTime);
+          break;
+        case 'binary_search_neti':
+          drawBinarySearchLab(ctx, w, h, labTime);
+          break;
+        case 'indras_net_graphs':
+          drawDistributedGraphLab(ctx, w, h, labTime);
+          break;
+        case 'aparigraha_gc':
+          drawGarbageCollectionLab(ctx, w, h, labTime);
+          break;
+        case 'dynamic_programming_karma':
+          drawMemoizationDPLab(ctx, w, h, labTime);
+          break;
+        case 'three_gunas_sorting':
+          drawQuickSortEntropyLab(ctx, w, h, labTime);
+          break;
+        default:
+          drawRecursionLab(ctx, w, h, labTime);
       }
 
       requestAnimationFrame(renderMasterLab);
@@ -309,26 +351,26 @@
     renderMasterLab();
   }
 
-  function drawSamsaraLab(ctx, w, h, t) {
+  // --- Specific Simulation Renderers ---
+
+  function drawRecursionLab(ctx, w, h, t) {
     const cx = w / 2;
     const cy = h / 2;
-    const depth = 8;
-    const angleStep = 0.58 + Math.sin(t * 0.5) * 0.04;
+    const steps = 7;
 
     ctx.save();
     ctx.translate(cx, cy);
 
-    for (let i = 0; i < depth; i++) {
-      const r = 180 * Math.pow(0.74, i);
-      const rot = t * 0.7 + i * angleStep;
-      const x = Math.cos(rot) * r;
-      const y = Math.sin(rot) * r;
+    for (let i = 0; i < steps; i++) {
+      const r = 175 * Math.pow(0.72, i);
+      const angle = t * 0.7 + i * 0.7;
+      const x = Math.cos(angle) * r;
+      const y = Math.sin(angle) * r;
 
-      ctx.strokeStyle = `rgba(${245 - i * 20}, ${158 - i * 12}, ${11 + i * 30}, ${0.85 - i * 0.08})`;
-      ctx.lineWidth = Math.max(2, 5 - i * 0.5);
-
+      ctx.strokeStyle = `rgba(245, 158, 11, ${0.9 - i * 0.1})`;
+      ctx.lineWidth = Math.max(1.5, 4.5 - i * 0.4);
       ctx.beginPath();
-      ctx.arc(x, y, 16 + (8 - i) * 3, 0, Math.PI * 2);
+      ctx.arc(x, y, 16 + (steps - i) * 1.5, 0, Math.PI * 2);
       ctx.stroke();
 
       ctx.fillStyle = '#fff';
@@ -338,22 +380,22 @@
     }
 
     const pulse = Math.sin(t * 3) * 6 + 18;
-    ctx.fillStyle = '#fef08a';
-    ctx.shadowColor = '#f59e0b';
+    ctx.fillStyle = '#4ade80';
+    ctx.shadowColor = '#22c55e';
     ctx.shadowBlur = pulse;
     ctx.beginPath();
-    ctx.arc(0, 0, 16, 0, Math.PI * 2);
+    ctx.arc(0, 0, 18, 0, Math.PI * 2);
     ctx.fill();
     ctx.shadowBlur = 0;
 
     ctx.fillStyle = '#0f172a';
-    ctx.font = 'bold 9px Outfit, sans-serif';
+    ctx.font = 'bold 8.5px Outfit, sans-serif';
     ctx.textAlign = 'center';
-    ctx.fillText('MOKSHA', 0, 3);
+    ctx.fillText('BASE CASE', 0, 3);
     ctx.restore();
   }
 
-  function drawNetiLab(ctx, w, h, t) {
+  function drawBinarySearchLab(ctx, w, h, t) {
     const cx = w / 2;
     const cy = h / 2;
     const n = 16;
@@ -392,13 +434,17 @@
 
       if (isDiscarded) {
         ctx.fillStyle = '#ef4444';
+        ctx.font = 'bold 8.5px Outfit';
+        ctx.fillText('PRUNED', x + boxW / 2, cy - 32);
+      } else if (isMid) {
+        ctx.fillStyle = '#f59e0b';
         ctx.font = 'bold 9px Outfit';
-        ctx.fillText('NETI', x + boxW / 2, cy - 32);
+        ctx.fillText('MID', x + boxW / 2, cy - 32);
       }
     }
   }
 
-  function drawIndrasNetLab(ctx, w, h, t) {
+  function drawDistributedGraphLab(ctx, w, h, t) {
     const cx = w / 2;
     const cy = h / 2;
     const num = 12;
@@ -429,7 +475,7 @@
     });
   }
 
-  function drawAparigrahaLab(ctx, w, h, t) {
+  function drawGarbageCollectionLab(ctx, w, h, t) {
     const cx = w / 2;
     const cy = h / 2;
     const cycle = (t * 0.6) % 4;
@@ -445,11 +491,11 @@
     ctx.fillText('ROOT', cx, cy - 106);
 
     const blocks = [
-      { x: cx - 120, y: cy + 10, live: true, label: 'Dharma' },
-      { x: cx, y: cy - 10, live: true, label: 'Wisdom' },
-      { x: cx + 120, y: cy + 10, live: true, label: 'Compassion' },
-      { x: cx - 70, y: cy + 100, live: false, label: 'Past Guilt' },
-      { x: cx + 70, y: cy + 100, live: false, label: 'Ego Clinging' },
+      { x: cx - 120, y: cy + 10, live: true, label: 'UserSession' },
+      { x: cx, y: cy - 10, live: true, label: 'AuthToken' },
+      { x: cx + 120, y: cy + 10, live: true, label: 'DbConnection' },
+      { x: cx - 70, y: cy + 100, live: false, label: 'OrphanSocket' },
+      { x: cx + 70, y: cy + 100, live: false, label: 'StaleCache' },
     ];
 
     blocks.forEach((b) => {
@@ -465,12 +511,12 @@
       ctx.lineWidth = 1.5;
 
       ctx.beginPath();
-      ctx.roundRect(b.x - 45, b.y - 20, 90, 40, 8);
+      ctx.roundRect(b.x - 55, b.y - 20, 110, 40, 8);
       ctx.fill();
       ctx.stroke();
 
       ctx.fillStyle = '#fff';
-      ctx.font = '12px Outfit';
+      ctx.font = '11px Outfit';
       ctx.textAlign = 'center';
       ctx.fillText(b.label, b.x, b.y + 4);
 
@@ -484,7 +530,7 @@
     });
   }
 
-  function drawKarmaDPLab(ctx, w, h, t) {
+  function drawMemoizationDPLab(ctx, w, h, t) {
     const cx = w / 2;
     const cy = h / 2;
     const cols = 6;
@@ -492,9 +538,9 @@
     const startX = cx - (cols * cellW) / 2;
 
     ctx.fillStyle = '#fef08a';
-    ctx.font = 'bold 15px Outfit';
+    ctx.font = 'bold 14px Outfit';
     ctx.textAlign = 'center';
-    ctx.fillText('SANCHITA KARMA (LOOKUP MEMO TABLE)', cx, cy - 70);
+    ctx.fillText('DYNAMIC PROGRAMMING: MEMOIZATION TABLE dp[i]', cx, cy - 70);
 
     for (let i = 0; i < cols; i++) {
       const x = startX + i * cellW;
@@ -513,7 +559,7 @@
     }
   }
 
-  function drawThreeGunasLab(ctx, w, h, t) {
+  function drawQuickSortEntropyLab(ctx, w, h, t) {
     const cx = w / 2;
     const cy = h / 2;
     const count = 18;

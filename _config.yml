@@ -1,7 +1,7 @@
 # AlgoSorcerer World — Jekyll Configuration for GitHub Pages
 title: "AlgoSorcerer World"
-tagline: "Where Computer Science Meets Ancient Wisdom"
-description: "High-definition procedural simulations, dual-voice Guru-Pupil dialogues, and interactive Darshana labs exploring the convergence of Computer Science and Indian Philosophy."
+tagline: "High-Performance Computer Science & Algorithmic Mental Models"
+description: "Interactive browser simulations, algorithmic mental models, and dual-voice dialogues between Senior Architect Acharya and Junior Engineer Anvay on high-performance Computer Science and system architecture."
 url: "https://algo-sorcerer.github.io"
 baseurl: ""
 
@@ -19,13 +19,13 @@ author:
 characters:
   acharya:
     name: "Acharya Vidyadhar"
-    title: "The Guru / Preceptor"
+    title: "Senior CS Architect & Mentor"
     avatar: "/assets/brand/acharya_avatar.svg"
-    symbol: "🕉️"
+    symbol: "🎓"
     voice: "en-IN-PrabhatNeural"
   anvay:
     name: "Anvay"
-    title: "The Pupil / Seeker"
+    title: "Junior Software Engineer & Student"
     avatar: "/assets/brand/anvay_avatar.svg"
     symbol: "💡"
     voice: "en-IN-NeerjaNeural"

@@ -63,5 +63,5 @@
 
   <!-- Typography Arc / Brand Title -->
   <text x="250" y="445" font-family="'Cinzel', 'Outfit', sans-serif" font-size="24" font-weight="800" fill="#f59e0b" text-anchor="middle" letter-spacing="6">ALGOSORCERER</text>
-  <text x="250" y="468" font-family="'Inter', sans-serif" font-size="11" font-weight="500" fill="#a5f3fc" text-anchor="middle" letter-spacing="3">CODE • CONSCIOUSNESS • DARSHANA</text>
+  <text x="250" y="468" font-family="'Inter', sans-serif" font-size="11" font-weight="500" fill="#a5f3fc" text-anchor="middle" letter-spacing="3">CODE • ARCHITECTURE • ALGORITHMS</text>
 </svg>

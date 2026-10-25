@@ -13,7 +13,7 @@ parent_hub:
 public_pages:
   name: "algo-sorcerer.github.io"
   role: "PUBLIC WEBSITE & LABS (PUBLIC)"
-  description: "Official showcase website and browser-based interactive Darshana simulation labs."
+  description: "Official showcase website and browser-based interactive algorithmic simulation labs."
   tech:
     - "Jekyll"
     - "Sass / SCSS"

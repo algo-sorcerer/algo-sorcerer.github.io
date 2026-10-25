@@ -14,26 +14,37 @@
     <div class="characters-split-editorial">
       <!-- Acharya Vidyadhar Portrait & Dossier -->
       <div class="char-dossier acharya-dossier">
-        <div class="dossier-visual-wrap">
-          <div class="portrait-halo gold-halo"></div>
-          <div class="portrait-frame">
-            <img src="{{ site.data.characters.acharya.avatar | relative_url }}" 
-                 alt="{{ site.data.characters.acharya.name }}" 
-                 class="portrait-img"
-                 onerror="this.src='{{ site.data.characters.acharya.vector_avatar | relative_url }}'">
+        <div class="dossier-hero-row">
+          <!-- Full Unclipped Portrait Showcase -->
+          <div class="dossier-portrait-showcase">
+            <div class="portrait-ambient-glow gold-glow"></div>
+            <div class="portrait-card gold-border">
+              <img src="{{ site.data.characters.acharya.avatar | relative_url }}" 
+                   alt="{{ site.data.characters.acharya.name }}" 
+                   class="full-character-img"
+                   onerror="this.src='{{ site.data.characters.acharya.vector_avatar | relative_url }}'">
+              <span class="portrait-sub-tag">ARCHIVAL PORTRAIT</span>
+            </div>
           </div>
-          <div class="dossier-pill gold">{{ site.data.characters.acharya.badge }}</div>
+
+          <div class="dossier-header-meta">
+            <div class="dossier-pill gold">{{ site.data.characters.acharya.badge }}</div>
+            <h3 class="dossier-name">{{ site.data.characters.acharya.name }}</h3>
+            <span class="dossier-role">{{ site.data.characters.acharya.role }}</span>
+            <div class="dossier-voice-meta">
+              <span class="voice-glyph">🎙️</span>
+              <span class="voice-label">Neural Voice:</span>
+              <code>PrabhatNeural (Deep, Calm)</code>
+            </div>
+            <blockquote class="dossier-quote gold-quote">
+              <span class="quote-mark">“</span>
+              <p>{{ site.data.characters.acharya.quote }}</p>
+            </blockquote>
+          </div>
         </div>
 
         <div class="dossier-body">
-          <h3 class="dossier-name">{{ site.data.characters.acharya.name }}</h3>
-          <span class="dossier-role">{{ site.data.characters.acharya.role }}</span>
           <p class="dossier-bio">{{ site.data.characters.acharya.bio }}</p>
-
-          <blockquote class="dossier-quote gold-quote">
-            <span class="quote-mark">“</span>
-            <p>{{ site.data.characters.acharya.quote }}</p>
-          </blockquote>
 
           <div class="dossier-domains">
             <span class="domains-title">CORE ARCHITECTURAL DOMAINS:</span>
@@ -51,26 +62,37 @@
 
       <!-- Anvay Portrait & Dossier -->
       <div class="char-dossier anvay-dossier">
-        <div class="dossier-visual-wrap">
-          <div class="portrait-halo cyan-halo"></div>
-          <div class="portrait-frame">
-            <img src="{{ site.data.characters.anvay.avatar | relative_url }}" 
-                 alt="{{ site.data.characters.anvay.name }}" 
-                 class="portrait-img"
-                 onerror="this.src='{{ site.data.characters.anvay.vector_avatar | relative_url }}'">
+        <div class="dossier-hero-row">
+          <!-- Full Unclipped Portrait Showcase (Including Laptop & Hands) -->
+          <div class="dossier-portrait-showcase">
+            <div class="portrait-ambient-glow cyan-glow"></div>
+            <div class="portrait-card cyan-border">
+              <img src="{{ site.data.characters.anvay.avatar | relative_url }}" 
+                   alt="{{ site.data.characters.anvay.name }}" 
+                   class="full-character-img"
+                   onerror="this.src='{{ site.data.characters.anvay.vector_avatar | relative_url }}'">
+              <span class="portrait-sub-tag">ARCHIVAL PORTRAIT</span>
+            </div>
           </div>
-          <div class="dossier-pill cyan">{{ site.data.characters.anvay.badge }}</div>
+
+          <div class="dossier-header-meta">
+            <div class="dossier-pill cyan">{{ site.data.characters.anvay.badge }}</div>
+            <h3 class="dossier-name">{{ site.data.characters.anvay.name }}</h3>
+            <span class="dossier-role">{{ site.data.characters.anvay.role }}</span>
+            <div class="dossier-voice-meta">
+              <span class="voice-glyph">🎙️</span>
+              <span class="voice-label">Neural Voice:</span>
+              <code>NeerjaNeural (Inquisitive, Sharp)</code>
+            </div>
+            <blockquote class="dossier-quote cyan-quote">
+              <span class="quote-mark">“</span>
+              <p>{{ site.data.characters.anvay.quote }}</p>
+            </blockquote>
+          </div>
         </div>
 
         <div class="dossier-body">
-          <h3 class="dossier-name">{{ site.data.characters.anvay.name }}</h3>
-          <span class="dossier-role">{{ site.data.characters.anvay.role }}</span>
           <p class="dossier-bio">{{ site.data.characters.anvay.bio }}</p>
-
-          <blockquote class="dossier-quote cyan-quote">
-            <span class="quote-mark">“</span>
-            <p>{{ site.data.characters.anvay.quote }}</p>
-          </blockquote>
 
           <div class="dossier-domains">
             <span class="domains-title">ENGINEERING FOCUS AREAS:</span>

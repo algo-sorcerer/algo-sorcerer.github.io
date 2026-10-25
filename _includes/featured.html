@@ -1,0 +1,88 @@
+<section id="featured" class="featured-section">
+  <div class="section-container">
+    <div class="section-tag">PREMIERE EPISODE #1</div>
+    <h2 class="section-title">Recursion & Samsara: <span class="gradient-gold">The Cosmic Call Stack</span></h2>
+    <p class="section-sub">
+      Why does a recursive function without a base case crash your computer, exactly like a soul cycling endlessly through rebirth?
+    </p>
+
+    <div class="featured-grid">
+      <!-- Interactive Spiral Simulator Card -->
+      <div class="featured-canvas-card">
+        <div class="card-bar">
+          <div class="bar-left">
+            <span class="pulse-indicator"></span>
+            <span class="bar-title">LIVE SIMULATION • THE CALL STACK OF REBIRTH</span>
+          </div>
+          <div class="bar-right">
+            <button id="btn-spiral-step" class="btn-ctrl">Next Stack Frame</button>
+            <button id="btn-spiral-reset" class="btn-ctrl">Reset Cycle</button>
+          </div>
+        </div>
+        <div class="canvas-box">
+          <canvas id="samsara-canvas" width="600" height="440"></canvas>
+          <div class="samsara-hud">
+            <span id="stack-depth-label">Stack Depth: 1</span>
+            <span id="stack-state-label">Cycle: Active Rebirth</span>
+          </div>
+        </div>
+        <div class="canvas-footer-caption">
+          <span class="caption-icon">🕉️</span>
+          <span><em>"पुनरपि जननं पुनरपि मरणम्"</em> — Without a Base Case to halt the recursion, the call stack overflows into suffering. The Base Case is Moksha (Liberation).</span>
+        </div>
+      </div>
+
+      <!-- Dialogue Breakdown & Character Insight -->
+      <div class="dialogue-breakdown-card">
+        <div class="dialogue-header">
+          <h3>The Guru-Shishya Dialogue</h3>
+          <span class="sanskrit-title">संसार चक्र एवं प्रत्यावर्तनम्</span>
+        </div>
+
+        <div class="dialogue-scroll-box">
+          <!-- Turn 1 -->
+          <div class="dialogue-turn anvay-turn">
+            <img src="{{ site.characters.anvay.avatar | relative_url }}" alt="Anvay" class="dialogue-avatar">
+            <div class="turn-content">
+              <div class="speaker-label speaker-anvay">{{ site.characters.anvay.symbol }} {{ site.characters.anvay.name }}</div>
+              <p>"Acharya, yesterday my recursive code froze my computer with a Stack Overflow error! Why does an algorithm eat its own memory?"</p>
+            </div>
+          </div>
+
+          <!-- Turn 2 -->
+          <div class="dialogue-turn acharya-turn">
+            <img src="{{ site.characters.acharya.avatar | relative_url }}" alt="Acharya" class="dialogue-avatar">
+            <div class="turn-content">
+              <div class="speaker-label speaker-acharya">{{ site.characters.acharya.symbol }} {{ site.characters.acharya.name }}</div>
+              <p>"Anvay, your code forgot its Base Case. In Vedanta, this endless loop is called Samsara—the soul repeating lifetimes without awakening."</p>
+            </div>
+          </div>
+
+          <!-- Turn 3 -->
+          <div class="dialogue-turn anvay-turn">
+            <img src="{{ site.characters.anvay.avatar | relative_url }}" alt="Anvay" class="dialogue-avatar">
+            <div class="turn-content">
+              <div class="speaker-label speaker-anvay">{{ site.characters.anvay.symbol }} {{ site.characters.anvay.name }}</div>
+              <p>"So every function call is like another birth, stacking karmic debt upon debt?"</p>
+            </div>
+          </div>
+
+          <!-- Turn 4 -->
+          <div class="dialogue-turn acharya-turn">
+            <img src="{{ site.characters.acharya.avatar | relative_url }}" alt="Acharya" class="dialogue-avatar">
+            <div class="turn-content">
+              <div class="speaker-label speaker-acharya">{{ site.characters.acharya.symbol }} {{ site.characters.acharya.name }}</div>
+              <p>"Precisely. When the problem reaches its simplest truth, the Base Case fires. That is Moksha—liberation! The call stack unwinds, and total memory returns to peace."</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="dialogue-footer">
+          <a href="{{ site.author.youtube_url }}" target="_blank" class="btn-watch-short">
+            <span>▶ Watch Episode on YouTube @AlgoSorcerer</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

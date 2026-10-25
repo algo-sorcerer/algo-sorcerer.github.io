@@ -1,0 +1,26 @@
+<header class="navbar">
+  <div class="nav-container">
+    <a href="{{ '/' | relative_url }}" class="brand-link">
+      <img src="{{ '/assets/brand/logo.svg' | relative_url }}" alt="AlgoSorcerer Logo" class="nav-logo">
+      <div class="brand-name-group">
+        <span class="nav-brand-title">ALGOSORCERER</span>
+        <span class="nav-brand-sub">CODE • CONSCIOUSNESS • DARSHANA</span>
+      </div>
+    </a>
+
+    <nav class="nav-menu">
+      <a href="#featured" class="nav-item">Premiere Short</a>
+      <a href="#labs" class="nav-item">Interactive Labs</a>
+      <a href="#characters" class="nav-item">Guru & Pupil</a>
+      <a href="#topics" class="nav-item">The 6 Darshanas</a>
+      <a href="#ecosystem" class="nav-item">Ecosystem</a>
+    </nav>
+
+    <div class="nav-cta-group">
+      <a href="{{ site.author.youtube_url }}" target="_blank" rel="noopener noreferrer" class="btn-yt-subscribe">
+        <span class="yt-play-icon">▶</span>
+        <span>Subscribe {{ site.author.handle }}</span>
+      </a>
+    </div>
+  </div>
+</header>

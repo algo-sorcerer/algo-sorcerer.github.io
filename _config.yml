@@ -1,0 +1,50 @@
+# AlgoSorcerer World — Jekyll Configuration for GitHub Pages
+title: "AlgoSorcerer World"
+tagline: "Where Computer Science Meets Ancient Wisdom"
+description: "High-definition procedural simulations, dual-voice Guru-Pupil dialogues, and interactive Darshana labs exploring the convergence of Computer Science and Indian Philosophy."
+url: "https://algo-sorcerer.github.io"
+baseurl: ""
+
+# Author & Branding
+author:
+  name: "AlgoSorcerer"
+  handle: "@AlgoSorcerer"
+  email: "creator@algosorcerer.com"
+  avatar: "/assets/brand/logo.svg"
+  watermark: "/assets/brand/watermark.png"
+  youtube_url: "https://www.youtube.com/@AlgoSorcerer"
+  github_url: "https://github.com/algo-sorcerer"
+
+# Characters
+characters:
+  acharya:
+    name: "Acharya Vidyadhar"
+    title: "The Guru / Preceptor"
+    avatar: "/assets/brand/acharya_avatar.svg"
+    symbol: "🕉️"
+    voice: "en-IN-PrabhatNeural"
+  anvay:
+    name: "Anvay"
+    title: "The Pupil / Seeker"
+    avatar: "/assets/brand/anvay_avatar.svg"
+    symbol: "💡"
+    voice: "en-IN-NeerjaNeural"
+
+# Sass / SCSS Configuration
+sass:
+  sass_dir: _sass
+  style: compressed
+
+# Markdown & Syntax
+markdown: kramdown
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+
+# Excludes
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor
+  - .venv

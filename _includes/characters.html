@@ -1,0 +1,57 @@
+<section id="characters" class="characters-section">
+  <div class="section-container">
+    <div class="section-tag">MEET THE TEACHER & SEEKER</div>
+    <h2 class="section-title">The Voices of <span class="gradient-gold">AlgoSorcerer</span></h2>
+    <p class="section-sub">
+      Every dialogue brings ancient metaphysical insight into harmony with rigorous software engineering.
+    </p>
+
+    <div class="characters-grid">
+      <!-- Acharya Card -->
+      <div class="char-profile-card acharya-card">
+        <div class="char-avatar-container">
+          <img src="{{ site.data.characters.acharya.avatar | relative_url }}" alt="{{ site.data.characters.acharya.name }}" class="profile-avatar">
+          <div class="char-halo gold-halo"></div>
+        </div>
+        <div class="char-details">
+          <span class="role-pill gold-pill">{{ site.data.characters.acharya.role }}</span>
+          <h3 class="char-fullname">{{ site.data.characters.acharya.name }}</h3>
+          <p class="char-desc">
+            Venerable preceptor of ancient Indian philosophy, mathematical logic, and metaphysical order (Rita). Speaks with calm, resonant authority, guiding students to see the eternal Brahman behind code and computation.
+          </p>
+          <div class="char-attributes">
+            {% for tag in site.data.characters.acharya.tags %}
+            <span class="attr-tag">{{ tag }}</span>
+            {% endfor %}
+          </div>
+          <div class="signature-quote">
+            "{{ site.data.characters.acharya.quote }}"
+          </div>
+        </div>
+      </div>
+
+      <!-- Anvay Card -->
+      <div class="char-profile-card anvay-card">
+        <div class="char-avatar-container">
+          <img src="{{ site.data.characters.anvay.avatar | relative_url }}" alt="{{ site.data.characters.anvay.name }}" class="profile-avatar">
+          <div class="char-halo cyan-halo"></div>
+        </div>
+        <div class="char-details">
+          <span class="role-pill cyan-pill">{{ site.data.characters.anvay.role }}</span>
+          <h3 class="char-fullname">{{ site.data.characters.anvay.name }}</h3>
+          <p class="char-desc">
+            An inquisitive, brilliant young computer scientist and seeker. Curious, analytical, and relentless in asking the questions that every modern coder and human wrestles with: memory leaks, complexity, exhaustion, and purpose.
+          </p>
+          <div class="char-attributes">
+            {% for tag in site.data.characters.anvay.tags %}
+            <span class="attr-tag">{{ tag }}</span>
+            {% endfor %}
+          </div>
+          <div class="signature-quote">
+            "{{ site.data.characters.anvay.quote }}"
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

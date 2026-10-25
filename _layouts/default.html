@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% include head.html %}
+</head>
+<body>
+  <!-- Ambient Cosmic Particle Canvas -->
+  <canvas id="cosmic-bg"></canvas>
+
+  {% include nav.html %}
+
+  <main>
+    {{ content }}
+  </main>
+
+  {% include footer.html %}
+
+  <!-- Core Interactive Scripts -->
+  <script src="{{ '/script.js' | relative_url }}"></script>
+</body>
+</html>

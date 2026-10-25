@@ -1,0 +1,45 @@
+// ==============================================================================
+// AlgoSorcerer World — Sass Design Tokens & Variables
+// ==============================================================================
+
+// Palette: Cosmic Void & Sacred Hues
+$bg-deep-void: #050611;
+$bg-surface: #090c22;
+$bg-card: rgba(13, 17, 44, 0.78);
+$bg-card-hover: rgba(22, 28, 68, 0.92);
+
+$border-subtle: rgba(255, 255, 255, 0.08);
+$border-gold: rgba(245, 158, 11, 0.35);
+$border-cyan: rgba(6, 182, 212, 0.35);
+
+// Gold & Saffron (Acharya / Vedic Wisdom)
+$gold-primary: #f59e0b;
+$gold-glow: #fbbf24;
+$gold-dark: #b45309;
+$gold-soft: #fef08a;
+
+// Mana Cyan & Teal (Anvay / Algorithmic Inquiry)
+$cyan-primary: #06b6d4;
+$cyan-glow: #22d3ee;
+$cyan-dark: #0e7490;
+$cyan-soft: #cffafe;
+
+// Typography Colors
+$text-main: #f8fafc;
+$text-muted: #94a3b8;
+$text-dark: #64748b;
+
+// Font Families
+$font-display: 'Cinzel', serif;
+$font-body: 'Outfit', sans-serif;
+$font-code: 'Fira Code', monospace;
+
+// Radii & Shadows
+$radius-sm: 8px;
+$radius-md: 14px;
+$radius-lg: 24px;
+$radius-full: 9999px;
+
+$shadow-gold: 0 0 30px rgba(245, 158, 11, 0.25);
+$shadow-cyan: 0 0 30px rgba(6, 182, 212, 0.25);
+$shadow-card: 0 15px 40px rgba(0, 0, 0, 0.6);

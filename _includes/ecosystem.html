@@ -1,0 +1,46 @@
+<section id="ecosystem" class="ecosystem-section">
+  <div class="section-container">
+    <div class="section-tag">OPEN SOURCE ARCHITECTURE</div>
+    <h2 class="section-title">The <span class="gradient-cyan">AlgoSorcerer Hub</span></h2>
+    <p class="section-sub">
+      Explore companion repositories and production pipelines under <code>@algo-sorcerer</code>.
+    </p>
+
+    <div class="ecosystem-card">
+      <div class="eco-left">
+        <div class="repo-badge">{{ site.data.ecosystem.parent_hub.role }}</div>
+        <h3>{{ site.data.ecosystem.parent_hub.name }}</h3>
+        <p>{{ site.data.ecosystem.parent_hub.description }}</p>
+        <div class="tech-stack-row">
+          {% for t in site.data.ecosystem.parent_hub.tech %}
+          <span class="tech-badge">{{ t }}</span>
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="eco-right">
+        <div class="repo-link-item">
+          <span class="link-icon">🌐</span>
+          <div>
+            <strong>{{ site.data.ecosystem.public_pages.name }}</strong>
+            <p>{{ site.data.ecosystem.public_pages.description }}</p>
+          </div>
+        </div>
+        <div class="repo-link-item">
+          <span class="link-icon">🎬</span>
+          <div>
+            <strong>YouTube {{ site.author.handle }}</strong>
+            <p>Algorithmic wisdom shorts & philosophical breakdowns</p>
+          </div>
+        </div>
+        <div class="repo-link-item">
+          <span class="link-icon">⚙️</span>
+          <div>
+            <strong>Automated Production Pipeline</strong>
+            <p>Playwright frame capture, Edge-TTS audio & FFmpeg master composer</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

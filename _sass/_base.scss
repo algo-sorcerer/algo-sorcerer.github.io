@@ -1,0 +1,120 @@
+// ==============================================================================
+// AlgoSorcerer World — Base Styles & Ambient Canvas
+// ==============================================================================
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: $bg-deep-void;
+  color: $text-main;
+  font-family: $font-body;
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  position: relative;
+}
+
+#cosmic-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.gradient-gold {
+  background: linear-gradient(135deg, #fff 0%, $gold-glow 50%, $gold-primary 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-cyan {
+  background: linear-gradient(135deg, #fff 0%, $cyan-glow 50%, $cyan-primary 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+section {
+  position: relative;
+  z-index: 10;
+  padding: 84px 0;
+}
+
+.section-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.section-tag {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: $cyan-primary;
+  margin-bottom: 8px;
+}
+
+.section-title {
+  font-family: $font-display;
+  font-size: 38px;
+  font-weight: 800;
+  margin-bottom: 12px;
+  letter-spacing: 0.5px;
+}
+
+.section-sub {
+  font-size: 16px;
+  color: $text-muted;
+  max-width: 720px;
+  margin-bottom: 40px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 28px;
+  border-radius: $radius-md;
+  font-family: $font-body;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  border: none;
+
+  &-primary {
+    background: linear-gradient(135deg, $gold-primary 0%, $gold-dark 100%);
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.35);
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 28px rgba(245, 158, 11, 0.5);
+    }
+  }
+
+  &-secondary {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid $border-subtle;
+    color: #fff;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-2px);
+    }
+  }
+}

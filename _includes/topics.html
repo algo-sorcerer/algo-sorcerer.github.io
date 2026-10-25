@@ -1,0 +1,26 @@
+<section id="topics" class="topics-section">
+  <div class="section-container">
+    <div class="section-tag">CURRICULUM & ROADMAP</div>
+    <h2 class="section-title">The 6 Core <span class="gradient-gold">Algorithmic Darshanas</span></h2>
+    <p class="section-sub">
+      Explore how fundamental data structures and algorithmic complexity mirror ancient Indian philosophical doctrines.
+    </p>
+
+    <div class="topics-grid">
+      {% for ep in site.data.episodes %}
+      <div class="topic-box">
+        <div class="topic-num">{{ ep.num }}</div>
+        <div class="topic-meta-header">
+          <span class="badge-tag">{{ ep.cs_concept }}</span>
+          <span class="school-name">{{ ep.school }}</span>
+        </div>
+        <h4>{{ ep.title }}</h4>
+        <p>{{ ep.core }}</p>
+        <div class="topic-footer">
+          <code>{{ ep.equation }}</code>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>

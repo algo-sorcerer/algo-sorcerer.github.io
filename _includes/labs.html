@@ -1,0 +1,52 @@
+<section id="labs" class="labs-section">
+  <div class="section-container">
+    <div class="section-tag">BROWSER-BASED EXPERIMENTS</div>
+    <h2 class="section-title">The Interactive <span class="gradient-cyan">Darshana Sandbox</span></h2>
+    <p class="section-sub">
+      Explore each algorithmic principle in real-time. Select a simulation below to interact directly with the mathematics and philosophy.
+    </p>
+
+    <div class="labs-interactive-grid">
+      <!-- Left: Master Simulation Stage -->
+      <div class="main-lab-stage">
+        <div class="stage-header">
+          <div>
+            <span class="stage-badge" id="current-lab-badge">RECURSION & SAMSARA</span>
+            <h3 id="current-lab-title">The Logarithmic Spiral of Call Stacks</h3>
+          </div>
+          <div class="stage-actions">
+            <button id="btn-lab-toggle" class="btn-ctrl">Pause / Play</button>
+            <button id="btn-lab-reset" class="btn-ctrl">Reset</button>
+          </div>
+        </div>
+
+        <div class="lab-canvas-container">
+          <canvas id="master-lab-canvas" width="800" height="480"></canvas>
+          <div class="lab-live-legend" id="lab-live-legend">
+            <span class="legend-chip">Active Frame</span>
+            <span class="legend-chip">Time: O(N)</span>
+            <span class="legend-chip">Space: O(N)</span>
+          </div>
+        </div>
+
+        <div class="stage-explanation" id="stage-explanation-text">
+          Watch the recursive call stack expand as a golden spiral. Without the central 'Moksha' base case, the stack exhausts all available mental memory.
+        </div>
+      </div>
+
+      <!-- Right: Topic Selection List from _data/episodes.yml -->
+      <div class="lab-topic-selector">
+        {% for ep in site.data.episodes %}
+        <div class="lab-card-item {% if forloop.first %}active{% endif %}" data-sim="{{ ep.id }}">
+          <div class="lab-icon">{{ ep.icon }}</div>
+          <div class="lab-item-info">
+            <h4>{{ ep.title }}</h4>
+            <p>{{ ep.cs_concept }} & {{ ep.vedic_philosophy }}</p>
+            <span class="school-tag">{{ ep.school }}</span>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>

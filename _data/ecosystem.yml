@@ -1,0 +1,21 @@
+parent_hub:
+  name: "algosorcerer-world"
+  role: "PARENT STUDIO HUB (PRIVATE)"
+  description: "Centralized orchestrator: dual-voice neural audio synthesis, Playwright frame capture, FFmpeg composition, and YouTube API distribution."
+  tech:
+    - "Python 3.12"
+    - "uv"
+    - "Edge-TTS"
+    - "Playwright"
+    - "FFmpeg 7"
+    - "GitHub Actions"
+
+public_pages:
+  name: "algo-sorcerer.github.io"
+  role: "PUBLIC WEBSITE & LABS (PUBLIC)"
+  description: "Official showcase website and browser-based interactive Darshana simulation labs."
+  tech:
+    - "Jekyll"
+    - "Sass / SCSS"
+    - "HTML5 Canvas"
+    - "GitHub Pages"

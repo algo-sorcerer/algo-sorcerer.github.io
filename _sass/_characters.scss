@@ -1,0 +1,134 @@
+// ==============================================================================
+// AlgoSorcerer World — Characters & Profile Cards Styles
+// ==============================================================================
+
+.characters-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+.char-profile-card {
+  display: flex;
+  gap: 24px;
+  background: $bg-card;
+  backdrop-filter: blur(16px);
+  border: 1px solid $border-subtle;
+  border-radius: $radius-lg;
+  padding: 32px;
+  transition: all 0.3s ease;
+
+  &.acharya-card {
+    border-left: 4px solid $gold-primary;
+  }
+
+  &.anvay-card {
+    border-left: 4px solid $cyan-primary;
+  }
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-card;
+  }
+}
+
+.char-avatar-container {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  flex-shrink: 0;
+}
+
+.profile-avatar {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  position: relative;
+  z-index: 2;
+}
+
+.char-halo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  filter: blur(16px);
+  opacity: 0.6;
+}
+
+.gold-halo {
+  background: $gold-primary;
+}
+
+.cyan-halo {
+  background: $cyan-primary;
+}
+
+.char-details {
+  flex: 1;
+}
+
+.role-pill {
+  display: inline-block;
+  font-size: 10.5px;
+  font-weight: 800;
+  letter-spacing: 1.5px;
+  padding: 3px 10px;
+  border-radius: $radius-full;
+  margin-bottom: 8px;
+
+  &.gold-pill {
+    background: rgba(245, 158, 11, 0.15);
+    color: $gold-glow;
+  }
+
+  &.cyan-pill {
+    background: rgba(6, 182, 212, 0.15);
+    color: $cyan-glow;
+  }
+}
+
+.char-fullname {
+  font-family: $font-display;
+  font-size: 22px;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.char-desc {
+  font-size: 14px;
+  color: $text-muted;
+  line-height: 1.55;
+  margin-bottom: 16px;
+}
+
+.char-attributes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.attr-tag {
+  font-size: 11px;
+  background: rgba(255, 255, 255, 0.06);
+  padding: 3px 10px;
+  border-radius: $radius-sm;
+  color: #e2e8f0;
+}
+
+.signature-quote {
+  font-size: 13.5px;
+  font-style: italic;
+  color: $gold-glow;
+  padding-left: 12px;
+  border-left: 2px solid $gold-primary;
+
+  .anvay-card & {
+    color: $cyan-glow;
+    border-left-color: $cyan-primary;
+  }
+}

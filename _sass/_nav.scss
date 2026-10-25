@@ -58,20 +58,28 @@
     position: absolute;
     inset: -2px;
     border-radius: 50%;
-    border: 1px solid rgba(199, 166, 106, 0.25);
+    border: 1px solid rgba(100, 232, 255, 0.35);
+    box-shadow: 0 0 10px rgba(100, 232, 255, 0.25);
     pointer-events: none;
+    transition: all $transition-smooth;
+  }
+
+  .brand-link:hover &::after {
+    border-color: rgba(100, 232, 255, 0.75);
+    box-shadow: 0 0 16px rgba(100, 232, 255, 0.45);
   }
 }
 
 .nav-logo {
-  width: 38px;
-  height: 38px;
-  object-fit: contain;
-  filter: drop-shadow(0 0 8px rgba(199, 166, 106, 0.3));
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  filter: drop-shadow(0 0 8px rgba(100, 232, 255, 0.3));
   transition: transform $transition-fast;
 
   .brand-link:hover & {
-    transform: rotate(15deg) scale(1.05);
+    transform: scale(1.06);
   }
 }
 

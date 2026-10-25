@@ -10,12 +10,45 @@
   flex-direction: column;
   justify-content: center;
   position: relative;
+  overflow: hidden;
   background: radial-gradient(circle at 75% 40%, rgba(199, 166, 106, 0.08) 0%, transparent 60%),
               radial-gradient(circle at 20% 70%, rgba(100, 232, 255, 0.05) 0%, transparent 50%),
               $color-obsidian;
 
   @media (max-width: 960px) {
     padding-top: calc(#{$nav-height} + 24px);
+  }
+}
+
+// Panoramic Channel Banner Atmosphere
+.hero-banner-atmosphere {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 600px;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+
+  .hero-banner-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+    opacity: 0.32;
+    filter: saturate(1.25) contrast(1.15);
+    transform: scale(1.02);
+  }
+
+  .banner-vignette {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, 
+      rgba(8, 9, 13, 0.35) 0%, 
+      rgba(8, 9, 13, 0.72) 55%, 
+      $color-obsidian 100%
+    );
   }
 }
 

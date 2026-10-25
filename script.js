@@ -1,10 +1,30 @@
 /**
  * AlgoSorcerer World — Interactive Digital Universe & Laboratory Engine
+ * Award-Winning Procedural Simulations & System Architecture Canvas
  * "Ancient wisdom. Algorithmic thinking. Infinite possibilities."
  */
 
 (function () {
   'use strict';
+
+  // ============================================================================
+  // Canvas HiDPI / Retina Helper
+  // ============================================================================
+  function setupHiDpi(canvas) {
+    if (!canvas) return null;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2); // Cap at 2x for high performance
+    const rect = canvas.getBoundingClientRect();
+    const displayWidth = Math.floor(rect.width || canvas.width);
+    const displayHeight = Math.floor(rect.height || canvas.height);
+
+    if (canvas.width !== displayWidth * dpr || canvas.height !== displayHeight * dpr) {
+      canvas.width = displayWidth * dpr;
+      canvas.height = displayHeight * dpr;
+    }
+    const ctx = canvas.getContext('2d');
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { ctx, w: displayWidth, h: displayHeight, dpr };
+  }
 
   // ============================================================================
   // 1. Ambient Background Particle Matrix
@@ -21,32 +41,34 @@
     });
 
     const particles = [];
-    const count = Math.min(65, Math.floor(width / 24));
+    const count = Math.min(75, Math.floor(width / 20));
 
     for (let i = 0; i < count; i++) {
       particles.push({
         x: Math.random() * width,
         y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.4,
-        vy: (Math.random() - 0.5) * 0.4,
-        radius: Math.random() * 2 + 1,
-        color: Math.random() > 0.45 ? 'rgba(100, 232, 255, ' : 'rgba(199, 166, 106, ',
-        alpha: Math.random() * 0.45 + 0.15,
+        vx: (Math.random() - 0.5) * 0.35,
+        vy: (Math.random() - 0.5) * 0.35,
+        radius: Math.random() * 2.2 + 0.8,
+        color: Math.random() > 0.4 ? 'rgba(100, 232, 255, ' : 'rgba(199, 166, 106, ',
+        alpha: Math.random() * 0.5 + 0.15,
+        phase: Math.random() * Math.PI * 2,
       });
     }
 
     function animateAmbient() {
       ctx.clearRect(0, 0, width, height);
 
-      // Draw Network Edges
+      // Draw Constellation Edges
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
           const dist = Math.sqrt(dx * dx + dy * dy);
 
-          if (dist < 115) {
-            ctx.strokeStyle = `rgba(100, 232, 255, ${0.1 * (1 - dist / 115)})`;
+          if (dist < 125) {
+            const edgeAlpha = 0.14 * (1 - dist / 125);
+            ctx.strokeStyle = `rgba(100, 232, 255, ${edgeAlpha})`;
             ctx.lineWidth = 0.75;
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
@@ -56,17 +78,19 @@
         }
       }
 
-      // Draw Particles
+      // Draw Luminous Nodes
       particles.forEach((p) => {
         p.x += p.vx;
         p.y += p.vy;
+        p.phase += 0.02;
 
         if (p.x < 0) p.x = width;
         if (p.x > width) p.x = 0;
         if (p.y < 0) p.y = height;
         if (p.y > height) p.y = 0;
 
-        ctx.fillStyle = p.color + p.alpha + ')';
+        const pulseAlpha = p.alpha * (0.8 + 0.2 * Math.sin(p.phase));
+        ctx.fillStyle = p.color + pulseAlpha + ')';
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
         ctx.fill();
@@ -82,110 +106,174 @@
   // ============================================================================
   const heroPortalCanvas = document.getElementById('hero-portal-canvas');
   if (heroPortalCanvas) {
-    const ctx = heroPortalCanvas.getContext('2d');
     let t = 0;
+    let targetMouseX = 0;
+    let targetMouseY = 0;
     let mouseX = 0;
     let mouseY = 0;
 
     window.addEventListener('mousemove', (e) => {
       const rect = heroPortalCanvas.getBoundingClientRect();
-      mouseX = ((e.clientX - rect.left) / rect.width - 0.5) * 2;
-      mouseY = ((e.clientY - rect.top) / rect.height - 0.5) * 2;
+      targetMouseX = ((e.clientX - (rect.left + rect.width / 2)) / rect.width) * 2;
+      targetMouseY = ((e.clientY - (rect.top + rect.height / 2)) / rect.height) * 2;
     });
 
     function renderHeroPortal() {
-      const w = heroPortalCanvas.width;
-      const h = heroPortalCanvas.height;
+      const dpi = setupHiDpi(heroPortalCanvas);
+      if (!dpi) return;
+      const { ctx, w, h } = dpi;
       ctx.clearRect(0, 0, w, h);
 
-      const cx = w / 2 + mouseX * 12;
-      const cy = h / 2 + mouseY * 12;
-      t += 0.015;
+      // Smooth mouse damping
+      mouseX += (targetMouseX - mouseX) * 0.05;
+      mouseY += (targetMouseY - mouseY) * 0.05;
+
+      const cx = w / 2 + mouseX * 18;
+      const cy = h / 2 + mouseY * 18;
+      t += 0.016;
 
       ctx.save();
       ctx.translate(cx, cy);
 
-      // Concentric Orbital Invariants
-      for (let r = 55; r <= 200; r += 28) {
-        ctx.strokeStyle = `rgba(199, 166, 106, ${0.15 + (r / 220) * 0.25})`;
-        ctx.lineWidth = 1;
+      // 1. Ambient Background Glow Core
+      const radialGlow = ctx.createRadialGradient(0, 0, 10, 0, 0, 240);
+      radialGlow.addColorStop(0, 'rgba(199, 166, 106, 0.25)');
+      radialGlow.addColorStop(0.35, 'rgba(100, 232, 255, 0.12)');
+      radialGlow.addColorStop(0.7, 'rgba(154, 140, 255, 0.04)');
+      radialGlow.addColorStop(1, 'transparent');
+      ctx.fillStyle = radialGlow;
+      ctx.beginPath();
+      ctx.arc(0, 0, 240, 0, Math.PI * 2);
+      ctx.fill();
+
+      // 2. Outer Astrolabe Gauge Ring with Degree Ticks
+      ctx.strokeStyle = 'rgba(199, 166, 106, 0.28)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.arc(0, 0, 210, 0, Math.PI * 2);
+      ctx.stroke();
+
+      for (let i = 0; i < 72; i++) {
+        const angle = (i * Math.PI * 2) / 72 + t * 0.08;
+        const isMajor = i % 9 === 0;
+        const len = isMajor ? 10 : 4;
+        const r1 = 210;
+        const r2 = 210 - len;
+
+        ctx.strokeStyle = isMajor ? '#c7a66a' : 'rgba(199, 166, 106, 0.25)';
+        ctx.lineWidth = isMajor ? 1.5 : 0.8;
+        ctx.beginPath();
+        ctx.moveTo(Math.cos(angle) * r1, Math.sin(angle) * r1);
+        ctx.lineTo(Math.cos(angle) * r2, Math.sin(angle) * r2);
+        ctx.stroke();
+      }
+
+      // 3. Concentric Orbital Resonance Rings
+      for (let r = 70; r <= 180; r += 26) {
+        ctx.strokeStyle = `rgba(100, 232, 255, ${0.12 + (r / 200) * 0.16})`;
+        ctx.lineWidth = 0.9;
         ctx.beginPath();
         ctx.arc(0, 0, r, 0, Math.PI * 2);
         ctx.stroke();
       }
 
-      // Rotating Algorithmic Geometry (Clockwise)
+      // 4. Rotating Sacred Algorithmic Geometry (Clockwise Octagon Matrix)
       ctx.save();
-      ctx.rotate(t * 0.4);
+      ctx.rotate(t * 0.35);
       for (let i = 0; i < 8; i++) {
-        ctx.strokeStyle = 'rgba(100, 232, 255, 0.45)';
-        ctx.lineWidth = 1.3;
+        const polyGrad = ctx.createLinearGradient(0, 40, 140, 140);
+        polyGrad.addColorStop(0, 'rgba(100, 232, 255, 0.6)');
+        polyGrad.addColorStop(1, 'rgba(199, 166, 106, 0.25)');
+
+        ctx.strokeStyle = polyGrad;
+        ctx.lineWidth = 1.4;
         ctx.beginPath();
         ctx.rotate((Math.PI * 2) / 8);
-        ctx.moveTo(0, 50);
-        ctx.lineTo(100, 140);
-        ctx.lineTo(140, 100);
+        ctx.moveTo(0, 48);
+        ctx.lineTo(95, 135);
+        ctx.lineTo(135, 95);
         ctx.closePath();
         ctx.stroke();
+
+        // Subtle luminous vertex node
+        ctx.fillStyle = '#64e8ff';
+        ctx.shadowColor = '#64e8ff';
+        ctx.shadowBlur = 8;
+        ctx.beginPath();
+        ctx.arc(95, 135, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
       }
       ctx.restore();
 
-      // Counter-Rotating Inner Mathematical Matrix
+      // 5. Counter-Rotating Hexagonal Mathematical Core (Counter-Clockwise)
       ctx.save();
-      ctx.rotate(-t * 0.6);
+      ctx.rotate(-t * 0.5);
       for (let i = 0; i < 6; i++) {
-        ctx.strokeStyle = 'rgba(199, 166, 106, 0.5)';
-        ctx.lineWidth = 1.5;
+        ctx.strokeStyle = 'rgba(199, 166, 106, 0.45)';
+        ctx.lineWidth = 1.3;
         ctx.beginPath();
         ctx.rotate((Math.PI * 2) / 6);
-        ctx.moveTo(0, 30);
-        ctx.lineTo(75, 75);
-        ctx.lineTo(75, -20);
+        ctx.moveTo(0, 28);
+        ctx.lineTo(70, 70);
+        ctx.lineTo(70, -25);
         ctx.closePath();
         ctx.stroke();
       }
       ctx.restore();
 
-      // Orbiting Algorithmic Nodes
-      const nodeCount = 5;
+      // 6. Orbiting Algorithmic Nodes with Energy Beams
+      const nodeCount = 6;
       for (let i = 0; i < nodeCount; i++) {
-        const orbitR = 150 + Math.sin(t * 2 + i) * 15;
-        const angle = t * 0.8 + (i * Math.PI * 2) / nodeCount;
+        const orbitR = 145 + Math.sin(t * 2 + i * 1.5) * 16;
+        const angle = t * 0.75 + (i * Math.PI * 2) / nodeCount;
         const nx = Math.cos(angle) * orbitR;
         const ny = Math.sin(angle) * orbitR;
 
-        // Connector ray to center
-        ctx.strokeStyle = 'rgba(100, 232, 255, 0.15)';
+        // Thin radiant connector to center
+        ctx.strokeStyle = `rgba(100, 232, 255, ${0.12 + 0.08 * Math.sin(t * 3 + i)})`;
+        ctx.lineWidth = 0.8;
         ctx.beginPath();
         ctx.moveTo(0, 0);
         ctx.lineTo(nx, ny);
         ctx.stroke();
 
-        // Node circle
-        ctx.fillStyle = i % 2 === 0 ? '#64e8ff' : '#c7a66a';
-        ctx.shadowColor = ctx.fillStyle;
-        ctx.shadowBlur = 12;
+        // Node Glow Sphere
+        const isGold = i % 2 === 0;
+        ctx.fillStyle = isGold ? '#e2c288' : '#64e8ff';
+        ctx.shadowColor = isGold ? '#c7a66a' : '#64e8ff';
+        ctx.shadowBlur = 14;
         ctx.beginPath();
         ctx.arc(nx, ny, 4.5, 0, Math.PI * 2);
         ctx.fill();
         ctx.shadowBlur = 0;
+
+        // Orbiting Micro Halo
+        ctx.strokeStyle = isGold ? 'rgba(199, 166, 106, 0.4)' : 'rgba(100, 232, 255, 0.4)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.arc(nx, ny, 9, 0, Math.PI * 2);
+        ctx.stroke();
       }
 
-      // Central Luminous Core
-      const corePulse = Math.sin(t * 3) * 6 + 22;
-      ctx.fillStyle = '#f0f4fc';
+      // 7. Central Hyper-Dimensional Crystal Core
+      const corePulse = Math.sin(t * 3.5) * 6 + 22;
+      ctx.fillStyle = '#ffffff';
       ctx.shadowColor = '#64e8ff';
       ctx.shadowBlur = corePulse;
       ctx.beginPath();
-      ctx.arc(0, 0, 14, 0, Math.PI * 2);
+      ctx.arc(0, 0, 15, 0, Math.PI * 2);
       ctx.fill();
       ctx.shadowBlur = 0;
 
-      // Central Glyph
+      // Inner Symbol rotation
+      ctx.save();
+      ctx.rotate(t * 0.2);
       ctx.fillStyle = '#08090d';
-      ctx.font = 'bold 10px Fira Code, monospace';
+      ctx.font = 'bold 9.5px Fira Code, monospace';
       ctx.textAlign = 'center';
       ctx.fillText('{ }', 0, 3.5);
+      ctx.restore();
 
       ctx.restore();
       requestAnimationFrame(renderHeroPortal);
@@ -203,15 +291,16 @@
   const stackStateLabel = document.getElementById('stack-state-label');
 
   if (samsaraCanvas) {
-    const ctx = samsaraCanvas.getContext('2d');
-    const w = samsaraCanvas.width;
-    const h = samsaraCanvas.height;
-
     let samsaraStep = 1;
     const maxStack = 6;
     let samsaraAnimTime = 0;
+    let shockwaveR = 0;
 
     function renderSamsara() {
+      const dpi = setupHiDpi(samsaraCanvas);
+      if (!dpi) return;
+      const { ctx, w, h } = dpi;
+
       samsaraAnimTime += 0.02;
       ctx.fillStyle = '#040508';
       ctx.fillRect(0, 0, w, h);
@@ -219,45 +308,114 @@
       const cx = w / 2;
       const cy = h / 2;
 
+      // Fine coordinate grid backdrop
+      ctx.strokeStyle = 'rgba(233, 223, 200, 0.04)';
+      ctx.lineWidth = 0.8;
+      for (let x = 0; x < w; x += 35) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, h);
+        ctx.stroke();
+      }
+      for (let y = 0; y < h; y += 35) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
+        ctx.stroke();
+      }
+
       ctx.save();
       ctx.translate(cx, cy);
 
       const isBaseCase = samsaraStep >= maxStack;
 
-      // Draw Recursive Spiral Stack Frames
+      // Golden Spiral Parametric Curve
+      ctx.strokeStyle = 'rgba(199, 166, 106, 0.2)';
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      for (let a = 0; a < Math.PI * 4; a += 0.08) {
+        const rad = 22 * Math.exp(0.18 * a);
+        const sx = Math.cos(a + samsaraAnimTime * 0.4) * rad;
+        const sy = Math.sin(a + samsaraAnimTime * 0.4) * rad;
+        if (a === 0) ctx.moveTo(sx, sy);
+        else ctx.lineTo(sx, sy);
+      }
+      ctx.stroke();
+
+      // Draw Recursive Stack Frames
       for (let i = 0; i < samsaraStep; i++) {
-        const r = 160 * Math.pow(0.76, i);
+        const r = 165 * Math.pow(0.75, i);
         const rot = samsaraAnimTime * 0.5 + i * 0.65;
         const x = Math.cos(rot) * r;
         const y = Math.sin(rot) * r;
 
-        ctx.strokeStyle = `rgba(${199 - i * 15}, ${166 - i * 12}, ${106 + i * 25}, 0.9)`;
-        ctx.lineWidth = Math.max(2, 5 - i * 0.4);
-
+        // Glowing connection ray to center
+        ctx.strokeStyle = `rgba(100, 232, 255, ${0.15 + (i / maxStack) * 0.25})`;
+        ctx.lineWidth = 1;
         ctx.beginPath();
-        ctx.arc(x, y, 16 + (maxStack - i) * 2, 0, Math.PI * 2);
+        ctx.moveTo(0, 0);
+        ctx.lineTo(x, y);
         ctx.stroke();
 
-        ctx.fillStyle = '#f0f4fc';
-        ctx.font = '11px Outfit, sans-serif';
+        // Stack Frame Capsule Box
+        const cardW = 92;
+        const cardH = 34;
+        ctx.save();
+        ctx.translate(x, y);
+
+        // Frame Glow
+        const isCurrentActive = i === samsaraStep - 1;
+        ctx.fillStyle = isCurrentActive ? 'rgba(16, 26, 44, 0.95)' : 'rgba(8, 12, 20, 0.85)';
+        ctx.strokeStyle = isCurrentActive ? '#64e8ff' : 'rgba(199, 166, 106, 0.45)';
+        ctx.lineWidth = isCurrentActive ? 2 : 1;
+        ctx.shadowColor = isCurrentActive ? '#64e8ff' : 'rgba(0,0,0,0)';
+        ctx.shadowBlur = isCurrentActive ? 15 : 0;
+
+        ctx.beginPath();
+        ctx.roundRect(-cardW / 2, -cardH / 2, cardW, cardH, 6);
+        ctx.fill();
+        ctx.stroke();
+        ctx.shadowBlur = 0;
+
+        // Frame text: Frame number & Memory offset
+        ctx.fillStyle = isCurrentActive ? '#64e8ff' : '#e2c288';
+        ctx.font = 'bold 10px Fira Code, monospace';
         ctx.textAlign = 'center';
-        ctx.fillText(`Frame #${i + 1}`, x, y + 4);
+        ctx.fillText(`Frame #${i + 1}`, 0, -3);
+
+        ctx.fillStyle = '#a3a9b8';
+        ctx.font = '8.5px Fira Code, monospace';
+        ctx.fillText(`0x7FF${(80 - i * 16).toString(16).toUpperCase()}`, 0, 9);
+
+        ctx.restore();
       }
 
-      // Central Base Case Anchor
-      const glow = Math.sin(samsaraAnimTime * 4) * 8 + 18;
+      // Shockwave ring when Base Case is active
+      if (isBaseCase) {
+        shockwaveR = (shockwaveR + 2.5) % 220;
+        ctx.strokeStyle = `rgba(74, 222, 128, ${Math.max(0, 0.7 - shockwaveR / 220)})`;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(0, 0, shockwaveR, 0, Math.PI * 2);
+        ctx.stroke();
+      } else {
+        shockwaveR = 0;
+      }
+
+      // Central Base Case Anchor Beacon
+      const glow = Math.sin(samsaraAnimTime * 4) * 8 + 20;
       ctx.fillStyle = isBaseCase ? '#4ade80' : '#e2c288';
       ctx.shadowColor = isBaseCase ? '#22c55e' : '#c7a66a';
-      ctx.shadowBlur = isBaseCase ? 25 : glow;
+      ctx.shadowBlur = isBaseCase ? 28 : glow;
       ctx.beginPath();
-      ctx.arc(0, 0, isBaseCase ? 22 : 14, 0, Math.PI * 2);
+      ctx.arc(0, 0, isBaseCase ? 22 : 15, 0, Math.PI * 2);
       ctx.fill();
       ctx.shadowBlur = 0;
 
       ctx.fillStyle = '#08090d';
-      ctx.font = 'bold 8.5px Outfit, sans-serif';
+      ctx.font = 'bold 8.5px Fira Code, monospace';
       ctx.textAlign = 'center';
-      ctx.fillText(isBaseCase ? 'BASE CASE' : 'ROOT', 0, 3);
+      ctx.fillText(isBaseCase ? 'BASE' : 'ENTRY', 0, 3);
 
       ctx.restore();
       requestAnimationFrame(renderSamsara);
@@ -286,7 +444,7 @@
       if (stackDepthLabel) stackDepthLabel.textContent = `Stack Depth: ${samsaraStep} / ${maxStack}`;
       if (stackStateLabel) {
         stackStateLabel.textContent =
-          samsaraStep >= maxStack ? 'State: Base Case Met (Unwinding Stack)' : 'State: Pushing Stack Frame';
+          samsaraStep >= maxStack ? 'State: Base Case Met (Unwinding Memory)' : 'State: Pushing Stack Frame';
       }
     }
   }
@@ -343,7 +501,7 @@
       space: 'O(V)',
       heading: 'Topological Interdependence:',
       desc: 'In distributed architectures and DAGs, no microservice is independent. Click any node to fire a request impulse and trace dependency propagation through downstream services.',
-      counter1: 'Active Nodes: 12 Services',
+      counter1: 'Active Nodes: 8 Services',
       counter2: 'Topology: Directed Acyclic Graph',
     },
     aparigraha_gc: {
@@ -530,19 +688,19 @@
 
   // Master Canvas Render Loop
   if (masterCanvas) {
-    const ctx = masterCanvas.getContext('2d');
-    const w = masterCanvas.width;
-    const h = masterCanvas.height;
-
-    // Handle canvas clicks for interactive graph
+    // Handle canvas clicks for interactive graph impulses
     masterCanvas.addEventListener('click', (e) => {
       const rect = masterCanvas.getBoundingClientRect();
-      const clickX = ((e.clientX - rect.left) / rect.width) * w;
-      const clickY = ((e.clientY - rect.top) / rect.height) * h;
+      const clickX = e.clientX - rect.left;
+      const clickY = e.clientY - rect.top;
       graphImpulseNodes.push({ x: clickX, y: clickY, r: 0, alpha: 1.0 });
     });
 
     function renderMasterLab() {
+      const dpi = setupHiDpi(masterCanvas);
+      if (!dpi) return;
+      const { ctx, w, h } = dpi;
+
       if (isLabPlaying) {
         labTime += 0.02;
       }
@@ -550,8 +708,8 @@
       ctx.fillStyle = '#040509';
       ctx.fillRect(0, 0, w, h);
 
-      // Fine Grid Backdrop
-      ctx.strokeStyle = 'rgba(233, 223, 200, 0.03)';
+      // Fine Futuristic Grid Backdrop
+      ctx.strokeStyle = 'rgba(233, 223, 200, 0.035)';
       ctx.lineWidth = 1;
       for (let x = 0; x < w; x += 40) {
         ctx.beginPath();
@@ -565,6 +723,35 @@
         ctx.lineTo(w, y);
         ctx.stroke();
       }
+
+      // Tech Corner Brackets (┌ ┐ └ ┘)
+      ctx.strokeStyle = 'rgba(100, 232, 255, 0.3)';
+      ctx.lineWidth = 1.5;
+      const cornerSize = 14;
+      // Top-Left
+      ctx.beginPath();
+      ctx.moveTo(14, 14 + cornerSize);
+      ctx.lineTo(14, 14);
+      ctx.lineTo(14 + cornerSize, 14);
+      ctx.stroke();
+      // Top-Right
+      ctx.beginPath();
+      ctx.moveTo(w - 14 - cornerSize, 14);
+      ctx.lineTo(w - 14, 14);
+      ctx.lineTo(w - 14, 14 + cornerSize);
+      ctx.stroke();
+      // Bottom-Left
+      ctx.beginPath();
+      ctx.moveTo(14, h - 14 - cornerSize);
+      ctx.lineTo(14, h - 14);
+      ctx.lineTo(14 + cornerSize, h - 14);
+      ctx.stroke();
+      // Bottom-Right
+      ctx.beginPath();
+      ctx.moveTo(w - 14 - cornerSize, h - 14);
+      ctx.lineTo(w - 14, h - 14);
+      ctx.lineTo(w - 14, h - 14 - cornerSize);
+      ctx.stroke();
 
       // Dispatch to active simulation renderer
       switch (activeLabKey) {
@@ -598,66 +785,102 @@
 
   // --- Specific Simulation Implementations ---
 
-  // Lab A: Recursion and Call Stacks
+  // Lab A: Recursion and Call Stacks (Isometric Stack Towers & Wave Unwind)
   function drawRecursionDeck(ctx, w, h, t) {
     const cx = w / 2;
     const cy = h / 2;
     const steps = 7;
     const activeFrame = Math.min(steps, Math.floor((t * 0.8) % (steps + 2)));
+    const isBaseCase = activeFrame >= steps - 1;
 
     ctx.save();
     ctx.translate(cx, cy);
 
+    // Glowing Spiral Background Orbit
+    ctx.strokeStyle = 'rgba(199, 166, 106, 0.15)';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.arc(0, 0, 180, 0, Math.PI * 2);
+    ctx.stroke();
+
     for (let i = 0; i < steps; i++) {
-      const r = 175 * Math.pow(0.74, i);
-      const angle = t * 0.6 + i * 0.7;
+      const r = 180 * Math.pow(0.74, i);
+      const angle = t * 0.5 + i * 0.72;
       const x = Math.cos(angle) * r;
       const y = Math.sin(angle) * r;
       const isAllocated = i <= activeFrame;
 
+      // Connecting Laser Line
       ctx.strokeStyle = isAllocated
-        ? `rgba(199, 166, 106, ${0.9 - i * 0.1})`
-        : 'rgba(255, 255, 255, 0.08)';
-      ctx.lineWidth = isAllocated ? Math.max(1.5, 4.5 - i * 0.4) : 1;
+        ? `rgba(100, 232, 255, ${0.2 + (i / steps) * 0.5})`
+        : 'rgba(255, 255, 255, 0.05)';
+      ctx.lineWidth = isAllocated ? 1.5 : 0.8;
       ctx.beginPath();
-      ctx.arc(x, y, 16 + (steps - i) * 1.5, 0, Math.PI * 2);
+      ctx.moveTo(0, 0);
+      ctx.lineTo(x, y);
       ctx.stroke();
 
-      if (isAllocated) {
-        ctx.fillStyle = '#f0f4fc';
-        ctx.font = '11px Fira Code, monospace';
-        ctx.textAlign = 'center';
-        ctx.fillText(`Frame #${i + 1}`, x, y + 4);
-      }
+      // Memory Frame Capsule Card
+      ctx.save();
+      ctx.translate(x, y);
+      const isCurrent = i === activeFrame;
+
+      ctx.fillStyle = isCurrent
+        ? 'rgba(16, 26, 44, 0.95)'
+        : isAllocated
+        ? 'rgba(12, 16, 28, 0.85)'
+        : 'rgba(8, 10, 16, 0.5)';
+      ctx.strokeStyle = isCurrent ? '#64e8ff' : isAllocated ? '#c7a66a' : 'rgba(255, 255, 255, 0.1)';
+      ctx.lineWidth = isCurrent ? 2 : 1;
+      ctx.shadowColor = isCurrent ? '#64e8ff' : 'transparent';
+      ctx.shadowBlur = isCurrent ? 16 : 0;
+
+      ctx.beginPath();
+      ctx.roundRect(-46, -18, 92, 36, 6);
+      ctx.fill();
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      // Frame text readouts
+      ctx.fillStyle = isAllocated ? '#f0f4fc' : '#6b7280';
+      ctx.font = 'bold 9.5px Fira Code, monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(`Frame #${i + 1}`, 0, -2);
+
+      ctx.fillStyle = isCurrent ? '#64e8ff' : '#a3a9b8';
+      ctx.font = '8px Fira Code, monospace';
+      ctx.fillText(`n=${steps - i} [ret 0x${(i * 4).toString(16)}]`, 0, 10);
+
+      ctx.restore();
     }
 
-    // Base Case Core
-    const isBaseCase = activeFrame >= steps - 1;
-    const pulse = Math.sin(t * 3) * 6 + 18;
+    // Central Base Case Invariant Core
+    const pulse = Math.sin(t * 3.5) * 6 + 20;
     ctx.fillStyle = isBaseCase ? '#4ade80' : '#c7a66a';
     ctx.shadowColor = isBaseCase ? '#22c55e' : '#c7a66a';
-    ctx.shadowBlur = pulse;
+    ctx.shadowBlur = isBaseCase ? 32 : pulse;
     ctx.beginPath();
-    ctx.arc(0, 0, 18, 0, Math.PI * 2);
+    ctx.arc(0, 0, isBaseCase ? 22 : 16, 0, Math.PI * 2);
     ctx.fill();
     ctx.shadowBlur = 0;
 
     ctx.fillStyle = '#08090d';
-    ctx.font = 'bold 8.5px Fira Code, monospace';
+    ctx.font = 'bold 8px Fira Code, monospace';
     ctx.textAlign = 'center';
-    ctx.fillText('BASE CASE', 0, 3);
+    ctx.fillText(isBaseCase ? 'BASE' : 'HALT', 0, 3);
+
     ctx.restore();
 
     if (hudCounter1) hudCounter1.textContent = `Stack Depth: ${activeFrame + 1} / ${steps}`;
-    if (hudCounter2) hudCounter2.textContent = isBaseCase ? 'State: Unwinding Memory' : 'State: Pushing Frame';
+    if (hudCounter2) hudCounter2.textContent = isBaseCase ? 'State: Unwinding Call Stack' : 'State: Pushing Frame Record';
   }
 
-  // Lab B: Binary Search
+  // Lab B: Binary Search (Holographic Laser Calipers & Elimination)
   function drawBinarySearchDeck(ctx, w, h, t) {
     const cx = w / 2;
     const cy = h / 2;
     const n = 16;
-    const boxW = Math.min(44, (w - 100) / n);
+    const boxW = Math.min(46, (w - 120) / n);
     const startX = cx - (n * boxW) / 2;
 
     const values = [2, 5, 7, 11, 15, 19, 23, 29, 34, 42, 51, 64, 72, 80, 88, 96];
@@ -681,105 +904,173 @@
     }
     const currentMid = Math.floor((low + high) / 2);
 
+    // Draw Top Caliper Indicators [LOW] [MID] [HIGH]
+    const lowX = startX + low * boxW + boxW / 2;
+    const highX = startX + high * boxW + boxW / 2;
+    const midX = startX + currentMid * boxW + boxW / 2;
+
+    // Laser Range Beam between Low and High
+    ctx.strokeStyle = 'rgba(100, 232, 255, 0.4)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(lowX, cy - 54);
+    ctx.lineTo(highX, cy - 54);
+    ctx.stroke();
+
+    // Caliper Pointers
+    [
+      { x: lowX, label: 'LOW', col: '#64e8ff' },
+      { x: midX, label: 'MID', col: '#e2c288' },
+      { x: highX, label: 'HIGH', col: '#64e8ff' },
+    ].forEach((cal) => {
+      ctx.fillStyle = cal.col;
+      ctx.font = 'bold 9px Fira Code, monospace';
+      ctx.textAlign = 'center';
+      ctx.fillText(cal.label, cal.x, cy - 62);
+
+      ctx.beginPath();
+      ctx.moveTo(cal.x, cy - 50);
+      ctx.lineTo(cal.x, cy - 35);
+      ctx.strokeStyle = cal.col;
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    });
+
+    // Array Memory Cells
     for (let i = 0; i < n; i++) {
       const x = startX + i * boxW;
       const isDiscarded = i < low || i > high;
       const isMid = i === currentMid;
+      const isTarget = values[i] === binSearchTarget;
 
+      ctx.save();
       if (isDiscarded) {
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
-        ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.02)';
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.06)';
+        ctx.lineWidth = 1;
       } else if (isMid) {
-        ctx.fillStyle = 'rgba(199, 166, 106, 0.75)';
+        ctx.fillStyle = 'rgba(199, 166, 106, 0.85)';
         ctx.strokeStyle = '#e2c288';
+        ctx.lineWidth = 2;
+        ctx.shadowColor = '#c7a66a';
+        ctx.shadowBlur = 12;
       } else {
-        ctx.fillStyle = 'rgba(100, 232, 255, 0.2)';
-        ctx.strokeStyle = '#64e8ff';
+        ctx.fillStyle = 'rgba(16, 25, 42, 0.8)';
+        ctx.strokeStyle = 'rgba(100, 232, 255, 0.35)';
+        ctx.lineWidth = 1.2;
       }
 
-      ctx.lineWidth = 1.5;
-      ctx.fillRect(x + 2, cy - 25, boxW - 4, 50);
-      ctx.strokeRect(x + 2, cy - 25, boxW - 4, 50);
+      ctx.beginPath();
+      ctx.roundRect(x + 2, cy - 25, boxW - 4, 52, 6);
+      ctx.fill();
+      ctx.stroke();
+      ctx.shadowBlur = 0;
 
-      ctx.fillStyle = '#f0f4fc';
-      ctx.font = '12px Fira Code, monospace';
+      // Index and Value
+      ctx.fillStyle = isMid ? '#08090d' : isDiscarded ? '#4b5563' : '#f0f4fc';
+      ctx.font = 'bold 12px Fira Code, monospace';
       ctx.textAlign = 'center';
-      ctx.fillText(values[i], x + boxW / 2, cy + 4);
+      ctx.fillText(values[i], x + boxW / 2, cy + 6);
+
+      // Index label below
+      ctx.fillStyle = '#6b7280';
+      ctx.font = '8.5px Fira Code, monospace';
+      ctx.fillText(`[${i}]`, x + boxW / 2, cy + 42);
 
       if (isDiscarded) {
         ctx.fillStyle = '#ef4444';
-        ctx.font = 'bold 8.5px Outfit, sans-serif';
+        ctx.font = 'bold 8px Outfit, sans-serif';
         ctx.fillText('PRUNED', x + boxW / 2, cy - 32);
-      } else if (isMid) {
-        ctx.fillStyle = '#c7a66a';
-        ctx.font = 'bold 9px Fira Code, monospace';
-        ctx.fillText('MID', x + boxW / 2, cy - 32);
       }
+      ctx.restore();
     }
 
-    if (hudCounter1) hudCounter1.textContent = `Target: ${binSearchTarget} (Index ${targetIdx})`;
-    if (hudCounter2) hudCounter2.textContent = `Step ${step + 1}: Search Interval [${low}..${high}]`;
+    if (hudCounter1) hudCounter1.textContent = `Target Key: ${binSearchTarget} (Index ${targetIdx})`;
+    if (hudCounter2) hudCounter2.textContent = `Step ${step + 1}: Remaining Interval [${low}..${high}]`;
   }
 
-  // Lab C: Graph Theory & DAGs
+  // Lab C: Graph Theory & Distributed DAGs (Curved Beziers & Packet Impulses)
   function drawGraphDAGDeck(ctx, w, h, t) {
     const cx = w / 2;
     const cy = h / 2;
     const nodes = [
-      { name: 'Gateway', x: cx - 240, y: cy },
-      { name: 'Auth', x: cx - 120, y: cy - 70 },
-      { name: 'RateLimit', x: cx - 120, y: cy + 70 },
-      { name: 'UserDB', x: cx + 20, y: cy - 90 },
-      { name: 'Cache', x: cx + 20, y: cy },
-      { name: 'Queue', x: cx + 20, y: cy + 90 },
-      { name: 'Worker', x: cx + 180, y: cy + 50 },
-      { name: 'Analytics', x: cx + 180, y: cy - 50 },
+      { name: 'Gateway', x: cx - 250, y: cy, col: '#c7a66a', status: '200 OK' },
+      { name: 'Auth', x: cx - 130, y: cy - 75, col: '#64e8ff', status: '1.2ms' },
+      { name: 'RateLimit', x: cx - 130, y: cy + 75, col: '#64e8ff', status: '0.4ms' },
+      { name: 'UserDB', x: cx + 20, y: cy - 95, col: '#9a8cff', status: 'Sharded' },
+      { name: 'Cache', x: cx + 20, y: cy, col: '#c7a66a', status: 'Hit 99%' },
+      { name: 'Queue', x: cx + 20, y: cy + 95, col: '#64e8ff', status: 'Kafka' },
+      { name: 'Worker', x: cx + 190, y: cy + 55, col: '#4ade80', status: 'Idle' },
+      { name: 'Analytics', x: cx + 190, y: cy - 55, col: '#9a8cff', status: 'Stream' },
     ];
 
     const edges = [
       [0, 1], [0, 2], [1, 3], [1, 4], [2, 5], [4, 7], [5, 6]
     ];
 
-    // Draw Edges
+    // Draw Smooth Curved Bezier Edges
     edges.forEach(([u, v]) => {
-      ctx.strokeStyle = 'rgba(100, 232, 255, 0.25)';
+      const p1 = nodes[u];
+      const p2 = nodes[v];
+      const midX = (p1.x + p2.x) / 2;
+
+      ctx.strokeStyle = 'rgba(100, 232, 255, 0.28)';
       ctx.lineWidth = 1.8;
       ctx.beginPath();
-      ctx.moveTo(nodes[u].x, nodes[u].y);
-      ctx.lineTo(nodes[v].x, nodes[v].y);
+      ctx.moveTo(p1.x, p1.y);
+      ctx.bezierCurveTo(midX, p1.y, midX, p2.y, p2.x, p2.y);
       ctx.stroke();
 
-      // Flowing Pulse on Edge
-      const pulsePos = (t * 0.7 + u * 0.3) % 1;
-      const px = nodes[u].x + (nodes[v].x - nodes[u].x) * pulsePos;
-      const py = nodes[u].y + (nodes[v].y - nodes[u].y) * pulsePos;
+      // Flowing Energy Packet along the curve
+      const flowT = (t * 0.75 + (u + v) * 0.25) % 1;
+      const bx = (1 - flowT) * (1 - flowT) * p1.x + 2 * (1 - flowT) * flowT * midX + flowT * flowT * p2.x;
+      const by = (1 - flowT) * (1 - flowT) * p1.y + 2 * (1 - flowT) * flowT * ((p1.y + p2.y) / 2) + flowT * flowT * p2.y;
+
       ctx.fillStyle = '#64e8ff';
+      ctx.shadowColor = '#64e8ff';
+      ctx.shadowBlur = 10;
       ctx.beginPath();
-      ctx.arc(px, py, 3, 0, Math.PI * 2);
+      ctx.arc(bx, by, 3.5, 0, Math.PI * 2);
       ctx.fill();
+      ctx.shadowBlur = 0;
     });
 
-    // Draw Nodes
-    nodes.forEach((n, idx) => {
+    // Draw Microservice Nodes
+    nodes.forEach((n) => {
+      ctx.save();
+      ctx.translate(n.x, n.y);
+
+      // Node Backdrop Card
       ctx.fillStyle = '#101521';
-      ctx.strokeStyle = idx === 0 ? '#c7a66a' : '#64e8ff';
-      ctx.lineWidth = 2;
+      ctx.strokeStyle = n.col;
+      ctx.lineWidth = 1.8;
+      ctx.shadowColor = n.col;
+      ctx.shadowBlur = 10;
+
       ctx.beginPath();
-      ctx.arc(n.x, n.y, 24, 0, Math.PI * 2);
+      ctx.roundRect(-38, -20, 76, 40, 6);
       ctx.fill();
       ctx.stroke();
+      ctx.shadowBlur = 0;
 
+      // Node Name & Status
       ctx.fillStyle = '#f0f4fc';
-      ctx.font = '10px Fira Code, monospace';
+      ctx.font = 'bold 9.5px Fira Code, monospace';
       ctx.textAlign = 'center';
-      ctx.fillText(n.name, n.x, n.y + 3);
+      ctx.fillText(n.name, 0, -2);
+
+      ctx.fillStyle = n.col;
+      ctx.font = '8px Fira Code, monospace';
+      ctx.fillText(n.status, 0, 10);
+
+      ctx.restore();
     });
 
-    // Draw click impulses
+    // Draw user click shockwaves
     for (let i = graphImpulseNodes.length - 1; i >= 0; i--) {
       const imp = graphImpulseNodes[i];
-      imp.r += 2.5;
-      imp.alpha -= 0.025;
+      imp.r += 3;
+      imp.alpha -= 0.03;
 
       ctx.strokeStyle = `rgba(100, 232, 255, ${Math.max(0, imp.alpha)})`;
       ctx.lineWidth = 2;
@@ -791,130 +1082,233 @@
     }
   }
 
-  // Lab D: Garbage Collection & Heap Optimization
+  // Lab D: Garbage Collection & Heap Memory (Scanning Radar & Reclaim Particles)
   function drawGarbageCollectionDeck(ctx, w, h, t) {
     const cx = w / 2;
     const cy = h / 2;
 
-    // Root
-    ctx.fillStyle = '#64e8ff';
+    // GC Root Node (Stack/Registers)
+    ctx.save();
+    ctx.fillStyle = '#101521';
+    ctx.strokeStyle = '#64e8ff';
+    ctx.lineWidth = 2;
+    ctx.shadowColor = '#64e8ff';
+    ctx.shadowBlur = 14;
+
     ctx.beginPath();
-    ctx.arc(cx, cy - 120, 24, 0, Math.PI * 2);
+    ctx.roundRect(cx - 55, cy - 145, 110, 36, 6);
     ctx.fill();
+    ctx.stroke();
+    ctx.shadowBlur = 0;
 
-    ctx.fillStyle = '#08090d';
-    ctx.font = 'bold 9.5px Fira Code, monospace';
+    ctx.fillStyle = '#64e8ff';
+    ctx.font = 'bold 10px Fira Code, monospace';
     ctx.textAlign = 'center';
-    ctx.fillText('GC ROOT', cx, cy - 116);
+    ctx.fillText('⚡ GC ROOT', cx, cy - 128);
+    ctx.restore();
 
+    // Heap Objects
     const objects = [
-      { x: cx - 140, y: cy + 10, live: true, label: 'Session' },
-      { x: cx, y: cy - 10, live: true, label: 'AuthToken' },
-      { x: cx + 140, y: cy + 10, live: true, label: 'DBPool' },
-      { x: cx - 80, y: cy + 110, live: false, label: 'OrphanSocket' },
-      { x: cx + 80, y: cy + 110, live: false, label: 'StaleQuery' },
+      { x: cx - 150, y: cy + 10, live: true, label: 'UserSession', size: '32KB' },
+      { x: cx, y: cy - 10, live: true, label: 'AuthToken', size: '16KB' },
+      { x: cx + 150, y: cy + 10, live: true, label: 'DBPool', size: '64KB' },
+      { x: cx - 90, y: cy + 115, live: false, label: 'OrphanSocket', size: '48KB' },
+      { x: cx + 90, y: cy + 115, live: false, label: 'StaleQuery', size: '80KB' },
     ];
 
+    // Reference connections from Root
     objects.forEach((b) => {
-      const isDead = !b.live;
-      if (isDead && gcPhase === 'sweeping') return;
-
-      let fill = 'rgba(255, 255, 255, 0.1)';
-      let stroke = '#6b7280';
-
       if (b.live) {
-        fill = gcPhase === 'marking' ? 'rgba(74, 222, 128, 0.45)' : 'rgba(100, 232, 255, 0.25)';
-        stroke = gcPhase === 'marking' ? '#4ade80' : '#64e8ff';
-      } else {
-        if (gcPhase === 'marking') {
-          fill = 'rgba(239, 68, 68, 0.4)';
-          stroke = '#ef4444';
-        }
-      }
-
-      ctx.fillStyle = fill;
-      ctx.strokeStyle = stroke;
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      ctx.roundRect(b.x - 55, b.y - 20, 110, 40, 8);
-      ctx.fill();
-      ctx.stroke();
-
-      ctx.fillStyle = '#f0f4fc';
-      ctx.font = '11px Outfit, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText(b.label, b.x, b.y + 4);
-
-      if (b.live) {
-        ctx.strokeStyle = 'rgba(100, 232, 255, 0.4)';
+        ctx.strokeStyle = gcPhase === 'marking' ? 'rgba(74, 222, 128, 0.7)' : 'rgba(100, 232, 255, 0.4)';
+        ctx.lineWidth = 1.8;
         ctx.beginPath();
-        ctx.moveTo(cx, cy - 96);
+        ctx.moveTo(cx, cy - 109);
         ctx.lineTo(b.x, b.y - 20);
         ctx.stroke();
       }
     });
 
-    if (hudCounter1) hudCounter1.textContent = `Heap Objects: 3 Live, ${gcPhase === 'sweeping' ? '0 Dead' : '2 Dead'}`;
-    if (hudCounter2) hudCounter2.textContent = `Phase: ${gcPhase.toUpperCase()} • Reclaimed: ${gcReclaimedBytes} KB`;
+    // Draw Heap Objects
+    objects.forEach((b) => {
+      const isDead = !b.live;
+      if (isDead && gcPhase === 'sweeping') {
+        // Vaporize into red particle cloud
+        for (let p = 0; p < 3; p++) {
+          const px = b.x + (Math.random() - 0.5) * 60;
+          const py = b.y + (Math.random() - 0.5) * 30 - (t * 20) % 40;
+          ctx.fillStyle = 'rgba(239, 68, 68, 0.6)';
+          ctx.beginPath();
+          ctx.arc(px, py, 2, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        return;
+      }
+
+      ctx.save();
+      ctx.translate(b.x, b.y);
+
+      let fillCol = 'rgba(16, 21, 33, 0.85)';
+      let strokeCol = '#6b7280';
+
+      if (b.live) {
+        fillCol = gcPhase === 'marking' ? 'rgba(22, 45, 30, 0.95)' : 'rgba(16, 26, 44, 0.9)';
+        strokeCol = gcPhase === 'marking' ? '#4ade80' : '#64e8ff';
+      } else {
+        if (gcPhase === 'marking') {
+          fillCol = 'rgba(45, 20, 20, 0.95)';
+          strokeCol = '#ef4444';
+        }
+      }
+
+      ctx.fillStyle = fillCol;
+      ctx.strokeStyle = strokeCol;
+      ctx.lineWidth = 1.5;
+      if (b.live) {
+        ctx.shadowColor = strokeCol;
+        ctx.shadowBlur = 8;
+      }
+
+      ctx.beginPath();
+      ctx.roundRect(-50, -18, 100, 36, 6);
+      ctx.fill();
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      ctx.fillStyle = '#f0f4fc';
+      ctx.font = 'bold 9.5px Outfit, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(b.label, 0, -2);
+
+      ctx.fillStyle = strokeCol;
+      ctx.font = '8px Fira Code, monospace';
+      ctx.fillText(b.size, 0, 9);
+
+      ctx.restore();
+    });
+
+    if (hudCounter1) hudCounter1.textContent = `Live Heap: 3 Objects (${gcPhase === 'sweeping' ? '0 Dead' : '2 Dead'})`;
+    if (hudCounter2) hudCounter2.textContent = `GC Phase: ${gcPhase.toUpperCase()} • Reclaimed: ${gcReclaimedBytes} KB`;
   }
 
-  // Lab E: Dynamic Programming
+  // Lab E: Dynamic Programming & Memoization Table
   function drawDynamicProgrammingDeck(ctx, w, h, t) {
     const cx = w / 2;
     const cy = h / 2;
     const cols = 7;
-    const cellW = 55;
+    const cellW = 58;
     const startX = cx - (cols * cellW) / 2;
-
-    ctx.fillStyle = '#c7a66a';
-    ctx.font = 'bold 12px Fira Code, monospace';
-    ctx.textAlign = 'center';
-    ctx.fillText('MEMOIZATION TABLE dp[0..6]', cx, cy - 70);
-
     const fibVals = [0, 1, 1, 2, 3, 5, 8];
 
+    ctx.fillStyle = '#c7a66a';
+    ctx.font = 'bold 11px Fira Code, monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('DYNAMIC PROGRAMMING // MEMO TABLE dp[0..6]', cx, cy - 75);
+
+    // Render Cache Table
     for (let i = 0; i < cols; i++) {
       const x = startX + i * cellW;
-      const isCalculated = (t * 0.8) % 8 > i;
+      const isCached = dpMode === 'memoized' ? (t * 0.8) % 8 > i : false;
 
-      ctx.fillStyle = isCalculated ? 'rgba(199, 166, 106, 0.35)' : 'rgba(255, 255, 255, 0.06)';
-      ctx.strokeStyle = isCalculated ? '#c7a66a' : '#4b5563';
-      ctx.lineWidth = 1.5;
-      ctx.fillRect(x + 2, cy - 40, cellW - 4, 48);
-      ctx.strokeRect(x + 2, cy - 40, cellW - 4, 48);
+      ctx.save();
+      ctx.fillStyle = isCached ? 'rgba(26, 32, 22, 0.95)' : 'rgba(16, 21, 33, 0.7)';
+      ctx.strokeStyle = isCached ? '#4ade80' : '#4b5563';
+      ctx.lineWidth = isCached ? 2 : 1;
+      if (isCached) {
+        ctx.shadowColor = '#4ade80';
+        ctx.shadowBlur = 10;
+      }
 
-      ctx.fillStyle = isCalculated ? '#f0f4fc' : '#6b7280';
-      ctx.font = '12px Fira Code, monospace';
+      ctx.beginPath();
+      ctx.roundRect(x + 2, cy - 40, cellW - 4, 50, 6);
+      ctx.fill();
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+
+      ctx.fillStyle = isCached ? '#4ade80' : '#9ca3af';
+      ctx.font = 'bold 11px Fira Code, monospace';
       ctx.textAlign = 'center';
-      ctx.fillText(isCalculated ? `fib(${i})=${fibVals[i]}` : `dp[${i}]`, x + cellW / 2, cy - 12);
+      ctx.fillText(isCached ? `val=${fibVals[i]}` : `dp[${i}]`, x + cellW / 2, cy - 15);
+
+      ctx.fillStyle = '#6b7280';
+      ctx.font = '8px Fira Code, monospace';
+      ctx.fillText(isCached ? 'O(1) HIT' : 'NIL', x + cellW / 2, cy + 2);
+      ctx.restore();
     }
 
-    if (hudCounter1) hudCounter1.textContent = `Mode: ${dpMode.toUpperCase()}`;
-    if (hudCounter2) hudCounter2.textContent = dpMode === 'memoized' ? 'Complexity: O(N) Linear Flow' : 'Complexity: O(2^N) Redundant Tree';
+    // Call Graph representation below
+    ctx.fillStyle = dpMode === 'memoized' ? '#4ade80' : '#ef4444';
+    ctx.font = 'bold 12px Outfit, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(
+      dpMode === 'memoized'
+        ? '✓ Linear Complexity: Exactly 7 distinct subproblem resolutions'
+        : '⚠ Exponential Call Explosion: 2^N redundant subproblem calculations!',
+      cx,
+      cy + 55
+    );
+
+    if (hudCounter1) hudCounter1.textContent = `Mode: ${dpMode === 'memoized' ? 'Memoized Lookup' : 'Naive Recursion'}`;
+    if (hudCounter2) hudCounter2.textContent = dpMode === 'memoized' ? 'Complexity: O(N) Linear' : 'Complexity: O(2^N) Redundant';
   }
 
-  // Lab F: Sorting & Shannon Entropy
+  // Lab F: Sorting Algorithms & Shannon Entropy (Neon Spectrum & Entropy Gauge)
   function drawSortingEntropyDeck(ctx, w, h, t) {
     const cx = w / 2;
     const cy = h / 2;
-    const count = 18;
-    const barW = Math.min(26, (w - 120) / count);
+    const count = 20;
+    const barW = Math.min(26, (w - 140) / count);
     const startX = cx - (count * barW) / 2;
 
     for (let i = 0; i < count; i++) {
-      const heightVal = 35 + ((i * 16 + Math.sin(t * 2 + i) * 16) % 150);
+      const heightVal = 35 + ((i * 15 + Math.sin(t * 2 + i) * 16) % 150);
       const x = startX + i * barW;
       const y = cy + 85 - heightVal;
 
-      let fillCol = '#ef4444';
-      if (heightVal > 75) fillCol = '#c7a66a';
-      if (heightVal > 115) fillCol = '#64e8ff';
+      // Color Spectrum from Cyan to Gold
+      const colorRatio = heightVal / 185;
+      const barGrad = ctx.createLinearGradient(0, y, 0, y + heightVal);
+      barGrad.addColorStop(0, colorRatio > 0.6 ? '#e2c288' : '#64e8ff');
+      barGrad.addColorStop(1, colorRatio > 0.6 ? '#916f39' : '#0e7490');
 
-      ctx.fillStyle = fillCol;
+      ctx.fillStyle = barGrad;
       ctx.fillRect(x + 2, y, barW - 4, heightVal);
+
+      // Top glowing tip
+      ctx.fillStyle = colorRatio > 0.6 ? '#ffffff' : '#a5f3fc';
+      ctx.fillRect(x + 2, y, barW - 4, 2.5);
     }
 
+    // Corner Circular Shannon Entropy Gauge
+    const gaugeX = w - 85;
+    const gaugeY = 65;
+    const gaugeR = 36;
     const entropyVal = Math.max(0.12, (3.84 - ((t * 0.3) % 3.84))).toFixed(2);
+
+    ctx.save();
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.arc(gaugeX, gaugeY, gaugeR, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // Active Entropy Arc
+    const entropyPercent = entropyVal / 4.0;
+    ctx.strokeStyle = entropyPercent > 0.5 ? '#ef4444' : '#4ade80';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.arc(gaugeX, gaugeY, gaugeR, -Math.PI / 2, -Math.PI / 2 + entropyPercent * Math.PI * 2);
+    ctx.stroke();
+
+    ctx.fillStyle = '#f0f4fc';
+    ctx.font = 'bold 11px Fira Code, monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText(`${entropyVal}`, gaugeX, gaugeY + 1);
+
+    ctx.fillStyle = '#a3a9b8';
+    ctx.font = '7.5px Fira Code, monospace';
+    ctx.fillText('ENTROPY H', gaugeX, gaugeY + 12);
+    ctx.restore();
+
     if (hudCounter1) hudCounter1.textContent = `Shannon Entropy: H(X) = ${entropyVal} bits`;
     if (hudCounter2) hudCounter2.textContent = `Algorithm: ${sortingAlg.toUpperCase()} • Partition Active`;
   }
@@ -1062,11 +1456,11 @@
   });
 
   if (archCanvas) {
-    const ctx = archCanvas.getContext('2d');
-    const w = archCanvas.width;
-    const h = archCanvas.height;
-
     function renderArchDiagram() {
+      const dpi = setupHiDpi(archCanvas);
+      if (!dpi) return;
+      const { ctx, w, h } = dpi;
+
       archTime += 0.02;
       ctx.fillStyle = '#040508';
       ctx.fillRect(0, 0, w, h);
@@ -1104,8 +1498,8 @@
   }
 
   function drawConsistentHashingRing(ctx, cx, cy, t) {
-    const r = 130;
-    ctx.strokeStyle = 'rgba(100, 232, 255, 0.35)';
+    const r = 135;
+    ctx.strokeStyle = 'rgba(100, 232, 255, 0.4)';
     ctx.lineWidth = 2;
     ctx.beginPath();
     ctx.arc(cx, cy, r, 0, Math.PI * 2);
@@ -1113,49 +1507,57 @@
 
     // 4 Nodes on the ring
     const nodes = [
-      { angle: 0, name: 'Node A' },
-      { angle: Math.PI / 2, name: 'Node B' },
-      { angle: Math.PI, name: 'Node C' },
-      { angle: (3 * Math.PI) / 2, name: 'Node D' },
+      { angle: 0, name: 'Node A', col: '#c7a66a' },
+      { angle: Math.PI / 2, name: 'Node B', col: '#64e8ff' },
+      { angle: Math.PI, name: 'Node C', col: '#c7a66a' },
+      { angle: (3 * Math.PI) / 2, name: 'Node D', col: '#64e8ff' },
     ];
 
     nodes.forEach((n) => {
       const nx = cx + Math.cos(n.angle) * r;
       const ny = cy + Math.sin(n.angle) * r;
 
-      ctx.fillStyle = '#c7a66a';
+      ctx.fillStyle = '#101521';
+      ctx.strokeStyle = n.col;
+      ctx.lineWidth = 2;
+      ctx.shadowColor = n.col;
+      ctx.shadowBlur = 10;
       ctx.beginPath();
-      ctx.arc(nx, ny, 16, 0, Math.PI * 2);
+      ctx.arc(nx, ny, 18, 0, Math.PI * 2);
       ctx.fill();
+      ctx.stroke();
+      ctx.shadowBlur = 0;
 
-      ctx.fillStyle = '#08090d';
+      ctx.fillStyle = '#f0f4fc';
       ctx.font = 'bold 9px Fira Code, monospace';
       ctx.textAlign = 'center';
       ctx.fillText(n.name, nx, ny + 3);
     });
 
-    // Orbiting request packets
+    // Orbiting request packets with color trails
     for (let i = 0; i < 4; i++) {
       const pAngle = (t * 0.8 + (i * Math.PI) / 2) % (Math.PI * 2);
       const px = cx + Math.cos(pAngle) * r;
       const py = cy + Math.sin(pAngle) * r;
 
       ctx.fillStyle = '#64e8ff';
+      ctx.shadowColor = '#64e8ff';
+      ctx.shadowBlur = 8;
       ctx.beginPath();
-      ctx.arc(px, py, 4, 0, Math.PI * 2);
+      ctx.arc(px, py, 4.5, 0, Math.PI * 2);
       ctx.fill();
+      ctx.shadowBlur = 0;
     }
   }
 
   function drawCachePipeline(ctx, cx, cy, t) {
-    // Client -> Cache -> DB
     const points = [
-      { x: cx - 180, y: cy, label: 'Client', col: '#64e8ff' },
-      { x: cx, y: cy, label: 'LRU Cache', col: '#c7a66a' },
-      { x: cx + 180, y: cy, label: 'Database', col: '#9a8cff' },
+      { x: cx - 180, y: cy, label: 'Client App', col: '#64e8ff' },
+      { x: cx, y: cy, label: 'LRU Cache (RAM)', col: '#c7a66a' },
+      { x: cx + 180, y: cy, label: 'Database (Disk)', col: '#9a8cff' },
     ];
 
-    // Connectors
+    // Pipeline Laser Connectors
     ctx.strokeStyle = 'rgba(233, 223, 200, 0.25)';
     ctx.lineWidth = 2;
     ctx.beginPath();
@@ -1163,17 +1565,28 @@
     ctx.lineTo(points[2].x, cy);
     ctx.stroke();
 
+    // Data packet flow
+    const packetT = (t * 0.6) % 1;
+    const px = points[0].x + (points[2].x - points[0].x) * packetT;
+    ctx.fillStyle = '#64e8ff';
+    ctx.shadowColor = '#64e8ff';
+    ctx.shadowBlur = 10;
+    ctx.beginPath();
+    ctx.arc(px, cy, 4, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.shadowBlur = 0;
+
     points.forEach((p) => {
       ctx.fillStyle = '#101521';
       ctx.strokeStyle = p.col;
       ctx.lineWidth = 2;
       ctx.beginPath();
-      ctx.roundRect(p.x - 50, p.y - 25, 100, 50, 8);
+      ctx.roundRect(p.x - 56, p.y - 25, 112, 50, 8);
       ctx.fill();
       ctx.stroke();
 
       ctx.fillStyle = p.col;
-      ctx.font = 'bold 11px Fira Code, monospace';
+      ctx.font = 'bold 10px Fira Code, monospace';
       ctx.textAlign = 'center';
       ctx.fillText(p.label, p.x, p.y + 4);
     });
@@ -1181,38 +1594,64 @@
 
   function drawBPlusTree(ctx, cx, cy, t) {
     ctx.fillStyle = '#c7a66a';
-    ctx.font = '11px Fira Code, monospace';
+    ctx.font = 'bold 11px Fira Code, monospace';
     ctx.textAlign = 'center';
-    ctx.fillText('B+ Tree Index Root', cx, cy - 90);
+    ctx.fillText('B+ Tree Index Hierarchy', cx, cy - 85);
 
-    // Tree levels
+    // Tree Branch Lasers
     ctx.strokeStyle = 'rgba(100, 232, 255, 0.35)';
+    ctx.lineWidth = 1.5;
     ctx.beginPath();
-    ctx.moveTo(cx, cy - 75);
+    ctx.moveTo(cx, cy - 65);
     ctx.lineTo(cx - 120, cy);
-    ctx.moveTo(cx, cy - 75);
+    ctx.moveTo(cx, cy - 65);
     ctx.lineTo(cx + 120, cy);
     ctx.stroke();
 
+    // Root Card
+    ctx.fillStyle = '#101521';
+    ctx.strokeStyle = '#c7a66a';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.roundRect(cx - 45, cy - 80, 90, 30, 4);
+    ctx.fill();
+    ctx.stroke();
+
+    // Internal Pages
     [-120, 120].forEach((ox) => {
       ctx.fillStyle = '#101521';
       ctx.strokeStyle = '#64e8ff';
+      ctx.lineWidth = 1.5;
       ctx.beginPath();
-      ctx.roundRect(cx + ox - 40, cy - 15, 80, 30, 4);
+      ctx.roundRect(cx + ox - 45, cy - 15, 90, 30, 4);
       ctx.fill();
       ctx.stroke();
+
+      ctx.fillStyle = '#f0f4fc';
+      ctx.font = '9px Fira Code, monospace';
+      ctx.fillText('Page [Key]', cx + ox, cy + 4);
     });
   }
 
   function drawRaftCluster(ctx, cx, cy, t) {
-    // Leader in center
-    ctx.fillStyle = '#c7a66a';
+    // Leader in center with pulsing heartbeat shockwaves
+    const waveR = (t * 40) % 130;
+    ctx.strokeStyle = `rgba(199, 166, 106, ${Math.max(0, 0.6 - waveR / 130)})`;
+    ctx.lineWidth = 1.5;
     ctx.beginPath();
-    ctx.arc(cx, cy, 28, 0, Math.PI * 2);
+    ctx.arc(cx, cy, waveR, 0, Math.PI * 2);
+    ctx.stroke();
+
+    ctx.fillStyle = '#c7a66a';
+    ctx.shadowColor = '#c7a66a';
+    ctx.shadowBlur = 14;
+    ctx.beginPath();
+    ctx.arc(cx, cy, 26, 0, Math.PI * 2);
     ctx.fill();
+    ctx.shadowBlur = 0;
 
     ctx.fillStyle = '#08090d';
-    ctx.font = 'bold 9.5px Fira Code, monospace';
+    ctx.font = 'bold 9px Fira Code, monospace';
     ctx.textAlign = 'center';
     ctx.fillText('LEADER', cx, cy + 3);
 
@@ -1224,6 +1663,7 @@
 
       // Heartbeat line
       ctx.strokeStyle = 'rgba(100, 232, 255, 0.3)';
+      ctx.lineWidth = 1.2;
       ctx.beginPath();
       ctx.moveTo(cx, cy);
       ctx.lineTo(fx, fy);
@@ -1231,6 +1671,7 @@
 
       ctx.fillStyle = '#101521';
       ctx.strokeStyle = '#64e8ff';
+      ctx.lineWidth = 1.8;
       ctx.beginPath();
       ctx.arc(fx, fy, 18, 0, Math.PI * 2);
       ctx.fill();
@@ -1244,20 +1685,31 @@
 
   function drawKafkaStream(ctx, cx, cy, t) {
     ctx.fillStyle = '#64e8ff';
-    ctx.font = '11px Fira Code, monospace';
+    ctx.font = 'bold 11px Fira Code, monospace';
     ctx.textAlign = 'center';
     ctx.fillText('Topic: telemetry-events [Partition 0..2]', cx, cy - 80);
 
     for (let p = 0; p < 3; p++) {
       const py = cy - 40 + p * 45;
+      ctx.fillStyle = 'rgba(16, 21, 33, 0.6)';
       ctx.strokeStyle = 'rgba(233, 223, 200, 0.2)';
-      ctx.strokeRect(cx - 180, py, 360, 32);
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.roundRect(cx - 180, py, 360, 32, 4);
+      ctx.fill();
+      ctx.stroke();
 
       // Moving message blocks
       for (let m = 0; m < 5; m++) {
-        const mx = cx - 160 + ((m * 60 + t * 40) % 320);
+        const mx = cx - 160 + ((m * 65 + t * 45) % 325);
         ctx.fillStyle = '#c7a66a';
-        ctx.fillRect(mx, py + 4, 35, 24);
+        ctx.beginPath();
+        ctx.roundRect(mx, py + 4, 38, 24, 3);
+        ctx.fill();
+
+        ctx.fillStyle = '#08090d';
+        ctx.font = 'bold 7.5px Fira Code, monospace';
+        ctx.fillText(`m${m}`, mx + 19, py + 18);
       }
     }
   }
@@ -1269,17 +1721,30 @@
       { name: 'HALF-OPEN', x: cx + 140, y: cy, col: '#c7a66a' },
     ];
 
+    // Transition connecting arcs
+    ctx.strokeStyle = 'rgba(233, 223, 200, 0.2)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(states[0].x, states[0].y);
+    ctx.lineTo(states[1].x, states[1].y);
+    ctx.lineTo(states[2].x, states[2].y);
+    ctx.closePath();
+    ctx.stroke();
+
     states.forEach((s) => {
       ctx.fillStyle = '#101521';
       ctx.strokeStyle = s.col;
       ctx.lineWidth = 2;
+      ctx.shadowColor = s.col;
+      ctx.shadowBlur = 10;
       ctx.beginPath();
       ctx.roundRect(s.x - 55, s.y - 20, 110, 40, 8);
       ctx.fill();
       ctx.stroke();
+      ctx.shadowBlur = 0;
 
       ctx.fillStyle = s.col;
-      ctx.font = 'bold 9.5px Fira Code, monospace';
+      ctx.font = 'bold 9px Fira Code, monospace';
       ctx.textAlign = 'center';
       ctx.fillText(s.name, s.x, s.y + 4);
     });

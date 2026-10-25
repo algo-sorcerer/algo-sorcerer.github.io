@@ -34,12 +34,12 @@
         </div>
 
         <div class="proj-actions">
-          <a href="{{ proj.url }}" target="_blank" rel="noopener noreferrer" class="btn-proj-link">
-            <span>View Repository</span>
-            <span class="link-arrow">↗</span>
+          <a href="{{ proj.url }}" {% unless proj.url contains '#' %}target="_blank" rel="noopener noreferrer"{% endunless %} class="btn-proj-link">
+            <span>{{ proj.action_label | default: "Explore Project" }}</span>
+            <span class="link-arrow">{% if proj.url contains '#' %}↓{% else %}↗{% endif %}</span>
           </a>
-          {% if proj.live_url %}
-          <a href="{{ proj.live_url }}" class="btn-proj-live">
+          {% if proj.live_url and proj.live_url != proj.url %}
+          <a href="{{ proj.live_url }}" {% unless proj.live_url contains '#' %}target="_blank" rel="noopener noreferrer"{% endunless %} class="btn-proj-live">
             <span>Explore Live</span>
           </a>
           {% endif %}

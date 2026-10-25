@@ -1,0 +1,625 @@
+// ==============================================================================
+// AlgoSorcerer World — Comprehensive Multi-Device Responsive System
+// Full coverage for 320px (iPhone SE) to 2560px+ (4K Ultra-Wide Displays)
+// ==============================================================================
+
+// ------------------------------------------------------------------------------
+// 1. Universal Anti-Overflow & Smooth Touch Physics
+// ------------------------------------------------------------------------------
+html, body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+img, canvas, svg, video {
+  max-width: 100%;
+}
+
+// ------------------------------------------------------------------------------
+// 2. Ultra-Wide & 4K Displays (>= 1600px)
+// ------------------------------------------------------------------------------
+@media (min-width: 1600px) {
+  .section-container {
+    max-width: 1440px;
+  }
+
+  .newspaper-broadside {
+    max-width: 1400px;
+    padding: 56px 64px;
+  }
+
+  .lead-story .lead-text-columns {
+    column-gap: 48px;
+  }
+}
+
+// ------------------------------------------------------------------------------
+// 3. Large Laptops & Standard Desktops (1025px - 1440px)
+// ------------------------------------------------------------------------------
+@media (max-width: 1440px) {
+  .section-container {
+    padding: 0 32px;
+  }
+}
+
+// ------------------------------------------------------------------------------
+// 4. Tablets & iPad Pro Landscape (961px - 1200px)
+// ------------------------------------------------------------------------------
+@media (max-width: 1200px) {
+  .nav-menu {
+    gap: 16px;
+  }
+
+  .nav-item {
+    font-size: 13px;
+  }
+
+  .lab-station-grid {
+    grid-template-columns: 1.4fr 1fr;
+    gap: 24px;
+  }
+
+  .chronicles-grid {
+    grid-template-columns: 1.2fr 1fr;
+    gap: 28px;
+  }
+}
+
+// ------------------------------------------------------------------------------
+// 5. Tablet Portrait & Small Laptops (769px - 960px)
+// ------------------------------------------------------------------------------
+@media (max-width: 960px) {
+  section {
+    padding: 72px 0;
+  }
+
+  // Hero Section
+  .hero-section {
+    padding-top: calc(#{$nav-height} + 32px);
+    padding-bottom: 56px;
+    min-height: auto;
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    text-align: center;
+  }
+
+  .hero-content {
+    align-items: center;
+  }
+
+  .hero-actions {
+    justify-content: center;
+  }
+
+  .hero-stats {
+    justify-content: center;
+  }
+
+  .hero-visual {
+    max-width: 480px;
+  }
+
+  // Featured Episode
+  .featured-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  // Labs
+  .lab-station-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .lab-selector-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  // Characters
+  .characters-split-editorial {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  // Chronicles
+  .chronicles-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .chronicles-cards-list {
+    max-height: 420px;
+  }
+
+  // Newspaper Broadside
+  .newspaper-frontpage-grid {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  .lead-story {
+    border-right: none;
+    padding-right: 0;
+    border-bottom: 1px solid $border-subtle;
+    padding-bottom: 28px;
+  }
+
+  // Ecosystem Hub
+  .ecosystem-cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  // Footer
+  .footer-content-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+}
+
+// ------------------------------------------------------------------------------
+// 6. Large Phones & Small Tablets (641px - 768px)
+// ------------------------------------------------------------------------------
+@media (max-width: 768px) {
+  .section-container {
+    padding: 0 24px;
+  }
+
+  .chapter-body-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .chapter-side-action {
+    justify-content: flex-start;
+  }
+
+  .newspaper-broadside {
+    padding: 28px 20px;
+  }
+
+  .console-viewport {
+    max-height: 380px;
+    padding: 20px 16px;
+  }
+
+  .transcript-turn {
+    max-width: 95%;
+  }
+
+  .footer-callout {
+    padding: 56px 0 48px;
+  }
+}
+
+// ------------------------------------------------------------------------------
+// 7. Standard Mobile Phones (481px - 640px)
+// ------------------------------------------------------------------------------
+@media (max-width: 640px) {
+  section {
+    padding: 56px 0;
+  }
+
+  .section-header {
+    margin-bottom: 36px;
+  }
+
+  .section-title {
+    font-size: clamp(24px, 5.5vw, 34px);
+    line-height: 1.25;
+  }
+
+  .section-sub {
+    font-size: 14.5px;
+    line-height: 1.6;
+  }
+
+  // Hero
+  .hero-badge {
+    max-width: 100%;
+    padding: 6px 12px;
+    font-size: 9.5px;
+    letter-spacing: 0.8px;
+    text-align: center;
+    line-height: 1.4;
+  }
+
+  .hero-title {
+    font-size: clamp(28px, 7vw, 42px);
+    line-height: 1.2;
+    word-break: break-word;
+  }
+
+  .hero-description {
+    font-size: 14.5px;
+    line-height: 1.6;
+  }
+
+  .hero-actions {
+    width: 100%;
+    gap: 12px;
+
+    .btn {
+      flex: 1;
+      justify-content: center;
+      padding: 12px 18px;
+      font-size: 13.5px;
+    }
+  }
+
+  .hero-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    width: 100%;
+    background: rgba(14, 18, 28, 0.7);
+    border: 1px solid $border-subtle;
+    border-radius: $radius-md;
+    padding: 16px 20px;
+
+    .stat-divider {
+      display: none;
+    }
+
+    .stat-item {
+      align-items: center;
+      text-align: center;
+    }
+  }
+
+  .hero-visual {
+    max-width: 360px;
+  }
+
+  // Labs
+  .deck-header {
+    padding: 14px 16px;
+    gap: 10px;
+  }
+
+  .deck-title {
+    font-size: 17px;
+  }
+
+  .deck-telemetry {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .telemetry-chip {
+    padding: 3px 8px;
+    font-size: 10px;
+  }
+
+  .deck-controls {
+    padding: 14px 16px;
+    gap: 10px;
+
+    .control-group {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .btn-ctrl {
+      justify-content: center;
+      padding: 9px 12px;
+      font-size: 12px;
+      min-height: 40px;
+    }
+  }
+
+  .dynamic-lab-actions {
+    width: 100%;
+    margin-top: 4px;
+    justify-content: center;
+  }
+
+  .lab-selector-list {
+    grid-template-columns: 1fr;
+  }
+
+  // Characters Dossier
+  .char-dossier {
+    padding: 24px 18px;
+  }
+
+  .dossier-hero-row {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 18px;
+  }
+
+  .dossier-portrait-showcase {
+    width: 100%;
+    max-width: 200px;
+  }
+
+  .portrait-card {
+    height: 230px;
+  }
+
+  .dossier-header-meta {
+    align-items: center;
+    text-align: center;
+  }
+
+  .dossier-pill {
+    align-self: center;
+  }
+
+  .dossier-quote {
+    text-align: left;
+    padding: 14px 18px;
+
+    p {
+      font-size: 14px;
+    }
+  }
+
+  .domain-tags {
+    gap: 6px;
+  }
+
+  .domain-chip {
+    padding: 6px 10px;
+  }
+
+  // Dialogue Console
+  .console-header {
+    padding: 14px 16px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .dialogue-scenario-selector {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch;
+
+    .btn-scenario {
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+  }
+
+  // Newspaper Masthead
+  .masthead {
+    margin-bottom: 24px;
+
+    .masthead-title {
+      font-size: clamp(24px, 8vw, 36px);
+      letter-spacing: 1.5px;
+    }
+
+    .masthead-meta-bar {
+      flex-direction: column;
+      gap: 4px;
+      text-align: center;
+    }
+  }
+
+  .lead-story .lead-text-columns {
+    column-count: 1;
+  }
+
+  // Footer
+  .footer-content-grid {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .footer-bottom-bar {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+}
+
+// ------------------------------------------------------------------------------
+// 8. Compact Mobile Phones (320px - 480px, e.g. iPhone SE, Galaxy S compact)
+// ------------------------------------------------------------------------------
+@media (max-width: 480px) {
+  .section-container {
+    padding: 0 16px;
+  }
+
+  // Navbar
+  .nav-container {
+    padding: 0 16px;
+  }
+
+  .brand-link {
+    gap: 10px;
+  }
+
+  .brand-emblem-wrap {
+    width: 38px;
+    height: 38px;
+  }
+
+  .nav-logo {
+    width: 34px;
+    height: 34px;
+  }
+
+  .nav-brand-title {
+    font-size: 15px;
+    letter-spacing: 1.5px;
+  }
+
+  .btn-enter-lab {
+    padding: 7px 10px;
+
+    span:not(.lab-glyph) {
+      display: none; // Show only ⚡ icon on ultra-narrow phones
+    }
+  }
+
+  // Hero
+  .hero-section {
+    padding-top: calc(#{$nav-height} + 18px);
+    padding-bottom: 40px;
+  }
+
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+
+    .btn {
+      width: 100%;
+    }
+  }
+
+  .hero-visual {
+    max-width: 290px;
+  }
+
+  // Featured Premiere
+  .featured-canvas-card {
+    padding: 16px 14px;
+  }
+
+  #samsara-canvas {
+    height: 260px;
+  }
+
+  .samsara-hud {
+    flex-wrap: wrap;
+    gap: 4px;
+
+    span {
+      font-size: 9.5px;
+      padding: 2px 7px;
+    }
+  }
+
+  .episode-code-box pre {
+    max-height: 180px;
+    font-size: 11px;
+    padding: 12px;
+  }
+
+  // Labs
+  .deck-viewport {
+    aspect-ratio: 4 / 3;
+    max-height: 320px;
+  }
+
+  .viewport-hud-overlay {
+    top: 8px;
+    left: 8px;
+    right: 8px;
+
+    .hud-item {
+      font-size: 9px;
+      padding: 2px 6px;
+    }
+  }
+
+  .lab-select-card {
+    padding: 12px 14px;
+    gap: 12px;
+
+    .card-num-icon {
+      width: 36px;
+      height: 36px;
+    }
+
+    .card-name {
+      font-size: 13.5px;
+    }
+
+    .card-model {
+      font-size: 10.5px;
+    }
+  }
+
+  // Architecture Chronicles
+  .arch-canvas-wrap {
+    aspect-ratio: 4 / 3;
+    max-height: 280px;
+  }
+
+  .stage-topbar {
+    padding: 12px 14px;
+  }
+
+  .chronicle-card {
+    padding: 14px 16px;
+  }
+
+  // Ecosystem Hub
+  .project-hub-card {
+    padding: 20px 16px;
+  }
+
+  .proj-actions {
+    flex-direction: column;
+    width: 100%;
+
+    .btn-proj-link, .btn-proj-live {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  // Footer Callout
+  .callout-title {
+    font-size: 24px;
+  }
+
+  .callout-sub {
+    font-size: 14px;
+  }
+
+  .callout-actions {
+    flex-direction: column;
+    width: 100%;
+
+    .btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}
+
+// ------------------------------------------------------------------------------
+// 9. Ultra-Narrow Phones (<= 360px, e.g. iPhone SE 1st gen, Galaxy Fold cover)
+// ------------------------------------------------------------------------------
+@media (max-width: 360px) {
+  .section-container {
+    padding: 0 12px;
+  }
+
+  .nav-brand-title {
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
+
+  .hero-visual {
+    max-width: 250px;
+  }
+
+  .stat-number {
+    font-size: 19px;
+  }
+
+  .stat-label {
+    font-size: 8.5px;
+  }
+
+  .char-dossier {
+    padding: 18px 12px;
+  }
+}

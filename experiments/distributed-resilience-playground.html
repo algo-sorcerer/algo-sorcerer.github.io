@@ -1,0 +1,559 @@
+---
+layout: default
+title: "Distributed Systems & Resilience Playground — Circuit Breaker, Quorum Loss & Master Election"
+description: "Interactive browser playground for Circuit Breakers (Sliding Window & Half-Open), Quorum Loss, Master Election, Term Fencing, Backoff + Jitter, and Bulkheads."
+---
+
+<section class="youtube-section" style="padding-top: 118px;">
+  <div class="section-container">
+    <div class="section-header">
+      <div class="section-tag tag-cyan">INTERACTIVE SYSTEM DESIGN PLAYGROUND // ALGOSORCERER</div>
+      <h1 class="section-title" style="font-size: clamp(2rem, 4.4vw, 3.2rem);">
+        Break Clusters Live: <span class="gradient-gold">Interactive Algo &amp; Consensus Playground.</span>
+      </h1>
+      <p class="section-sub">
+        Simulate Sliding-Window Circuit Breakers, Quorum Loss lockdowns, Master Elections with Split Votes &amp; Fencing Tokens, Exponential Backoff + Jitter, and Bulkhead Isolation right in your browser.
+      </p>
+      <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-top:20px;">
+        <a href="{{ '/experiments/opensearch-distributed-search.html' | relative_url }}" class="btn btn-primary">
+          🔍 OpenSearch Shards &amp; Scatter-Gather Lab
+        </a>
+        <a href="{{ '/' | relative_url }}#labs" class="btn btn-secondary">
+          ⚡ 6 Core Algorithm Labs
+        </a>
+        <a href="{{ '/' | relative_url }}#youtube" class="btn btn-secondary">
+          ▶ Watch Story Videos
+        </a>
+      </div>
+    </div>
+
+    <!-- Mode Switcher Bar -->
+    <div id="pg-mode-tabs" style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:24px;">
+      <button class="pg-tab active" data-mode="circuit_breaker" style="padding:10px 18px; border-radius:999px; border:1px solid #f59e0b; background:rgba(245,158,11,0.2); color:#fef08a; font-weight:700; cursor:pointer; font-size:0.9rem;">
+        ⚡ 1. Circuit Breaker (Sliding Window)
+      </button>
+      <button class="pg-tab" data-mode="quorum_loss" style="padding:10px 18px; border-radius:999px; border:1px solid rgba(255,255,255,0.16); background:rgba(16,21,33,0.85); color:#cbd5e1; font-weight:700; cursor:pointer; font-size:0.9rem;">
+        🗳️ 2. Quorum Loss &amp; Split-Brain
+      </button>
+      <button class="pg-tab" data-mode="master_election" style="padding:10px 18px; border-radius:999px; border:1px solid rgba(255,255,255,0.16); background:rgba(16,21,33,0.85); color:#cbd5e1; font-weight:700; cursor:pointer; font-size:0.9rem;">
+        👑 3. Master Election &amp; Term Fencing
+      </button>
+      <button class="pg-tab" data-mode="backoff_bulkhead" style="padding:10px 18px; border-radius:999px; border:1px solid rgba(255,255,255,0.16); background:rgba(16,21,33,0.85); color:#cbd5e1; font-weight:700; cursor:pointer; font-size:0.9rem;">
+        🚢 4. Backoff + Jitter &amp; Bulkheads
+      </button>
+    </div>
+
+    <!-- Main Interactive Sandbox Deck -->
+    <div class="lab-main-deck" style="max-width:1100px; margin:0 auto 44px; background:rgba(16,21,33,0.9); border:1px solid rgba(100,232,255,0.28); border-radius:20px; padding:24px; box-shadow:0 20px 60px rgba(0,0,0,0.65);">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+        <div>
+          <span id="pg-badge" style="color:#64e8ff; font-family:monospace; font-size:0.8rem;">LAB 1 // CIRCUIT BREAKER (CLOSED -> OPEN -> HALF-OPEN)</span>
+          <h3 id="pg-title" style="margin-top:4px; font-size:1.3rem;">Sliding Window Failure Threshold &amp; Canary Probes</h3>
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <span id="pg-metric-a" style="padding:6px 14px; border-radius:999px; background:rgba(16,185,129,0.16); border:1px solid rgba(16,185,129,0.45); color:#6ee7b7; font-family:monospace; font-size:0.84rem; font-weight:700;">State: CLOSED</span>
+          <span id="pg-metric-b" style="padding:6px 14px; border-radius:999px; background:rgba(56,189,248,0.14); border:1px solid rgba(56,189,248,0.4); color:#7dd3fc; font-family:monospace; font-size:0.84rem; font-weight:700;">Fail Rate: 0%</span>
+        </div>
+      </div>
+
+      <canvas id="resilience-pg-canvas" width="1040" height="470" style="width:100%; height:auto; display:block; border-radius:14px; background:#040814; border:1px solid rgba(255,255,255,0.08);"></canvas>
+
+      <!-- Mode-Specific Interactive Controls -->
+      <div id="pg-controls" style="display:flex; flex-wrap:wrap; gap:10px; align-items:center; justify-content:space-between; margin-top:18px;"></div>
+
+      <div id="pg-explainer" style="margin-top:16px; padding:14px 18px; border-radius:12px; background:rgba(8,13,30,0.88); border:1px solid rgba(100,232,255,0.22); color:#cbd5e1; font-size:0.94rem; line-height:1.55;">
+        <strong style="color:#64e8ff;">Live Behavior:</strong> Click buttons above or click directly inside the Cluster canvas nodes to inject real failures!
+      </div>
+    </div>
+
+    <!-- All Playgrounds Quick Directory -->
+    <div style="max-width:1100px; margin:0 auto;">
+      <h3 style="margin-bottom:16px; font-size:1.25rem; color:#fef08a;">Complete AlgoSorcerer Playground Directory</h3>
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px;">
+        <a href="{{ '/experiments/opensearch-distributed-search.html' | relative_url }}" style="text-decoration:none; background:rgba(16,21,33,0.82); border:1px solid rgba(100,232,255,0.28); border-radius:14px; padding:18px; color:inherit;">
+          <strong style="color:#64e8ff; display:block; margin-bottom:6px;">🔍 OpenSearch Cluster Lab</strong>
+          <span style="color:#94a3b8; font-size:0.88rem;">Inverted Index FST, Scatter-Gather Query-Then-Fetch &amp; Node Crash Failover.</span>
+        </a>
+        <a href="{{ '/' | relative_url }}#labs" style="text-decoration:none; background:rgba(16,21,33,0.82); border:1px solid rgba(245,158,11,0.28); border-radius:14px; padding:18px; color:inherit;">
+          <strong style="color:#fbbf24; display:block; margin-bottom:6px;">🌀 Recursion, Binary Search &amp; DP</strong>
+          <span style="color:#94a3b8; font-size:0.88rem;">Step through stack frames, O(log N) search pruning &amp; memoization caches.</span>
+        </a>
+        <a href="{{ '/' | relative_url }}#labs" style="text-decoration:none; background:rgba(16,21,33,0.82); border:1px solid rgba(16,185,129,0.28); border-radius:14px; padding:18px; color:inherit;">
+          <strong style="color:#6ee7b7; display:block; margin-bottom:6px;">🕸️ Graphs, GC &amp; QuickSort</strong>
+          <span style="color:#94a3b8; font-size:0.88rem;">Simulate Indra's Net BFS blasts, Mark-and-Sweep heap collection &amp; pivots.</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  const canvas = document.getElementById('resilience-pg-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+
+  const badgeEl = document.getElementById('pg-badge');
+  const titleEl = document.getElementById('pg-title');
+  const mA = document.getElementById('pg-metric-a');
+  const mB = document.getElementById('pg-metric-b');
+  const ctrlEl = document.getElementById('pg-controls');
+  const expEl = document.getElementById('pg-explainer');
+
+  let mode = 'circuit_breaker';
+  let animT = 0;
+
+  // --- State 1: Circuit Breaker ---
+  const cb = {
+    state: 'CLOSED', // CLOSED | OPEN | HALF-OPEN
+    window: Array(20).fill(true), // true=OK, false=FAIL
+    thresholdPct: 50,
+    openCountdown: 0,
+    probesPassed: 0,
+    blockedCount: 0,
+    okCount: 0,
+  };
+
+  // --- State 2: Quorum Loss ---
+  const ql = {
+    nodes: [true, true, true, true, true],
+    partitioned: false,
+    lastWriteMsg: 'Write ACK: 5/5 replicas synced safely',
+    lastWriteOk: true,
+  };
+
+  // --- State 3: Master Election & Fencing ---
+  const me = {
+    term: 4,
+    leaderIdx: 0,
+    alive: [true, true, true, true, true],
+    timers: [180, 210, 260, 155, 290],
+    zombieTerm: null,
+    electionNote: 'Term 4 active: N1 sending steady heartbeats every 50ms.',
+  };
+
+  // --- State 4: Backoff & Bulkhead ---
+  const bb = {
+    jitterEnabled: true,
+    muffinOvenBroken: false,
+    retryLoad: 12,
+    coffeeHealth: 99,
+    saladHealth: 99,
+    note: 'Healthy state: isolated thread pools keep Coffee & Salads fast.',
+  };
+
+  function card(x, y, w, h, stroke, fill, r) {
+    ctx.fillStyle = fill;
+    ctx.strokeStyle = stroke;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.roundRect(x, y, w, h, r || 14);
+    ctx.fill();
+    ctx.stroke();
+  }
+
+  function renderControls() {
+    ctrlEl.innerHTML = '';
+    const mkBtn = (label, col, bg, fn) => {
+      const b = document.createElement('button');
+      b.textContent = label;
+      b.style.cssText = `padding:9px 15px; border-radius:999px; border:1px solid ${col}; background:${bg}; color:#f8fafc; font-weight:700; cursor:pointer; font-size:0.86rem;`;
+      b.onclick = fn;
+      return b;
+    };
+    const left = document.createElement('div');
+    left.style.cssText = 'display:flex; gap:8px; flex-wrap:wrap;';
+    const right = document.createElement('div');
+    right.style.cssText = 'display:flex; gap:8px; flex-wrap:wrap;';
+
+    if (mode === 'circuit_breaker') {
+      badgeEl.textContent = 'LAB 1 // CIRCUIT BREAKER (CLOSED -> OPEN -> HALF-OPEN)';
+      titleEl.textContent = 'Sliding Window Failure Threshold & Canary Probes';
+      left.appendChild(mkBtn('✅ Send Healthy Call', '#10b981', 'rgba(16,185,129,0.2)', () => {
+        if (cb.state === 'OPEN') {
+          cb.blockedCount++;
+          expEl.innerHTML = '<strong style="color:#fca5a5;">OPEN Circuit:</strong> Request rejected in <code>0.4 ms</code> with Fallback Cache — zero sockets wasted!';
+        } else if (cb.state === 'HALF-OPEN') {
+          cb.probesPassed++;
+          cb.window.push(true); cb.window.shift();
+          if (cb.probesPassed >= 3) {
+            cb.state = 'CLOSED'; cb.probesPassed = 0;
+            expEl.innerHTML = '<strong style="color:#6ee7b7;">3/3 Canary Probes Passed!</strong> Circuit Breaker transitioned back to <code>CLOSED</code>.';
+          } else {
+            expEl.innerHTML = `<strong style="color:#fbbf24;">HALF-OPEN Canary Probe (${cb.probesPassed}/3 OK):</strong> Testing recovery safely without stampeding!`;
+          }
+        } else {
+          cb.okCount++; cb.window.push(true); cb.window.shift();
+          expEl.innerHTML = '<strong style="color:#6ee7b7;">CLOSED:</strong> Call succeeded cleanly inside sliding window.';
+        }
+        syncHud();
+      }));
+      left.appendChild(mkBtn('💥 Inject 500 / Timeout', '#ef4444', 'rgba(239,68,68,0.22)', () => {
+        if (cb.state === 'OPEN') {
+          cb.blockedCount++;
+          expEl.innerHTML = '<strong style="color:#fca5a5;">Already OPEN:</strong> Failing fast via Fallback without hitting struggling server.';
+        } else if (cb.state === 'HALF-OPEN') {
+          cb.state = 'OPEN'; cb.probesPassed = 0; cb.openCountdown = 8;
+          expEl.innerHTML = '<strong style="color:#fca5a5;">Canary Probe Failed!</strong> Breaker tripped back to <code>OPEN</code> immediately.';
+        } else {
+          for (let k = 0; k < 4; k++) { cb.window.push(false); cb.window.shift(); }
+          const fails = cb.window.filter(x => !x).length;
+          const pct = Math.round((fails / cb.window.length) * 100);
+          if (pct >= cb.thresholdPct) {
+            cb.state = 'OPEN'; cb.openCountdown = 8;
+            expEl.innerHTML = `<strong style="color:#fca5a5;">TRIPPED OPEN (${pct}% failures >= ${cb.thresholdPct}%):</strong> Downstream isolated; fallback active!`;
+          } else {
+            expEl.innerHTML = `<strong style="color:#fbbf24;">Degraded Window (${pct}% failed):</strong> Approaching ${cb.thresholdPct}% trip threshold.`;
+          }
+        }
+        syncHud();
+      }));
+      right.appendChild(mkBtn('🔎 Enter HALF-OPEN', '#f59e0b', 'rgba(245,158,11,0.2)', () => {
+        cb.state = 'HALF-OPEN'; cb.probesPassed = 0; cb.openCountdown = 0;
+        expEl.innerHTML = '<strong style="color:#fbbf24;">HALF-OPEN Gate:</strong> Only 3 canary probes allowed; send Healthy Calls to close or Inject Error to re-open.';
+        syncHud();
+      }));
+      right.appendChild(mkBtn('↺ Reset Window', '#38bdf8', 'rgba(56,189,248,0.16)', () => {
+        cb.state = 'CLOSED'; cb.window = Array(20).fill(true); cb.probesPassed = 0; cb.blockedCount = 0;
+        expEl.innerHTML = '<strong style="color:#6ee7b7;">Reset:</strong> Circuit Breaker CLOSED with clean 20/20 sliding window.';
+        syncHud();
+      }));
+    } else if (mode === 'quorum_loss') {
+      badgeEl.textContent = 'LAB 2 // QUORUM LOSS & SPLIT-BRAIN PREVENTION';
+      titleEl.textContent = '5-Node Cluster: Majority Rule floor(5/2) + 1 = 3 Votes';
+      left.appendChild(mkBtn('💥 Kill 1 Node', '#ef4444', 'rgba(239,68,68,0.2)', () => {
+        const idx = ql.nodes.findIndex(v => v);
+        if (idx >= 0) ql.nodes[idx] = false;
+        ql.partitioned = false;
+        updateQuorumMsg();
+      }));
+      left.appendChild(mkBtn('⚡ Rack Loss (Drop to 2/5)', '#ef4444', 'rgba(239,68,68,0.28)', () => {
+        ql.nodes = [true, true, false, false, false];
+        ql.partitioned = true;
+        updateQuorumMsg();
+      }));
+      left.appendChild(mkBtn('✍️ Attempt Cluster Write', '#f59e0b', 'rgba(245,158,11,0.2)', () => {
+        const alive = ql.nodes.filter(Boolean).length;
+        if (alive >= 3) {
+          ql.lastWriteOk = true;
+          ql.lastWriteMsg = `COMMITTED! ${alive}/5 Majority Quorum confirmed WAL + Replica sync.`;
+        } else {
+          ql.lastWriteOk = false;
+          ql.lastWriteMsg = `REJECTED (HTTP 503 QUORUM_LOST)! Only ${alive}/5 alive (< 3 needed). Read-Only Safety!`;
+        }
+        syncHud();
+      }));
+      right.appendChild(mkBtn('💚 Heal All 5 Nodes', '#10b981', 'rgba(16,185,129,0.2)', () => {
+        ql.nodes = [true, true, true, true, true];
+        ql.partitioned = false;
+        ql.lastWriteOk = true;
+        ql.lastWriteMsg = 'Cluster healed: 5/5 nodes online, Quorum GREEN.';
+        syncHud();
+      }));
+    } else if (mode === 'master_election') {
+      badgeEl.textContent = 'LAB 3 // MASTER ELECTION, SPLIT VOTE & TERM FENCING';
+      titleEl.textContent = 'Randomized Timers, RequestVote Majority & Zombie Leader Rejection';
+      left.appendChild(mkBtn('💀 Crash Current Master', '#ef4444', 'rgba(239,68,68,0.22)', () => {
+        if (me.leaderIdx !== null) me.alive[me.leaderIdx] = false;
+        const aliveList = me.alive.map((a, i) => a ? i : -1).filter(i => i >= 0);
+        if (aliveList.length >= 3) {
+          me.term++;
+          const winner = aliveList.reduce((best, cur) => me.timers[cur] < me.timers[best] ? cur : best, aliveList[0]);
+          me.zombieTerm = me.leaderIdx !== null ? (me.term - 1) : null;
+          me.leaderIdx = winner;
+          me.electionNote = `Term ${me.term}: N${winner+1} timed out first (${me.timers[winner]}ms), won ${aliveList.length}/5 votes -> NEW MASTER!`;
+        } else {
+          me.leaderIdx = null;
+          me.electionNote = `QUORUM LOST (${aliveList.length}/5 alive < 3): Master election frozen to prevent Split-Brain!`;
+        }
+        syncHud();
+      }));
+      left.appendChild(mkBtn('🧟 Wake Zombie Old Leader', '#a855f7', 'rgba(168,85,247,0.22)', () => {
+        const staleTerm = Math.max(1, me.term - 1);
+        me.electionNote = `ZOMBIE REJECTED! Old Master woke from GC pause sending Fencing Token Term ${staleTerm} < Cluster Term ${me.term}.`;
+        syncHud();
+      }));
+      left.appendChild(mkBtn('🎲 Randomize Election Timers', '#f59e0b', 'rgba(245,158,11,0.2)', () => {
+        me.timers = me.timers.map(() => 140 + Math.floor(Math.random() * 170));
+        me.electionNote = `Anti-Split-Vote jitter updated: [${me.timers.map(x => x+'ms').join(', ')}] — lowest wakes first cleanly.`;
+        syncHud();
+      }));
+      right.appendChild(mkBtn('💚 Restore All 5 Nodes', '#10b981', 'rgba(16,185,129,0.2)', () => {
+        me.alive = [true, true, true, true, true];
+        if (me.leaderIdx === null) { me.term++; me.leaderIdx = 0; }
+        me.electionNote = `Term ${me.term}: All 5 peers synced with Master N${me.leaderIdx + 1}.`;
+        syncHud();
+      }));
+    } else {
+      badgeEl.textContent = 'LAB 4 // RETRY BACKOFF + JITTER & BULKHEAD ISOLATION';
+      titleEl.textContent = 'Stop Retry Storms & Contain Broken Dependencies Inside Bulkheads';
+      left.appendChild(mkBtn('🔥 Break Muffin / Search DB', '#ef4444', 'rgba(239,68,68,0.22)', () => {
+        bb.muffinOvenBroken = true;
+        bb.retryLoad = bb.jitterEnabled ? 28 : 99;
+        bb.note = bb.jitterEnabled
+          ? 'Bulkhead isolated Muffin Oven; Exponential Backoff + Jitter kept retries calm (28%) & Coffee/Salad 99% healthy!'
+          : 'RETRY STORM! Jitter OFF caused 99% spike on failed node — luckily Bulkheads still saved Coffee & Salad pools!';
+        syncHud();
+      }));
+      left.appendChild(mkBtn(bb.jitterEnabled ? '🎛️ Jitter: ON (Backoff)' : '⚠️ Jitter: OFF (Naive)', '#38bdf8', 'rgba(56,189,248,0.18)', () => {
+        bb.jitterEnabled = !bb.jitterEnabled;
+        if (bb.muffinOvenBroken) bb.retryLoad = bb.jitterEnabled ? 28 : 99;
+        renderControls();
+        syncHud();
+      }));
+      right.appendChild(mkBtn('💚 Fix Broken Pool', '#10b981', 'rgba(16,185,129,0.2)', () => {
+        bb.muffinOvenBroken = false; bb.retryLoad = 12;
+        bb.note = 'Recovered: Backoff + Jitter & Bulkheads kept healthy endpoints at zero downtime.';
+        syncHud();
+      }));
+    }
+
+    ctrlEl.appendChild(left);
+    ctrlEl.appendChild(right);
+    syncHud();
+  }
+
+  function updateQuorumMsg() {
+    const alive = ql.nodes.filter(Boolean).length;
+    if (alive >= 3) {
+      ql.lastWriteOk = true;
+      ql.lastWriteMsg = `${alive}/5 nodes online (>= 3 Majority): Cluster operational & serving writes.`;
+    } else {
+      ql.lastWriteOk = false;
+      ql.lastWriteMsg = `QUORUM LOSS: Only ${alive}/5 surviving (< 3)! Cluster locked read-only cleanly.`;
+    }
+    syncHud();
+  }
+
+  function syncHud() {
+    if (mode === 'circuit_breaker') {
+      const fails = cb.window.filter(x => !x).length;
+      const pct = Math.round((fails / cb.window.length) * 100);
+      mA.textContent = `State: ${cb.state}`;
+      mA.style.color = cb.state === 'CLOSED' ? '#6ee7b7' : (cb.state === 'OPEN' ? '#fca5a5' : '#fef08a');
+      mB.textContent = `Fail Rate: ${pct}% | Fallbacks: ${cb.blockedCount}`;
+    } else if (mode === 'quorum_loss') {
+      const alive = ql.nodes.filter(Boolean).length;
+      mA.textContent = alive >= 3 ? `Quorum: ${alive}/5 (SAFE)` : `QUORUM LOST (${alive}/5)`;
+      mA.style.color = alive >= 3 ? '#6ee7b7' : '#fca5a5';
+      mB.textContent = alive >= 3 ? 'Writes: ALLOWED' : 'Writes: READ-ONLY LOCK';
+      expEl.innerHTML = `<strong style="color:${ql.lastWriteOk ? '#6ee7b7' : '#fca5a5'};">Cluster Status:</strong> ${ql.lastWriteMsg}`;
+    } else if (mode === 'master_election') {
+      const alive = me.alive.filter(Boolean).length;
+      mA.textContent = me.leaderIdx !== null ? `Master: N${me.leaderIdx + 1} (Term ${me.term})` : `NO MASTER (QUORUM LOST)`;
+      mA.style.color = me.leaderIdx !== null ? '#fef08a' : '#fca5a5';
+      mB.textContent = `Alive: ${alive}/5`;
+      expEl.innerHTML = `<strong style="color:#64e8ff;">Consensus Log:</strong> ${me.electionNote}`;
+    } else {
+      mA.textContent = bb.muffinOvenBroken ? `Oven: DOWN (Load ${bb.retryLoad}%)` : 'All Pools: HEALTHY';
+      mA.style.color = bb.muffinOvenBroken ? '#fbbf24' : '#6ee7b7';
+      mB.textContent = `Coffee & Salads: 99% | Jitter: ${bb.jitterEnabled ? 'ON' : 'OFF'}`;
+      expEl.innerHTML = `<strong style="color:#64e8ff;">Resilience Telemetry:</strong> ${bb.note}`;
+    }
+  }
+
+  function draw() {
+    animT += 0.03;
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#040814';
+    ctx.fillRect(0, 0, W, H);
+
+    // Subtle grid
+    ctx.strokeStyle = 'rgba(148, 163, 184, 0.06)';
+    ctx.lineWidth = 1;
+    for (let x = 0; x < W; x += 40) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+    for (let y = 0; y < H; y += 40) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+
+    ctx.textAlign = 'center';
+
+    if (mode === 'circuit_breaker') {
+      // State Machine Diagram Top + 20-Slot Sliding Window Bottom
+      const states = [
+        { k: 'CLOSED', x: 200, col: '#10b981', desc: 'Calls Flow (<50% err)' },
+        { k: 'OPEN', x: 520, col: '#ef4444', desc: '<1ms Fallback Reject' },
+        { k: 'HALF-OPEN', x: 840, col: '#f59e0b', desc: `Canary Gate (${cb.probesPassed}/3)` },
+      ];
+      ctx.strokeStyle = 'rgba(148, 163, 184, 0.35)';
+      ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.moveTo(295, 110); ctx.lineTo(425, 110); ctx.moveTo(615, 110); ctx.lineTo(745, 110); ctx.stroke();
+
+      states.forEach(s => {
+        const active = cb.state === s.k;
+        card(s.x - 115, 55, 230, 110, active ? s.col : 'rgba(148,163,184,0.22)', active ? 'rgba(15,23,42,0.96)' : 'rgba(10,16,32,0.8)', 16);
+        ctx.fillStyle = active ? s.col : '#64748b';
+        ctx.font = 'bold 20px monospace';
+        ctx.fillText(s.k, s.x, 102);
+        ctx.fillStyle = active ? '#e2e8f0' : '#475569';
+        ctx.font = '13px -apple-system, sans-serif';
+        ctx.fillText(s.desc, s.x, 134);
+      });
+
+      card(70, 215, 900, 200, 'rgba(56,189,248,0.45)', 'rgba(10,16,36,0.9)', 16);
+      ctx.fillStyle = '#38bdf8';
+      ctx.font = 'bold 17px monospace';
+      ctx.fillText('20-CALL ROLLING SLIDING WINDOW (THRESHOLD: >= 50% FAILURES TRIPS OPEN)', W * 0.5, 255);
+
+      const cellW = 34, gap = 6;
+      const sx = W * 0.5 - (20 * (cellW + gap) - gap) * 0.5;
+      cb.window.forEach((ok, idx) => {
+        const bx = sx + idx * (cellW + gap);
+        ctx.fillStyle = ok ? 'rgba(16,185,129,0.85)' : 'rgba(239,68,68,0.88)';
+        ctx.beginPath(); ctx.roundRect(bx, 286, cellW, 64, 6); ctx.fill();
+        ctx.fillStyle = '#020617';
+        ctx.font = 'bold 12px monospace';
+        ctx.fillText(ok ? 'OK' : '500', bx + cellW * 0.5, 322);
+      });
+      const failPct = Math.round((cb.window.filter(x => !x).length / 20) * 100);
+      ctx.fillStyle = failPct >= 50 ? '#fca5a5' : '#6ee7b7';
+      ctx.font = 'bold 16px monospace';
+      ctx.fillText(`Window Error Rate: ${failPct}%   |   Fallbacks Served: ${cb.blockedCount}`, W * 0.5, 388);
+
+    } else if (mode === 'quorum_loss') {
+      const alive = ql.nodes.filter(Boolean).length;
+      const hasQ = alive >= 3;
+      card(90, 32, 860, 68, hasQ ? '#10b981' : '#ef4444', hasQ ? 'rgba(6,38,30,0.9)' : 'rgba(52,10,18,0.94)', 14);
+      ctx.fillStyle = hasQ ? '#6ee7b7' : '#fca5a5';
+      ctx.font = 'bold 18px monospace';
+      ctx.fillText(
+        hasQ ? `MAJORITY QUORUM ACTIVE: ${alive}/5 ONLINE (>= 3 REQUIRED)` : `QUORUM LOSS: ONLY ${alive}/5 ONLINE (< 3) — WRITES HALTED`,
+        W * 0.5, 72
+      );
+
+      for (let i = 0; i < 5; i++) {
+        const nx = 135 + i * 192;
+        const ok = ql.nodes[i];
+        card(nx - 78, 145, 156, 175, ok ? '#10b981' : '#ef4444', ok ? 'rgba(15,23,42,0.92)' : 'rgba(42,10,16,0.9)', 16);
+        ctx.fillStyle = ok ? '#6ee7b7' : '#fca5a5';
+        ctx.font = 'bold 22px -apple-system, sans-serif';
+        ctx.fillText(`NODE ${i + 1}`, nx, 195);
+        ctx.fillStyle = '#fef08a';
+        ctx.font = 'bold 14px monospace';
+        ctx.fillText(ok ? 'ALIVE (WAL OK)' : 'UNREACHABLE', nx, 238);
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '12px monospace';
+        ctx.fillText('Click to toggle', nx, 285);
+      }
+
+      card(90, 355, 860, 74, ql.lastWriteOk ? '#38bdf8' : '#ef4444', 'rgba(10,16,36,0.92)', 14);
+      ctx.fillStyle = ql.lastWriteOk ? '#7dd3fc' : '#fca5a5';
+      ctx.font = 'bold 16px monospace';
+      ctx.fillText(ql.lastWriteMsg, W * 0.5, 398);
+
+    } else if (mode === 'master_election') {
+      const alive = me.alive.filter(Boolean).length;
+      card(90, 32, 860, 68, me.leaderIdx !== null ? '#f59e0b' : '#ef4444', 'rgba(15,23,42,0.94)', 14);
+      ctx.fillStyle = '#fef08a';
+      ctx.font = 'bold 18px monospace';
+      ctx.fillText(
+        me.leaderIdx !== null ? `CURRENT MASTER: N${me.leaderIdx+1}  |  FENCING TOKEN TERM = ${me.term}` : `ELECTION FROZEN (QUORUM LOST ${alive}/5)`,
+        W * 0.5, 72
+      );
+
+      for (let i = 0; i < 5; i++) {
+        const nx = 135 + i * 192;
+        const ok = me.alive[i];
+        const isL = ok && me.leaderIdx === i;
+        const col = !ok ? '#ef4444' : (isL ? '#f59e0b' : '#38bdf8');
+        card(nx - 78, 145, 156, 175, col, 'rgba(15,23,42,0.92)', 16);
+        ctx.fillStyle = col;
+        ctx.font = 'bold 22px -apple-system, sans-serif';
+        ctx.fillText(isL ? `👑 N${i + 1}` : `N${i + 1}`, nx, 195);
+        ctx.fillStyle = '#fef08a';
+        ctx.font = 'bold 13px monospace';
+        ctx.fillText(!ok ? 'OFFLINE' : (isL ? `MASTER T${me.term}` : `FOLLOWER T${me.term}`), nx, 238);
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '12px monospace';
+        ctx.fillText(`Timer: ${me.timers[i]}ms`, nx, 282);
+      }
+
+      card(90, 355, 860, 74, '#a855f7', 'rgba(20,12,42,0.92)', 14);
+      ctx.fillStyle = '#d8b4fe';
+      ctx.font = 'bold 13.5px monospace';
+      ctx.fillText(me.electionNote.slice(0, 96), W * 0.5, 398);
+
+    } else {
+      // Backoff + Bulkhead Pools
+      const pools = [
+        { name: 'POOL A: MUFFIN OVEN', broken: bb.muffinOvenBroken, x: 200, load: bb.retryLoad },
+        { name: 'POOL B: COFFEE BAR', broken: false, x: 520, load: 24 },
+        { name: 'POOL C: SALADS', broken: false, x: 840, load: 18 },
+      ];
+      card(90, 32, 860, 68, '#38bdf8', 'rgba(10,20,42,0.92)', 14);
+      ctx.fillStyle = '#7dd3fc';
+      ctx.font = 'bold 18px monospace';
+      ctx.fillText(
+        `BULKHEAD POOLS + BACKOFF (${bb.jitterEnabled ? 'EXPONENTIAL + JITTER ON' : 'NAIVE 0ms RETRY STORM'})`,
+        W * 0.5, 72
+      );
+
+      pools.forEach(p => {
+        const col = p.broken ? '#ef4444' : '#10b981';
+        card(p.x - 135, 138, 270, 210, col, p.broken ? 'rgba(48,12,18,0.92)' : 'rgba(10,28,28,0.92)', 16);
+        ctx.fillStyle = col;
+        ctx.font = 'bold 17px -apple-system, sans-serif';
+        ctx.fillText(p.name, p.x, 180);
+        ctx.fillStyle = '#e2e8f0';
+        ctx.font = 'bold 28px monospace';
+        ctx.fillText(`${p.load}% Load`, p.x, 248);
+        ctx.fillStyle = p.broken ? '#fca5a5' : '#6ee7b7';
+        ctx.font = 'bold 13px monospace';
+        ctx.fillText(p.broken ? 'ISOLATED (No Cascade!)' : '99% Healthy & Fast!', p.x, 305);
+      });
+
+      card(90, 372, 860, 64, bb.muffinOvenBroken && !bb.jitterEnabled ? '#ef4444' : '#10b981', 'rgba(10,16,36,0.92)', 14);
+      ctx.fillStyle = '#fef08a';
+      ctx.font = 'bold 13.5px monospace';
+      ctx.fillText(bb.note.slice(0, 98), W * 0.5, 409);
+    }
+
+    requestAnimationFrame(draw);
+  }
+
+  // Click nodes in Quorum Loss & Master Election directly on canvas
+  canvas.addEventListener('click', (e) => {
+    const rect = canvas.getBoundingClientRect();
+    const cx = (e.clientX - rect.left) * (W / rect.width);
+    const cy = (e.clientY - rect.top) * (H / rect.height);
+    if ((mode === 'quorum_loss' || mode === 'master_election') && cy >= 145 && cy <= 320) {
+      for (let i = 0; i < 5; i++) {
+        const nx = 135 + i * 192;
+        if (Math.abs(cx - nx) <= 78) {
+          if (mode === 'quorum_loss') {
+            ql.nodes[i] = !ql.nodes[i];
+            updateQuorumMsg();
+          } else {
+            me.alive[i] = !me.alive[i];
+            if (!me.alive[i] && me.leaderIdx === i) {
+              me.leaderIdx = null;
+              me.electionNote = `N${i+1} crashed! Click "Crash Current Master" or restore nodes to trigger election.`;
+            }
+            syncHud();
+          }
+          break;
+        }
+      }
+    }
+  });
+
+  document.querySelectorAll('.pg-tab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.pg-tab').forEach(b => {
+        b.classList.remove('active');
+        b.style.borderColor = 'rgba(255,255,255,0.16)';
+        b.style.background = 'rgba(16,21,33,0.85)';
+        b.style.color = '#cbd5e1';
+      });
+      btn.classList.add('active');
+      btn.style.borderColor = '#f59e0b';
+      btn.style.background = 'rgba(245,158,11,0.2)';
+      btn.style.color = '#fef08a';
+      mode = btn.dataset.mode;
+      renderControls();
+    });
+  });
+
+  renderControls();
+  draw();
+})();
+</script>

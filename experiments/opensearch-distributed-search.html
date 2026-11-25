@@ -1,0 +1,294 @@
+---
+layout: default
+title: "Interactive OpenSearch Lab — Inverted Index, Shards & Scatter-Gather"
+description: "Test live OpenSearch tokenization, FST prefix lookup, Query-Then-Fetch scatter-gather, and Replica failover directly in your browser."
+---
+
+<section class="youtube-section" style="padding-top: 120px;">
+  <div class="section-container">
+    <div class="section-header">
+      <div class="section-tag tag-cyan">INTERACTIVE SYSTEM DESIGN LAB // OPENSEARCH</div>
+      <h1 class="section-title" style="font-size: clamp(2rem, 4.5vw, 3.2rem);">
+        How OpenSearch Searches <span class="gradient-gold">1 Billion Docs in 2ms.</span>
+      </h1>
+      <p class="section-sub">
+        Click any query term below or simulate a Node 1 crash to watch Lucene tokenization, Inverted Index lookups, Scatter-Gather Query-Then-Fetch, and Replica Promotion live.
+      </p>
+      <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:22px;">
+        <a href="https://www.youtube.com/watch?v=3bpZtQZNhmk" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="background:#ff0033; border-color:#ff0033; color:#fff;">
+          ▶ Watch Full 1080p Video (2:37)
+        </a>
+        <a href="https://www.youtube.com/shorts/WffI3WSlp6w" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+          ⚡ Watch 50s Short
+        </a>
+        <a href="{{ '/' | relative_url }}#youtube" class="btn btn-secondary">
+          ← Back to Studio Hub
+        </a>
+      </div>
+    </div>
+
+    <!-- Interactive OpenSearch Cluster Canvas Card -->
+    <div class="lab-main-deck" style="max-width: 1080px; margin: 0 auto 48px; background: rgba(16,21,33,0.88); border: 1px solid rgba(100,232,255,0.28); border-radius: 20px; padding: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.65);">
+      <div class="deck-header" style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:18px;">
+        <div>
+          <span class="deck-badge" style="color:#64e8ff; font-family: monospace; font-size: 0.8rem;">LIVE CLUSTER TOPOLOGY // 3 NODES • 3 PRIMARY + 3 REPLICA SHARDS</span>
+          <h3 style="margin-top:4px; font-size:1.3rem;">Query-Then-Fetch &amp; Automatic Failover Sandbox</h3>
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <span id="os-latency-pill" style="padding:6px 14px; border-radius:999px; background:rgba(16,185,129,0.16); border:1px solid rgba(16,185,129,0.45); color:#6ee7b7; font-family:monospace; font-size:0.85rem; font-weight:700;">Latency: 2.4 ms</span>
+          <span id="os-health-pill" style="padding:6px 14px; border-radius:999px; background:rgba(16,185,129,0.16); border:1px solid rgba(16,185,129,0.45); color:#6ee7b7; font-family:monospace; font-size:0.85rem; font-weight:700;">Cluster: GREEN (3/3)</span>
+        </div>
+      </div>
+
+      <canvas id="opensearch-lab-canvas" width="1030" height="520" style="width:100%; height:auto; display:block; border-radius:14px; background:#040814; border:1px solid rgba(255,255,255,0.08);"></canvas>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-top:18px;">
+        <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+          <span style="color:#94a3b8; font-size:0.85rem; font-weight:600;">Query Term:</span>
+          <button class="os-term-btn active" data-term="timeout" style="padding:7px 14px; border-radius:999px; border:1px solid #f59e0b; background:rgba(245,158,11,0.22); color:#fef08a; cursor:pointer; font-family:monospace; font-weight:700;">"timeout"</button>
+          <button class="os-term-btn" data-term="shard" style="padding:7px 14px; border-radius:999px; border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.05); color:#e2e8f0; cursor:pointer; font-family:monospace; font-weight:700;">"shard"</button>
+          <button class="os-term-btn" data-term="quorum" style="padding:7px 14px; border-radius:999px; border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.05); color:#e2e8f0; cursor:pointer; font-family:monospace; font-weight:700;">"quorum"</button>
+          <button class="os-term-btn" data-term="vector" style="padding:7px 14px; border-radius:999px; border:1px solid rgba(255,255,255,0.15); background:rgba(255,255,255,0.05); color:#e2e8f0; cursor:pointer; font-family:monospace; font-weight:700;">"vector"</button>
+        </div>
+
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button id="btn-os-crash" style="padding:8px 16px; border-radius:999px; border:1px solid rgba(239,68,68,0.6); background:rgba(239,68,68,0.18); color:#fca5a5; cursor:pointer; font-weight:700;">💥 Crash Node 1</button>
+          <button id="btn-os-sql" style="padding:8px 16px; border-radius:999px; border:1px solid rgba(100,232,255,0.4); background:rgba(100,232,255,0.12); color:#64e8ff; cursor:pointer; font-weight:700;">🐢 Compare SQL LIKE</button>
+        </div>
+      </div>
+
+      <div id="os-status-note" style="margin-top:16px; padding:14px 18px; border-radius:12px; background:rgba(8,13,30,0.85); border:1px solid rgba(100,232,255,0.22); color:#cbd5e1; font-size:0.95rem; line-height:1.5;">
+        <strong style="color:#64e8ff;">Active Flow:</strong> FST in RAM jumps straight to posting list <code>"timeout" -&gt; [Doc 12, Doc 42, Doc 819]</code>. Coordinator scatters Query-Then-Fetch across Primary Shards P0, P1, P2 in <strong>2.4 ms</strong>.
+      </div>
+    </div>
+
+    <!-- Architecture Breakdown Grid -->
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:22px; max-width:1080px; margin:0 auto;">
+      <div style="background:rgba(16,21,33,0.8); border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:22px;">
+        <h4 style="color:#f59e0b; margin-bottom:8px;">1. Inverted Index + FST</h4>
+        <p style="color:#94a3b8; font-size:0.92rem; line-height:1.6;">An Analyzer tokenizes text once at write time. An in-memory Finite State Transducer (FST) maps terms to disk byte offsets for O(1) posting-list jumps.</p>
+      </div>
+      <div style="background:rgba(16,21,33,0.8); border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:22px;">
+        <h4 style="color:#64e8ff; margin-bottom:8px;">2. 1s NRT Immutable Segments</h4>
+        <p style="color:#94a3b8; font-size:0.92rem; line-height:1.6;">Writes hit a RAM buffer + crash-safe Translog WAL, refresh every 1s into read-only Lucene segments, and merge in the background with zero read locks.</p>
+      </div>
+      <div style="background:rgba(16,21,33,0.8); border:1px solid rgba(255,255,255,0.08); border-radius:16px; padding:22px;">
+        <h4 style="color:#10b981; margin-bottom:8px;">3. Shards, Failover &amp; Hybrid RRF</h4>
+        <p style="color:#94a3b8; font-size:0.92rem; line-height:1.6;">Coordinator merges Top-K BM25 + HNSW k-NN vector scores via Reciprocal Rank Fusion, while Cluster Manager quorum promotes Replicas on node loss.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  const canvas = document.getElementById('opensearch-lab-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+
+  const TERMS = {
+    timeout: { docs: '[Doc 12, Doc 42, Doc 819]', score: '9.84', sqlMs: '42,800 ms' },
+    shard:   { docs: '[Doc 1, Doc 9, Doc 42]',   score: '9.41', sqlMs: '41,200 ms' },
+    quorum:  { docs: '[Doc 3, Doc 17, Doc 95]',  score: '8.92', sqlMs: '44,100 ms' },
+    vector:  { docs: '[Doc 7, Doc 42, Doc 88]',  score: '9.76', sqlMs: '43,500 ms' }
+  };
+
+  let activeTerm = 'timeout';
+  let node1Crashed = false;
+  let sqlMode = false;
+  let t = 0;
+
+  const latencyPill = document.getElementById('os-latency-pill');
+  const healthPill = document.getElementById('os-health-pill');
+  const statusNote = document.getElementById('os-status-note');
+  const crashBtn = document.getElementById('btn-os-crash');
+  const sqlBtn = document.getElementById('btn-os-sql');
+
+  function updateUI() {
+    const info = TERMS[activeTerm];
+    if (sqlMode) {
+      latencyPill.textContent = `SQL LIKE Latency: ${info.sqlMs}`;
+      latencyPill.style.borderColor = 'rgba(239,68,68,0.6)';
+      latencyPill.style.color = '#fca5a5';
+      statusNote.innerHTML = `<strong style="color:#f87171;">SQL Full Scan Mode:</strong> Leading wildcard <code>LIKE '%${activeTerm}%'</code> bypasses B-Tree indexes and scans 1B rows sequentially in <strong>${info.sqlMs}</strong> (99% CPU).`;
+    } else if (node1Crashed) {
+      latencyPill.textContent = 'Latency: 2.7 ms (Failover)';
+      latencyPill.style.borderColor = 'rgba(245,158,11,0.6)';
+      latencyPill.style.color = '#fef08a';
+      healthPill.textContent = 'Cluster: YELLOW (R0 -> P0)';
+      healthPill.style.borderColor = 'rgba(245,158,11,0.6)';
+      healthPill.style.color = '#fef08a';
+      statusNote.innerHTML = `<strong style="color:#fbbf24;">Failover Active:</strong> Node 1 crashed! Cluster Manager detected missed heartbeats and promoted <strong>Replica R0 on Node 3</strong> to Primary P0. Query <code>"${activeTerm}"</code> still resolves ${info.docs} in <strong>2.7 ms</strong>.`;
+    } else {
+      latencyPill.textContent = 'Latency: 2.4 ms';
+      latencyPill.style.borderColor = 'rgba(16,185,129,0.45)';
+      latencyPill.style.color = '#6ee7b7';
+      healthPill.textContent = 'Cluster: GREEN (3/3)';
+      healthPill.style.borderColor = 'rgba(16,185,129,0.45)';
+      healthPill.style.color = '#6ee7b7';
+      statusNote.innerHTML = `<strong style="color:#64e8ff;">Active Flow:</strong> FST in RAM jumps straight to posting list <code>"${activeTerm}" -&gt; ${info.docs}</code>. Coordinator scatters Query-Then-Fetch across P0, P1, P2 in <strong>2.4 ms</strong>.`;
+    }
+  }
+
+  document.querySelectorAll('.os-term-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeTerm = btn.dataset.term;
+      document.querySelectorAll('.os-term-btn').forEach(b => {
+        const on = b === btn;
+        b.style.borderColor = on ? '#f59e0b' : 'rgba(255,255,255,0.15)';
+        b.style.background = on ? 'rgba(245,158,11,0.22)' : 'rgba(255,255,255,0.05)';
+        b.style.color = on ? '#fef08a' : '#e2e8f0';
+      });
+      updateUI();
+    });
+  });
+
+  crashBtn.addEventListener('click', () => {
+    node1Crashed = !node1Crashed;
+    crashBtn.textContent = node1Crashed ? '🔄 Recover Node 1' : '💥 Crash Node 1';
+    updateUI();
+  });
+
+  sqlBtn.addEventListener('click', () => {
+    sqlMode = !sqlMode;
+    sqlBtn.textContent = sqlMode ? '⚡ Back to OpenSearch' : '🐢 Compare SQL LIKE';
+    updateUI();
+  });
+
+  function card(x, y, w, h, stroke, fill = 'rgba(15,23,42,0.9)', r = 14) {
+    ctx.fillStyle = fill;
+    ctx.strokeStyle = stroke;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.roundRect(x, y, w, h, r);
+    ctx.fill();
+    ctx.stroke();
+  }
+
+  function render() {
+    t += 0.025;
+    ctx.fillStyle = '#040814';
+    ctx.fillRect(0, 0, W, H);
+
+    // Subtle background grid
+    ctx.strokeStyle = 'rgba(56, 189, 248, 0.05)';
+    ctx.lineWidth = 1;
+    for (let x = 0; x < W; x += 48) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); }
+    for (let y = 0; y < H; y += 48) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke(); }
+
+    const info = TERMS[activeTerm];
+
+    if (sqlMode) {
+      card(140, 80, 750, 360, '#ef4444', 'rgba(20, 10, 18, 0.92)', 20);
+      ctx.textAlign = 'center';
+      ctx.fillStyle = '#fca5a5';
+      ctx.font = 'bold 24px monospace';
+      ctx.fillText(`SQL: SELECT * FROM logs WHERE body LIKE '%${activeTerm}%'`, W / 2, 138);
+      const scanIdx = Math.floor((t * 1.4) % 5);
+      for (let i = 0; i < 5; i++) {
+        const by = 175 + i * 44;
+        const on = i === scanIdx;
+        card(220, by, 590, 34, on ? '#ef4444' : 'rgba(148,163,184,0.2)', on ? 'rgba(239,68,68,0.3)' : 'rgba(15,23,42,0.8)', 8);
+        ctx.fillStyle = on ? '#fecaca' : '#94a3b8';
+        ctx.font = '14px monospace';
+        ctx.fillText(`Disk Partition #0${i + 1} (200M rows) -> ${on ? 'FULL TABLE SCAN...' : 'queued'}`, W / 2, by + 22);
+      }
+      ctx.fillStyle = '#f87171';
+      ctx.font = 'bold 20px monospace';
+      ctx.fillText(`Elapsed: ${info.sqlMs}  |  CPU: 99%  |  O(N * L)`, W / 2, 420);
+      requestAnimationFrame(render);
+      return;
+    }
+
+    // Left: FST + Inverted Index
+    card(32, 46, 300, 428, 'rgba(245,158,11,0.7)', 'rgba(12,18,36,0.92)', 18);
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#fbbf24';
+    ctx.font = 'bold 16px sans-serif';
+    ctx.fillText('INVERTED INDEX + FST (RAM)', 182, 82);
+
+    Object.keys(TERMS).forEach((term, i) => {
+      const y = 118 + i * 80;
+      const isAct = term === activeTerm;
+      card(52, y, 260, 62, isAct ? '#f59e0b' : 'rgba(148,163,184,0.2)', isAct ? 'rgba(245,158,11,0.2)' : 'rgba(15,23,42,0.85)', 12);
+      ctx.textAlign = 'left';
+      ctx.fillStyle = isAct ? '#fef08a' : '#38bdf8';
+      ctx.font = 'bold 15px monospace';
+      ctx.fillText(`"${term}"`, 68, y + 26);
+      ctx.fillStyle = '#cbd5e1';
+      ctx.font = '13px monospace';
+      ctx.fillText(`-> ${TERMS[term].docs}`, 68, y + 48);
+    });
+
+    // Top-Right: Coordinator Node
+    const coordX = 680, coordY = 92;
+    card(480, 46, 400, 86, '#38bdf8', 'rgba(12,24,52,0.94)', 43);
+    ctx.textAlign = 'center';
+    ctx.fillStyle = '#38bdf8';
+    ctx.font = 'bold 17px sans-serif';
+    ctx.fillText('COORDINATOR (QUERY-THEN-FETCH)', coordX, 82);
+    ctx.fillStyle = '#f8fafc';
+    ctx.font = '13px monospace';
+    ctx.fillText(`"${activeTerm}" -> Top-K BM25 (${info.score})`, coordX, 110);
+
+    // Link Inverted Index -> Coordinator
+    ctx.strokeStyle = 'rgba(245,158,11,0.6)';
+    ctx.lineWidth = 2.5;
+    ctx.setLineDash([6, 6]);
+    ctx.beginPath();
+    ctx.moveTo(332, 160);
+    ctx.lineTo(480, 92);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // 3 Cluster Nodes
+    const nodes = [
+      { id: 'NODE 1', x: 455, y: 340, p: 'P0 • PRIMARY', r: 'R1 • REPLICA', down: node1Crashed },
+      { id: 'NODE 2', x: 680, y: 340, p: 'P1 • PRIMARY', r: 'R2 • REPLICA', down: false },
+      { id: 'NODE 3', x: 905, y: 340, p: 'P2 • PRIMARY', r: node1Crashed ? 'R0 -> PROMOTED P0!' : 'R0 • REPLICA', down: false },
+    ];
+
+    nodes.forEach((n, idx) => {
+      ctx.strokeStyle = n.down ? 'rgba(239,68,68,0.45)' : 'rgba(56,189,248,0.65)';
+      ctx.lineWidth = 2.5;
+      ctx.setLineDash(n.down ? [6, 6] : []);
+      ctx.beginPath();
+      ctx.moveTo(coordX, 132);
+      ctx.lineTo(n.x, n.y - 100);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      if (!n.down) {
+        const pf = (t * 0.9 + idx * 0.3) % 1.0;
+        const px = coordX + (n.x - coordX) * pf;
+        const py = 132 + (n.y - 100 - 132) * pf;
+        ctx.fillStyle = '#64e8ff';
+        ctx.beginPath();
+        ctx.arc(px, py, 5.5, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      card(n.x - 96, n.y - 100, 192, 190, n.down ? '#ef4444' : '#38bdf8', 'rgba(15,23,42,0.92)', 16);
+      ctx.textAlign = 'center';
+      ctx.fillStyle = n.down ? '#fca5a5' : '#f8fafc';
+      ctx.font = 'bold 16px sans-serif';
+      ctx.fillText(n.down ? `${n.id} • OFFLINE` : n.id, n.x, n.y - 66);
+
+      card(n.x - 78, n.y - 44, 156, 48, n.down ? '#ef4444' : '#f59e0b', 'rgba(245,158,11,0.12)', 10);
+      ctx.fillStyle = n.down ? '#fca5a5' : '#fef08a';
+      ctx.font = 'bold 13px monospace';
+      ctx.fillText(n.p, n.x, n.y - 15);
+
+      const promoted = idx === 2 && node1Crashed;
+      card(n.x - 78, n.y + 18, 156, 48, promoted ? '#f59e0b' : '#10b981', promoted ? 'rgba(245,158,11,0.22)' : 'rgba(16,185,129,0.12)', 10);
+      ctx.fillStyle = promoted ? '#fef08a' : '#6ee7b7';
+      ctx.font = 'bold 12px monospace';
+      ctx.fillText(n.r, n.x, n.y + 47);
+    });
+
+    requestAnimationFrame(render);
+  }
+  render();
+})();
+</script>

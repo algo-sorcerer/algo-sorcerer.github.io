@@ -42,8 +42,8 @@
       <div class="dialogue-breakdown-card">
         <div class="dialogue-header">
           <div class="header-text-group">
-            <span class="dialogue-sub">ARCHITECTURAL DISCOURSE</span>
-            <h3>The Mentor-Engineer Dialogue</h3>
+            <span class="dialogue-sub">SYSTEM BREAKDOWN</span>
+            <h3>Alex &amp; Sam Dialogue</h3>
           </div>
           <span class="dialogue-topic-pill">T(n) = T(n-1) + O(1)</span>
         </div>
@@ -53,13 +53,13 @@
           <div class="dialogue-turn anvay-turn">
             <div class="dialogue-avatar-wrap">
               <img src="{{ site.data.characters.anvay.avatar | relative_url }}" 
-                   alt="Anvay" 
+                   alt="Sam" 
                    class="dialogue-avatar"
                    onerror="this.src='{{ site.data.characters.anvay.vector_avatar | relative_url }}'">
             </div>
             <div class="turn-content">
-              <div class="speaker-label speaker-anvay">💡 ANVAY • SOFTWARE ENGINEER</div>
-              <p>"Acharya, yesterday my recursive function crashed our production server with a Stack Overflow error! Why did memory run out so fast?"</p>
+              <div class="speaker-label speaker-anvay">⚡ SAM • BACKEND ENGINEER</div>
+              <p>"Alex, yesterday my recursive function crashed our production server with a Stack Overflow error! Why did memory run out so fast?"</p>
             </div>
           </div>
 
@@ -67,13 +67,13 @@
           <div class="dialogue-turn acharya-turn">
             <div class="dialogue-avatar-wrap">
               <img src="{{ site.data.characters.acharya.avatar | relative_url }}" 
-                   alt="Acharya" 
+                   alt="Alex" 
                    class="dialogue-avatar"
                    onerror="this.src='{{ site.data.characters.acharya.vector_avatar | relative_url }}'">
             </div>
             <div class="turn-content">
-              <div class="speaker-label speaker-acharya">🎓 ACHARYA • SYSTEMS ARCHITECT</div>
-              <p>"Anvay, your function lacked a Base Case. Each invocation pushed a new stack frame onto limited memory. Without an exit boundary, execution expands until hardware halts it."</p>
+              <div class="speaker-label speaker-acharya">🔍 ALEX • SYSTEMS LEAD</div>
+              <p>"Sam, your function lacked a Base Case. Each invocation pushed a new stack frame onto limited memory. Without an exit boundary, execution expands until hardware halts it."</p>
             </div>
           </div>
 
@@ -81,13 +81,13 @@
           <div class="dialogue-turn anvay-turn">
             <div class="dialogue-avatar-wrap">
               <img src="{{ site.data.characters.anvay.avatar | relative_url }}" 
-                   alt="Anvay" 
+                   alt="Sam" 
                    class="dialogue-avatar"
                    onerror="this.src='{{ site.data.characters.anvay.vector_avatar | relative_url }}'">
             </div>
             <div class="turn-content">
-              <div class="speaker-label speaker-anvay">💡 ANVAY • SOFTWARE ENGINEER</div>
-              <p>"So without a base case, the computer doesn't know when to halt, and stack memory explodes?"</p>
+              <div class="speaker-label speaker-anvay">⚡ SAM • BACKEND ENGINEER</div>
+              <p>"So without a base case, the runtime never knows when to unwind, and stack memory explodes?"</p>
             </div>
           </div>
 
@@ -95,13 +95,13 @@
           <div class="dialogue-turn acharya-turn">
             <div class="dialogue-avatar-wrap">
               <img src="{{ site.data.characters.acharya.avatar | relative_url }}" 
-                   alt="Acharya" 
+                   alt="Alex" 
                    class="dialogue-avatar"
                    onerror="this.src='{{ site.data.characters.acharya.vector_avatar | relative_url }}'">
             </div>
             <div class="turn-content">
-              <div class="speaker-label speaker-acharya">🎓 ACHARYA • SYSTEMS ARCHITECT</div>
-              <p>"Exactly. The Base Case is the boundary condition. The moment it evaluates to true, the call stack unwinds, freeing memory back to baseline. In software and in life, clear boundaries prevent infinite loops."</p>
+              <div class="speaker-label speaker-acharya">🔍 ALEX • SYSTEMS LEAD</div>
+              <p>"Exactly. The Base Case is the boundary condition. The moment it evaluates to true, the call stack unwinds, freeing memory back to baseline."</p>
             </div>
           </div>
         </div>

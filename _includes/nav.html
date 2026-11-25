@@ -6,24 +6,24 @@
       </div>
       <div class="brand-name-group">
         <span class="nav-brand-title">ALGOSORCERER</span>
-        <span class="nav-brand-sub">ANCIENT WISDOM • ALGORITHMIC THINKING</span>
+        <span class="nav-brand-sub">SYSTEM DESIGN • ALGORITHMS • DISTRIBUTED SYSTEMS</span>
       </div>
     </a>
 
     <nav class="nav-menu" id="nav-menu" aria-label="Main Navigation">
-      <a href="#hero" class="nav-item active" data-section="hero">Discover</a>
-      <a href="#labs" class="nav-item" data-section="labs">Interactive Labs</a>
-      <a href="#characters" class="nav-item" data-section="characters">Characters</a>
-      <a href="#curriculum" class="nav-item" data-section="curriculum">Curriculum</a>
-      <a href="#chronicles" class="nav-item" data-section="chronicles">Chronicles</a>
-      <a href="#archive" class="nav-item" data-section="archive">Archive</a>
-      <a href="#hub" class="nav-item" data-section="hub">Hub</a>
+      <a href="{{ '/' | relative_url }}#hero" class="nav-item active" data-section="hero">Discover</a>
+      <a href="{{ '/' | relative_url }}#youtube" class="nav-item" data-section="youtube">YouTube</a>
+      <a href="{{ '/' | relative_url }}#labs" class="nav-item" data-section="labs">Interactive Labs</a>
+      <a href="{{ '/' | relative_url }}#characters" class="nav-item" data-section="characters">Hosts</a>
+      <a href="{{ '/' | relative_url }}#curriculum" class="nav-item" data-section="curriculum">Curriculum</a>
+      <a href="{{ '/' | relative_url }}#chronicles" class="nav-item" data-section="chronicles">Chronicles</a>
+      <a href="{{ '/' | relative_url }}#hub" class="nav-item" data-section="hub">Hub</a>
     </nav>
 
     <div class="nav-actions">
-      <a href="#labs" class="btn-enter-lab">
+      <a href="{{ '/experiments/opensearch-distributed-search.html' | relative_url }}" class="btn-enter-lab">
         <span class="lab-glyph">⚡</span>
-        <span>Enter the Lab</span>
+        <span>OpenSearch Lab</span>
       </a>
 
       <!-- Mobile Hamburger Toggle -->
@@ -38,13 +38,14 @@
   <!-- Mobile Drawer Menu -->
   <div class="nav-mobile-drawer" id="nav-mobile-drawer" aria-hidden="true">
     <div class="mobile-drawer-links">
-      <a href="#hero" class="mobile-nav-link">Discover</a>
-      <a href="#labs" class="mobile-nav-link">Interactive Labs</a>
-      <a href="#characters" class="mobile-nav-link">Characters (Acharya & Anvay)</a>
-      <a href="#curriculum" class="mobile-nav-link">Curriculum (6 Mental Models)</a>
-      <a href="#chronicles" class="mobile-nav-link">Architecture Chronicles</a>
-      <a href="#archive" class="mobile-nav-link">The Algorithm Chronicle</a>
-      <a href="#hub" class="mobile-nav-link">Open-Source Hub</a>
+      <a href="{{ '/' | relative_url }}#hero" class="mobile-nav-link">Discover</a>
+      <a href="{{ '/' | relative_url }}#youtube" class="mobile-nav-link">YouTube Channel</a>
+      <a href="{{ '/' | relative_url }}#labs" class="mobile-nav-link">Interactive Labs</a>
+      <a href="{{ '/' | relative_url }}#characters" class="mobile-nav-link">Hosts (Alex & Sam)</a>
+      <a href="{{ '/' | relative_url }}#curriculum" class="mobile-nav-link">Curriculum (6 Mental Models)</a>
+      <a href="{{ '/' | relative_url }}#chronicles" class="mobile-nav-link">Architecture Chronicles</a>
+      <a href="{{ '/' | relative_url }}#archive" class="mobile-nav-link">The Algorithm Chronicle</a>
+      <a href="{{ '/' | relative_url }}#hub" class="mobile-nav-link">Open-Source Hub</a>
       <a href="{{ site.author.youtube_url }}" target="_blank" rel="noopener noreferrer" class="mobile-nav-link yt-link">
         ▶ YouTube @AlgoSorcerer
       </a>

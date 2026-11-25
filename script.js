@@ -1322,34 +1322,44 @@
   const dialogueTakeaway = document.getElementById('dialogue-takeaway-text');
 
   const dialogueTranscripts = {
+    opensearch_cluster: {
+      topic: 'OpenSearch Sharding & Inverted Index',
+      takeaway: 'Inverted indexes accelerate term lookups, while hash-routed primary shards and replica failover give OpenSearch horizontal throughput and high availability.',
+      turns: [
+        { speaker: 'anvay', name: '⚡ SAM', roleClass: 'cyan', text: 'Alex, why did our PostgreSQL wildcard LIKE query spike to four seconds once the logs table crossed fifty million rows, while OpenSearch answers in twelve milliseconds?' },
+        { speaker: 'acharya', name: '🔍 ALEX', roleClass: 'gold', text: 'Sam, row-oriented SQL scans rows sequentially when you match arbitrary keywords inside text. OpenSearch flips the data structure completely with an Inverted Index—mapping every normalized token directly to sorted document ID posting lists.' },
+        { speaker: 'anvay', name: '⚡ SAM', roleClass: 'cyan', text: 'And when a single machine runs out of RAM or disk, sharding splits that index across nodes?' },
+        { speaker: 'acharya', name: '🔍 ALEX', roleClass: 'gold', text: 'Exactly. Coordinator nodes scatter your query to every primary shard or replica in parallel, compute local BM25 top-K scores, and gather only the winners back—plus replicas automatically take over if any node goes dark.' }
+      ]
+    },
     stack_overflow: {
       topic: 'The Mystery of the Call Stack Crash',
       takeaway: 'In recursion, base cases are not optional safety nets; they are the mathematical halting invariants that give the function finite termination.',
       turns: [
-        { speaker: 'anvay', name: '💡 ANVAY', roleClass: 'cyan', text: 'Acharya, yesterday my recursive function crashed our staging cluster with a Stack Overflow error. Why did allocating frames tear down the whole runtime?' },
-        { speaker: 'acharya', name: '🎓 ACHARYA', roleClass: 'gold', text: 'Anvay, every function call claims a slice of finite physical stack memory. Your function lacked a definitive halting boundary. Without a Base Case, recursion continues indefinitely until the hardware intervenes.' },
-        { speaker: 'anvay', name: '💡 ANVAY', roleClass: 'cyan', text: 'So the algorithm was executing valid logic, but it lacked the wisdom of when to halt?' },
-        { speaker: 'acharya', name: '🎓 ACHARYA', roleClass: 'gold', text: 'Precisely. Every reliable system begins with a boundary. When the Base Case evaluates to true, state stops expanding and begins unwinding—returning memory to equilibrium.' }
+        { speaker: 'anvay', name: '⚡ SAM', roleClass: 'cyan', text: 'Alex, yesterday my recursive function crashed our staging cluster with a Stack Overflow error. Why did allocating frames tear down the whole runtime?' },
+        { speaker: 'acharya', name: '🔍 ALEX', roleClass: 'gold', text: 'Sam, every function call claims a slice of finite physical stack memory. Your function lacked a definitive halting boundary. Without a Base Case, recursion continues indefinitely until the hardware intervenes.' },
+        { speaker: 'anvay', name: '⚡ SAM', roleClass: 'cyan', text: 'So the algorithm was executing valid logic, but it lacked the guard for when to halt?' },
+        { speaker: 'acharya', name: '🔍 ALEX', roleClass: 'gold', text: 'Precisely. Every reliable system begins with a boundary. When the Base Case evaluates to true, state stops expanding and begins unwinding—returning memory to equilibrium.' }
       ]
     },
     o1_myth: {
       topic: 'The O(1) Lookup Reality Check',
       takeaway: 'Abstractions leak under extreme load. Amortized constant time requires uniform distribution and predictable load factors.',
       turns: [
-        { speaker: 'anvay', name: '💡 ANVAY', roleClass: 'cyan', text: 'I used a Hash Map everywhere assuming constant O(1) lookups, but our p99 latency spiked dramatically under heavy traffic. Isn\'t hash access guaranteed constant time?' },
-        { speaker: 'acharya', name: '🎓 ACHARYA', roleClass: 'gold', text: 'Constant time in a hash table is amortized, not absolute. When your hash function produces excessive collisions, or when the load factor triggers an internal table resizing, O(1) degrades toward O(N).' },
-        { speaker: 'anvay', name: '💡 ANVAY', roleClass: 'cyan', text: 'So the worst-case scenario isn\'t just theoretical—it directly degrades production response times?' },
-        { speaker: 'acharya', name: '🎓 ACHARYA', roleClass: 'gold', text: 'Indeed. High-performance engineering requires understanding the hidden machinery beneath the abstraction: uniform distribution, bucket resizing overhead, and cache locality.' }
+        { speaker: 'anvay', name: '⚡ SAM', roleClass: 'cyan', text: 'I used a Hash Map everywhere assuming constant O(1) lookups, but our p99 latency spiked dramatically under heavy traffic. Isn\'t hash access guaranteed constant time?' },
+        { speaker: 'acharya', name: '🔍 ALEX', roleClass: 'gold', text: 'Constant time in a hash table is amortized, not absolute. When your hash function produces excessive collisions, or when the load factor triggers an internal table resizing, O(1) degrades toward O(N).' },
+        { speaker: 'anvay', name: '⚡ SAM', roleClass: 'cyan', text: 'So the worst-case scenario isn\'t just theoretical—it directly degrades production response times?' },
+        { speaker: 'acharya', name: '🔍 ALEX', roleClass: 'gold', text: 'Indeed. High-performance engineering requires understanding the hidden machinery beneath the abstraction: uniform distribution, bucket resizing overhead, and cache locality.' }
       ]
     },
     memory_leak: {
       topic: 'The Phantom Memory Leak',
       takeaway: 'Garbage collectors only sweep what is strictly unreachable. Retaining unneeded root pointers is the primary cause of modern memory exhaustion.',
       turns: [
-        { speaker: 'anvay', name: '💡 ANVAY', roleClass: 'cyan', text: 'Our server heap was climbing continuously until the Out-Of-Memory killer terminated the container. But our language has an automatic garbage collector! How could memory leak?' },
-        { speaker: 'acharya', name: '🎓 ACHARYA', roleClass: 'gold', text: 'An automatic Garbage Collector only reclaims objects that are unreachable from the GC roots. If an unused object remains connected through an event listener, static cache, or global set, it is considered alive.' },
-        { speaker: 'anvay', name: '💡 ANVAY', roleClass: 'cyan', text: 'So memory doesn\'t leak because the collector failed; it leaks because our code clung to pointers it no longer needed.' },
-        { speaker: 'acharya', name: '🎓 ACHARYA', roleClass: 'gold', text: 'Exactly. The collector cannot judge your intent. Detach dead references explicitly, and the runtime will keep your heap pristine.' }
+        { speaker: 'anvay', name: '⚡ SAM', roleClass: 'cyan', text: 'Our server heap was climbing continuously until the Out-Of-Memory killer terminated the container. But our language has an automatic garbage collector! How could memory leak?' },
+        { speaker: 'acharya', name: '🔍 ALEX', roleClass: 'gold', text: 'An automatic Garbage Collector only reclaims objects that are unreachable from the GC roots. If an unused object remains connected through an event listener, static cache, or global set, it is considered alive.' },
+        { speaker: 'anvay', name: '⚡ SAM', roleClass: 'cyan', text: 'So memory doesn\'t leak because the collector failed; it leaks because our code clung to pointers it no longer needed.' },
+        { speaker: 'acharya', name: '🔍 ALEX', roleClass: 'gold', text: 'Exactly. The collector cannot judge your intent. Detach dead references explicitly, and the runtime will keep your heap pristine.' }
       ]
     }
   };

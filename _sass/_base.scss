@@ -26,6 +26,7 @@ body {
 }
 
 // Background Canvas Matrix
+#cosmic-bg,
 #ambient-canvas {
   position: fixed;
   top: 0;
@@ -218,6 +219,19 @@ section {
       background: rgba(100, 232, 255, 0.25);
       box-shadow: $glow-cyan;
       transform: translateY(-2px);
+    }
+  }
+
+  &-youtube {
+    background: linear-gradient(135deg, #ff2a4b 0%, #c8192e 100%);
+    color: #ffffff;
+    font-weight: 700;
+    box-shadow: 0 6px 22px rgba(255, 42, 75, 0.35);
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(255, 42, 75, 0.52);
+      background: linear-gradient(135deg, #ff4764 0%, #e11d36 100%);
     }
   }
 }

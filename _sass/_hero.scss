@@ -53,6 +53,8 @@
 }
 
 .hero-grid {
+  position: relative;
+  z-index: 2;
   display: grid;
   grid-template-columns: 1.15fr 1fr;
   align-items: center;

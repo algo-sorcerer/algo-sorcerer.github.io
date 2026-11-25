@@ -1,7 +1,7 @@
 # AlgoSorcerer World — Jekyll Configuration for GitHub Pages
 title: "AlgoSorcerer World"
-tagline: "High-Performance Computer Science & Algorithmic Mental Models"
-description: "Interactive browser simulations, algorithmic mental models, and dual-voice dialogues between Senior Architect Acharya and Junior Engineer Anvay on high-performance Computer Science and system architecture."
+tagline: "System Design, Algorithms & Interactive Labs"
+description: "Interactive browser simulations, OpenSearch system architecture deep dives, and engineer-to-engineer breakdowns by Alex & Sam."
 url: "https://algo-sorcerer.github.io"
 baseurl: ""
 
@@ -16,20 +16,20 @@ author:
   youtube_url: "https://www.youtube.com/@AlgoSorcerer"
   github_url: "https://github.com/algo-sorcerer"
 
-# Characters
+# Characters / Podcast Hosts
 characters:
   acharya:
-    name: "Acharya Vidyadhar"
-    title: "Senior CS Architect & Mentor"
+    name: "Alex (ex. Acharya)"
+    title: "Distributed Systems & Search Lead"
     avatar: "/assets/brand/acharya_avatar.svg"
-    symbol: "🎓"
-    voice: "en-IN-PrabhatNeural"
+    symbol: "🔍"
+    voice: "en-US-AndrewMultilingualNeural"
   anvay:
-    name: "Anvay"
-    title: "Junior Software Engineer & Student"
+    name: "Sam (ex. Anvay)"
+    title: "Backend & Infrastructure Engineer"
     avatar: "/assets/brand/anvay_avatar.svg"
-    symbol: "💡"
-    voice: "en-IN-NeerjaNeural"
+    symbol: "⚡"
+    voice: "en-US-BrianMultilingualNeural"
 
 # Sass / SCSS Configuration
 sass:

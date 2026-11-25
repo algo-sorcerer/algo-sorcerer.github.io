@@ -1,12 +1,12 @@
 <section id="characters" class="characters-section">
   <div class="section-container">
     <div class="section-header text-center">
-      <div class="section-tag tag-lavender">EDITORIAL FEATURE // THE VOICES OF ALGOSORCERER</div>
+      <div class="section-tag tag-lavender">STUDIO HOSTS // THE VOICES OF ALGOSORCERER</div>
       <h2 class="section-title">
-        The Architect & <span class="gradient-gold">The Engineer.</span>
+        Alex &amp; <span class="gradient-gold">Sam.</span>
       </h2>
       <p class="section-sub">
-        Every algorithm conceals a philosophy; every software architecture reflects how humans think. Meet the two recurring voices bridging mathematical foundations with real-world engineering.
+        Real engineering conversations over whiteboards—no jargon walls. Meet the two hosts breaking down distributed search, system trade-offs, and core algorithms.
       </p>
     </div>
 
@@ -104,7 +104,7 @@
       <div class="console-header">
         <div class="console-title-wrap">
           <span class="console-label">INTERACTIVE DIALOGUE TRANSCRIPT</span>
-          <h4 class="console-topic" id="dialogue-active-topic">The Mystery of the Call Stack Crash</h4>
+          <h4 class="console-topic" id="dialogue-active-topic">{{ site.data.characters.dialogues.first.title }}</h4>
         </div>
 
         <div class="dialogue-scenario-selector" role="tablist">
@@ -125,9 +125,9 @@
         <div class="transcript-turn turn-{{ turn.speaker }}">
           <div class="turn-speaker-badge">
             {% if turn.speaker == 'acharya' %}
-            <span class="speaker-tag gold">🎓 ACHARYA</span>
+            <span class="speaker-tag gold">🔍 ALEX</span>
             {% else %}
-            <span class="speaker-tag cyan">💡 ANVAY</span>
+            <span class="speaker-tag cyan">⚡ SAM</span>
             {% endif %}
           </div>
           <div class="turn-bubble">

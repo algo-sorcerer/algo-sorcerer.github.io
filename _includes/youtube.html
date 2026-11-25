@@ -1,0 +1,98 @@
+<section id="youtube" class="youtube-section">
+  <div class="section-container">
+    <div class="section-header">
+      <div class="section-tag tag-cyan">YOUTUBE STUDIO // @ALGOSORCERER</div>
+      <h2 class="section-title">
+        Visual System Design &amp; <span class="gradient-gold">Engineering Breakdowns.</span>
+      </h2>
+      <p class="section-sub">
+        Two developer friends—Alex &amp; Sam—breaking down distributed systems, search engines, and core algorithms with 100% procedural animations.
+      </p>
+    </div>
+
+    <!-- Official Channel Banner Card -->
+    <div class="yt-channel-banner-card">
+      <img src="{{ '/assets/brand/channel_banner.png' | relative_url }}" alt="AlgoSorcerer YouTube Banner" class="yt-banner-img">
+      <div class="yt-banner-overlay">
+        <div class="yt-channel-profile">
+          <img src="{{ '/assets/brand/channel_icon.png' | relative_url }}" alt="AlgoSorcerer Avatar" class="yt-avatar">
+          <div>
+            <h3>AlgoSorcerer Studio</h3>
+            <p>{{ site.author.handle }} • System Design, OpenSearch &amp; Algorithmic Thinking</p>
+          </div>
+        </div>
+        <a href="{{ site.author.youtube_url }}?sub_confirmation=1" target="_blank" rel="noopener noreferrer" class="btn-yt-subscribe">
+          ▶ Subscribe on YouTube
+        </a>
+      </div>
+    </div>
+
+    <!-- Curated Series Shelf -->
+    {% if site.data.playlists %}
+    <div class="playlists-shelf">
+      <div class="shelf-header">
+        <h3>
+          Curated Series
+          <span class="shelf-pill">Learning Tracks</span>
+        </h3>
+        <span class="shelf-sub">Structured visual journeys paired with interactive browser labs</span>
+      </div>
+      <div class="playlists-grid">
+        {% for pl in site.data.playlists %}
+        <a href="{{ pl.url }}" target="_blank" rel="noopener noreferrer" class="playlist-card" style="--playlist-gradient: {{ pl.gradient }};">
+          <div class="pl-top">
+            <span class="pl-icon">{{ pl.icon }}</span>
+            <span class="pl-count">{{ pl.count }}</span>
+          </div>
+          <h4>{{ pl.title }}</h4>
+          <p>{{ pl.tagline }}</p>
+          <div class="pl-btn">
+            <span>▶ Explore Series ↗</span>
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Video Grid -->
+    <div class="video-grid">
+      {% for video in site.data.youtube %}
+      <div class="video-card">
+        <a href="{{ video.video_url }}" target="_blank" rel="noopener noreferrer" class="video-thumbnail-wrapper" style="background: {{ video.gradient }}; text-decoration: none;">
+          {% if video.thumbnail %}
+          <img src="{{ video.thumbnail | relative_url }}" alt="{{ video.title }}" class="video-thumb-img" loading="lazy">
+          <div class="video-thumb-overlay"></div>
+          {% elsif video.id and video.id != "none" %}
+          <img src="https://i.ytimg.com/vi/{{ video.id }}/hqdefault.jpg" alt="{{ video.title }}" class="video-thumb-img" loading="lazy" onerror="this.style.display='none'">
+          <div class="video-thumb-overlay"></div>
+          {% endif %}
+          <span class="video-badge">{{ video.badge }}</span>
+          <div class="play-btn">▶</div>
+          <span class="video-duration">{{ video.duration }}</span>
+        </a>
+        <div class="video-info">
+          <span class="video-series">{{ video.series }} • {{ video.format }}</span>
+          <h4>{{ video.title }}</h4>
+          <p>{{ video.description }}</p>
+          <div class="video-tags">
+            {% for tag in video.tags %}
+            <span>#{{ tag }}</span>
+            {% endfor %}
+          </div>
+          <div class="video-card-actions">
+            <a href="{{ video.video_url }}" target="_blank" rel="noopener noreferrer" class="btn-video-watch">
+              <span>▶ Watch on YouTube</span>
+            </a>
+            {% if video.article_url %}
+            <a href="{{ video.article_url | relative_url }}" class="btn-video-article">
+              <span>⚡ Interactive Sim Lab ↗</span>
+            </a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>

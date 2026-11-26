@@ -1,7 +1,7 @@
 - id: "PLWoM32fhTq8I"
   title: "OpenSearch & Distributed Search Mastery"
   url: "https://www.youtube.com/playlist?list=PLWoM32fhTq8I"
-  count: "8 Videos"
+  count: "10 Videos"
   icon: "🔍"
   tagline: "Inverted Indexes, BM25, Shard Allocation Watermarks, Peer Recovery, JVM & Quorum Consensus"
   gradient: "linear-gradient(135deg, #06b6d4 0%, #3b82f6 55%, #1e1b4b 100%)"

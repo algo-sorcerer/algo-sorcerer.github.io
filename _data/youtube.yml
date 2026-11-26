@@ -1,3 +1,16 @@
+- id: "O4bjp9deg6s"
+  title: "Why Deleting 10M OpenSearch Docs Freed ZERO Disk: Tombstones, Merging & ISM (Maya & Sam)"
+  series: "OpenSearch Internals"
+  format: "16:9 Full Video"
+  badge: "MAYA & SAM STORY"
+  duration: "2:50"
+  video_url: "https://www.youtube.com/watch?v=O4bjp9deg6s"
+  article_url: "/experiments/opensearch-distributed-search.html"
+  thumbnail: "/assets/thumbnails/opensearch-segment-merge-story.jpg"
+  gradient: "linear-gradient(135deg, #f472b6 0%, #38bdf8 55%, #0f172a 100%)"
+  description: "Maya and Sam explain why delete_by_query leaves dead bytes on disk via .liv tombstones inside immutable Lucene segments, how TieredMergePolicy (5gb cap) and read-only _forcemerge reclaim space, and how ISM Rollover drops expired indices in O(1)."
+  tags: ["OpenSearch", "Lucene", "SegmentMerge", "ISM", "ForceMerge"]
+
 - id: "CdX4bymkz7Q"
   title: "How Does GPS Actually Work? The Passive Satellite Mystery & Einstein's Relativity"
   series: "How Everyday Tech Actually Works"

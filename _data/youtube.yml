@@ -11,6 +11,19 @@
   description: "Maya and Sam explain why delete_by_query leaves dead bytes on disk via .liv tombstones inside immutable Lucene segments, how TieredMergePolicy (5gb cap) and read-only _forcemerge reclaim space, and how ISM Rollover drops expired indices in O(1)."
   tags: ["OpenSearch", "Lucene", "SegmentMerge", "ISM", "ForceMerge"]
 
+- id: "vphu_EB19Rc"
+  title: "Why Does a Phone Call Ring on Your Mobile Phone Only? | Cellular Network System Design"
+  series: "How Everyday Tech Actually Works"
+  format: "16:9 Full Video"
+  badge: "DEEP DIVE"
+  duration: "3:45"
+  video_url: "https://www.youtube.com/watch?v=vphu_EB19Rc"
+  article_url: "/experiments/cellular-call-routing.html"
+  thumbnail: "/assets/thumbnails/mobile-call-routing.jpg"
+  gradient: "linear-gradient(135deg, #a855f7 0%, #06b6d4 55%, #0f172a 100%)"
+  description: "How your phone stays reachable across 8 billion devices without satellite GPS: hexagonal honeycomb cells, MSISDN vs IMSI vs rotating TMSI privacy, HLR/VLR lookups, MSRN trunk routing, and cell-tower broadcast paging."
+  tags: ["Cellular", "Telecom", "Networking", "SystemDesign", "DistributedSystems"]
+
 - id: "CdX4bymkz7Q"
   title: "How Does GPS Actually Work? The Passive Satellite Mystery & Einstein's Relativity"
   series: "How Everyday Tech Actually Works"

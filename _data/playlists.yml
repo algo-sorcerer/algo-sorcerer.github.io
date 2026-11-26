@@ -17,9 +17,9 @@
 - id: "PLbQuLUwxrxjM"
   title: "How Everyday Tech Actually Works"
   url: "https://www.youtube.com/playlist?list=PLbQuLUwxrxjM"
-  count: "3 Deep Dives"
+  count: "4 Deep Dives"
   icon: "🛰️"
-  tagline: "GPS Atomic Clocks & Relativity, Shazam Spectrogram Hashes & the 200ms Browser Pipeline"
+  tagline: "Cellular Paging, GPS Atomic Clocks & Relativity, Shazam Hashes & the 200ms Browser Pipeline"
   gradient: "linear-gradient(135deg, #10b981 0%, #38bdf8 55%, #0f172a 100%)"
 
 - id: "PLKA8psrpxPKc"

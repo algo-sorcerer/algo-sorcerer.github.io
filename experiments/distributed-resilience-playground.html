@@ -41,6 +41,9 @@ description: "Interactive browser playground for Circuit Breakers (Sliding Windo
       <button class="pg-tab" data-mode="backoff_bulkhead" style="padding:10px 18px; border-radius:999px; border:1px solid rgba(255,255,255,0.16); background:rgba(16,21,33,0.85); color:#cbd5e1; font-weight:700; cursor:pointer; font-size:0.9rem;">
         🚢 4. Backoff + Jitter &amp; Bulkheads
       </button>
+      <button class="pg-tab" data-mode="opensearch_allocation" style="padding:10px 18px; border-radius:999px; border:1px solid rgba(255,255,255,0.16); background:rgba(16,21,33,0.85); color:#cbd5e1; font-weight:700; cursor:pointer; font-size:0.9rem;">
+        🌊 5. OpenSearch Watermarks &amp; Recovery
+      </button>
     </div>
 
     <!-- Main Interactive Sandbox Deck -->
@@ -141,6 +144,14 @@ description: "Interactive browser playground for Circuit Breakers (Sliding Windo
     coffeeHealth: 99,
     saladHealth: 99,
     note: 'Healthy state: isolated thread pools keep Coffee & Salads fast.',
+  };
+
+  // --- State 5: OpenSearch Watermarks & Recovery ---
+  const oa = {
+    node2Disk: 62,
+    node2Down: false,
+    recoveryPhase: 'GREEN', // GREEN | YELLOW_DELAY | PHASE1_SEGMENTS | PHASE2_TRANSLOG | READ_ONLY_95
+    msg: 'Allocation balanced across Rack A & Rack B (low watermark 85% clear).',
   };
 
   function card(x, y, w, h, stroke, fill, r) {
@@ -285,7 +296,7 @@ description: "Interactive browser playground for Circuit Breakers (Sliding Windo
         me.electionNote = `Term ${me.term}: All 5 peers synced with Master N${me.leaderIdx + 1}.`;
         syncHud();
       }));
-    } else {
+    } else if (mode === 'backoff_bulkhead') {
       badgeEl.textContent = 'LAB 4 // RETRY BACKOFF + JITTER & BULKHEAD ISOLATION';
       titleEl.textContent = 'Stop Retry Storms & Contain Broken Dependencies Inside Bulkheads';
       left.appendChild(mkBtn('🔥 Break Muffin / Search DB', '#ef4444', 'rgba(239,68,68,0.22)', () => {
@@ -305,6 +316,44 @@ description: "Interactive browser playground for Circuit Breakers (Sliding Windo
       right.appendChild(mkBtn('💚 Fix Broken Pool', '#10b981', 'rgba(16,185,129,0.2)', () => {
         bb.muffinOvenBroken = false; bb.retryLoad = 12;
         bb.note = 'Recovered: Backoff + Jitter & Bulkheads kept healthy endpoints at zero downtime.';
+        syncHud();
+      }));
+    } else {
+      badgeEl.textContent = 'LAB 5 // OPENSEARCH WATERMARKS, DELAYED TIMEOUT & 2-PHASE RECOVERY';
+      titleEl.textContent = '85%/90%/95% Disk Watermarks, FollowersChecker & Peer Recovery';
+      left.appendChild(mkBtn('💾 +15% Disk Usage', '#f59e0b', 'rgba(245,158,11,0.2)', () => {
+        oa.node2Disk = Math.min(98, oa.node2Disk + 15);
+        if (oa.node2Disk >= 95) {
+          oa.recoveryPhase = 'READ_ONLY_95';
+          oa.msg = `95% FLOOD STAGE (${oa.node2Disk}%): index.blocks.read_only_allow_delete applied!`;
+        } else if (oa.node2Disk >= 90) {
+          oa.msg = `90% HIGH WATERMARK (${oa.node2Disk}%): Actively relocating shards away from Node 2!`;
+        } else if (oa.node2Disk >= 85) {
+          oa.msg = `85% LOW WATERMARK (${oa.node2Disk}%): Stopped allocating NEW shards to Node 2.`;
+        } else {
+          oa.msg = `Node 2 disk at ${oa.node2Disk}% — normal shard allocation allowed.`;
+        }
+        syncHud();
+      }));
+      left.appendChild(mkBtn('🔌 Crash Node 2 (1m Delay)', '#ef4444', 'rgba(239,68,68,0.2)', () => {
+        oa.node2Down = true; oa.recoveryPhase = 'YELLOW_DELAY';
+        oa.msg = 'FollowersChecker detected Node 2 down! Waiting 1m delayed_timeout before 200GB rebalance.';
+        syncHud();
+      }));
+      left.appendChild(mkBtn('🔄 Run 2-Phase Peer Recovery', '#38bdf8', 'rgba(56,189,248,0.2)', () => {
+        oa.node2Down = false;
+        if (oa.recoveryPhase === 'YELLOW_DELAY' || oa.recoveryPhase === 'PHASE1_SEGMENTS') {
+          oa.recoveryPhase = 'PHASE2_TRANSLOG';
+          oa.msg = 'Phase 1 segments streamed (joined replication group) -> Phase 2 replaying Translog up to global_checkpoint!';
+        } else {
+          oa.recoveryPhase = 'GREEN'; oa.node2Disk = Math.min(oa.node2Disk, 72);
+          oa.msg = 'Peer Recovery complete! Replica R0 synced cleanly -> Cluster GREEN.';
+        }
+        syncHud();
+      }));
+      right.appendChild(mkBtn('💚 Reset Disk & Nodes', '#10b981', 'rgba(16,185,129,0.2)', () => {
+        oa.node2Disk = 62; oa.node2Down = false; oa.recoveryPhase = 'GREEN';
+        oa.msg = 'Cluster GREEN: Zone awareness separates P0 (Rack A) and R0 (Rack B).';
         syncHud();
       }));
     }
@@ -345,11 +394,17 @@ description: "Interactive browser playground for Circuit Breakers (Sliding Windo
       mA.style.color = me.leaderIdx !== null ? '#fef08a' : '#fca5a5';
       mB.textContent = `Alive: ${alive}/5`;
       expEl.innerHTML = `<strong style="color:#64e8ff;">Consensus Log:</strong> ${me.electionNote}`;
-    } else {
+    } else if (mode === 'backoff_bulkhead') {
       mA.textContent = bb.muffinOvenBroken ? `Oven: DOWN (Load ${bb.retryLoad}%)` : 'All Pools: HEALTHY';
       mA.style.color = bb.muffinOvenBroken ? '#fbbf24' : '#6ee7b7';
       mB.textContent = `Coffee & Salads: 99% | Jitter: ${bb.jitterEnabled ? 'ON' : 'OFF'}`;
       expEl.innerHTML = `<strong style="color:#64e8ff;">Resilience Telemetry:</strong> ${bb.note}`;
+    } else {
+      const h = oa.recoveryPhase === 'READ_ONLY_95' ? 'READ-ONLY (95%)' : (oa.node2Down || oa.recoveryPhase === 'PHASE2_TRANSLOG' ? 'YELLOW' : 'GREEN');
+      mA.textContent = `Health: ${h} | N2 Disk: ${oa.node2Disk}%`;
+      mA.style.color = h === 'GREEN' ? '#6ee7b7' : (h === 'YELLOW' ? '#fbbf24' : '#fca5a5');
+      mB.textContent = oa.node2Down ? 'Timer: 1m delayed_timeout' : 'Watermarks: 85/90/95%';
+      expEl.innerHTML = `<strong style="color:#64e8ff;">OpenSearch Cluster State:</strong> ${oa.msg}`;
     }
   }
 
@@ -472,7 +527,7 @@ description: "Interactive browser playground for Circuit Breakers (Sliding Windo
       ctx.font = 'bold 13.5px monospace';
       ctx.fillText(me.electionNote.slice(0, 96), W * 0.5, 398);
 
-    } else {
+    } else if (mode === 'backoff_bulkhead') {
       // Backoff + Bulkhead Pools
       const pools = [
         { name: 'POOL A: MUFFIN OVEN', broken: bb.muffinOvenBroken, x: 200, load: bb.retryLoad },
@@ -505,6 +560,39 @@ description: "Interactive browser playground for Circuit Breakers (Sliding Windo
       ctx.fillStyle = '#fef08a';
       ctx.font = 'bold 13.5px monospace';
       ctx.fillText(bb.note.slice(0, 98), W * 0.5, 409);
+    } else {
+      // LAB 5: OpenSearch Watermarks, Delayed Timeout & Peer Recovery
+      const wmCol = oa.node2Disk >= 95 ? '#ef4444' : (oa.node2Disk >= 85 ? '#f59e0b' : '#10b981');
+      card(90, 32, 860, 68, oa.node2Down ? '#f59e0b' : wmCol, 'rgba(10,20,42,0.92)', 14);
+      ctx.fillStyle = '#fef08a';
+      ctx.font = 'bold 17px monospace';
+      ctx.fillText(
+        `ZONE AWARE CLUSTER  |  STATE: ${oa.recoveryPhase}  |  N2 DISK: ${oa.node2Disk}% (85/90/95%)`,
+        W * 0.5, 72
+      );
+
+      const nCards = [
+        { name: 'NODE 1 (Rack A)', sub: 'Primary P0 • FollowersChecker', disk: 58, down: false, col: '#10b981', x: 205 },
+        { name: 'NODE 2 (Rack B)', sub: oa.node2Down ? 'DOWN (1m delayed_timeout)' : (oa.recoveryPhase === 'PHASE2_TRANSLOG' ? 'Phase 2: Translog Catch-Up' : 'Replica R0'), disk: oa.node2Disk, down: oa.node2Down, col: oa.node2Down ? '#ef4444' : wmCol, x: 520 },
+        { name: 'NODE 3 (Rack B)', sub: 'Candidate • LeaderChecker', disk: 46, down: false, col: '#38bdf8', x: 835 },
+      ];
+      nCards.forEach(n => {
+        card(n.x - 138, 136, 276, 210, n.col, n.down ? 'rgba(48,12,18,0.92)' : 'rgba(15,23,42,0.92)', 16);
+        ctx.fillStyle = n.col;
+        ctx.font = 'bold 17px -apple-system, sans-serif';
+        ctx.fillText(n.name, n.x, 178);
+        ctx.fillStyle = '#e2e8f0';
+        ctx.font = 'bold 13px monospace';
+        ctx.fillText(n.sub, n.x, 218);
+        ctx.fillStyle = n.disk >= 95 ? '#fca5a5' : (n.disk >= 85 ? '#fbbf24' : '#6ee7b7');
+        ctx.font = 'bold 26px monospace';
+        ctx.fillText(n.down ? 'OFFLINE' : `${n.disk}% Disk`, n.x, 282);
+      });
+
+      card(90, 370, 860, 64, wmCol, 'rgba(10,16,36,0.92)', 14);
+      ctx.fillStyle = '#fef08a';
+      ctx.font = 'bold 13.5px monospace';
+      ctx.fillText(oa.msg.slice(0, 96), W * 0.5, 407);
     }
 
     requestAnimationFrame(draw);

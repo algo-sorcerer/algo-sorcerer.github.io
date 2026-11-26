@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>200ms Browser Request Lifecycle: Keystroke to Pixels | AlgoSorcerer</title>
+  <style>
+    :root {
+      --bg: #030712;
+      --card-bg: rgba(15, 23, 42, 0.85);
+      --border: rgba(56, 189, 248, 0.25);
+      --cyan: #00f5d4;
+      --sky: #38bdf8;
+      --pink: #f43f5e;
+      --yellow: #fde047;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
+      padding: 24px;
+      line-height: 1.5;
+    }
+    .header {
+      max-width: 1200px;
+      margin: 0 auto 20px auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+    }
+    .title h1 {
+      font-size: 24px;
+      color: var(--sky);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .badge {
+      background: rgba(0, 245, 212, 0.15);
+      border: 1px solid var(--cyan);
+      color: var(--cyan);
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 20px;
+    }
+    .stage-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    }
+    canvas {
+      width: 100%;
+      height: 480px;
+      background: #020617;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.08);
+      display: block;
+    }
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .control-group {
+      background: rgba(30, 41, 59, 0.5);
+      border: 1px solid rgba(255,255,255,0.05);
+      padding: 12px;
+      border-radius: 8px;
+    }
+    .control-group label {
+      font-size: 12px;
+      color: var(--sky);
+      font-weight: bold;
+      display: block;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--cyan);
+    }
+    .btn {
+      background: linear-gradient(135deg, #0284c7, #0369a1);
+      color: #fff;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 13px;
+      transition: all 0.2s;
+      width: 100%;
+      margin-top: 6px;
+    }
+    .btn:hover {
+      background: linear-gradient(135deg, #0ea5e9, #0284c7);
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+    }
+    .btn-pink {
+      background: linear-gradient(135deg, #e11d48, #be123c);
+    }
+    .btn-pink:hover {
+      background: linear-gradient(135deg, #f43f5e, #e11d48);
+      box-shadow: 0 0 12px rgba(244, 63, 94, 0.4);
+    }
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+    .stat-val {
+      font-family: monospace;
+      font-weight: bold;
+      color: var(--cyan);
+    }
+    .step-pill {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid var(--sky);
+      font-size: 11px;
+      margin-bottom: 6px;
+      color: var(--sky);
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="title">
+      <h1>⚡ 200ms Full-Stack Browser Symphony</h1>
+      <span class="badge">Keystroke to Display Pixels</span>
+    </div>
+    <div style="font-size: 12px; color: var(--text-muted);">
+      Interactive Systems Lab by <strong style="color: var(--sky);">AlgoSorcerer</strong>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="stage-card">
+      <canvas id="browserCanvas" width="820" height="480"></canvas>
+      <div style="display: flex; justify-content: space-between; margin-top: 12px; font-size: 11px; color: var(--text-muted);">
+        <span>0ms: Keystroke</span>
+        <span>25ms: DNS Anycast</span>
+        <span>55ms: TLS 1.3</span>
+        <span>100ms: HTTP/2 Edge</span>
+        <span>160ms: DOM / CSSOM</span>
+        <span>200ms: GPU VSYNC</span>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="control-group">
+        <label>Time Cursor (0ms - 200ms)</label>
+        <input type="range" id="timeSlider" min="0" max="200" value="85">
+        <div class="stat-row" style="margin-top: 6px;">
+          <span>Elapsed Time:</span>
+          <span class="stat-val" id="timeVal">85.0 ms</span>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label>Jump to Architectural Stage</label>
+        <button class="btn" onclick="setTime(3)">1. Mechanical Switch & USB (3ms)</button>
+        <button class="btn" onclick="setTime(25)">2. BGP Routing & DNS Anycast (25ms)</button>
+        <button class="btn" onclick="setTime(55)">3. TCP SYN + TLS 1.3 1-RTT (55ms)</button>
+        <button class="btn" onclick="setTime(95)">4. HTTP/2 & GFE Reverse Proxy (95ms)</button>
+        <button class="btn" onclick="setTime(150)">5. DOM / CSSOM & Layout Tree (150ms)</button>
+        <button class="btn btn-pink" onclick="setTime(195)">6. GPU Raster & 120Hz VSYNC (195ms)</button>
+      </div>
+
+      <div class="control-group">
+        <label>Live Latency Budget</label>
+        <div class="stat-row">
+          <span>Active Layer:</span>
+          <span class="stat-val" id="activeLayer" style="color: var(--yellow);">TLS 1.3 Key Exchange</span>
+        </div>
+        <div class="stat-row">
+          <span>Packets In Flight:</span>
+          <span class="stat-val" id="packetsCount">4 Frames</span>
+        </div>
+        <div class="stat-row">
+          <span>RTT Round-Trips:</span>
+          <span class="stat-val">1-RTT (0xECDH)</span>
+        </div>
+        <div class="stat-row">
+          <span>Frame Budget:</span>
+          <span class="stat-val" style="color: #6ee7b7;">8.33 ms (120Hz)</span>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label>Active Protocol Pipeline</label>
+        <div class="step-pill" id="protocolBadge">TLS_AES_256_GCM_SHA384</div>
+        <div style="font-size: 11px; color: var(--text-muted); line-height: 1.4;">
+          Zero round-trip resumption with X25519 elliptic curve key agreement, streaming multiplexed binary frames over fiber optics.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('browserCanvas');
+    const ctx = canvas.getContext('2d');
+    const timeSlider = document.getElementById('timeSlider');
+    let curTime = 85;
+
+    function setTime(ms) {
+      curTime = ms;
+      timeSlider.value = ms;
+      updateLabels();
+    }
+
+    timeSlider.addEventListener('input', () => {
+      curTime = parseFloat(timeSlider.value);
+      updateLabels();
+    });
+
+    function updateLabels() {
+      document.getElementById('timeVal').innerText = curTime.toFixed(1) + ' ms';
+      let layer = '', badge = '';
+      if (curTime < 10) {
+        layer = 'Switch Debounce & USB HID';
+        badge = 'USB 2.0 / HID Interrupt (1000Hz)';
+      } else if (curTime < 40) {
+        layer = 'BGP Anycast & Recursive DNS';
+        badge = 'DNS over UDP (Port 53 / Anycast)';
+      } else if (curTime < 75) {
+        layer = 'TCP SYN + TLS 1.3 1-RTT';
+        badge = 'TLS 1.3 / X25519 ECDHE Lock';
+      } else if (curTime < 125) {
+        layer = 'HTTP/2 Binary Stream & Edge Proxy';
+        badge = 'HPACK Header Compression / GFE';
+      } else if (curTime < 175) {
+        layer = 'DOM Tree, CSSOM & Layout Tree';
+        badge = 'Blink / V8 Tokenizer & Style Recalc';
+      } else {
+        layer = 'GPU Rasterization & VSYNC Flip';
+        badge = 'Direct3D/Metal Tile Raster (120Hz)';
+      }
+      document.getElementById('activeLayer').innerText = layer;
+      document.getElementById('protocolBadge').innerText = badge;
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const W = canvas.width;
+      const H = canvas.height;
+
+      // Draw Top Timeline Header
+      ctx.fillStyle = '#38bdf8';
+      ctx.font = 'bold 16px monospace';
+      ctx.fillText('200ms FULL-STACK BROWSER PIPELINE (TIME = ' + curTime.toFixed(1) + ' ms)', 20, 32);
+
+      // Timeline Progress Track
+      const trackX = 40;
+      const trackY = 60;
+      const trackW = W - 80;
+      const trackH = 14;
+      ctx.fillStyle = '#0f172a';
+      ctx.fillRect(trackX, trackY, trackW, trackH);
+      ctx.strokeStyle = '#334155';
+      ctx.strokeRect(trackX, trackY, trackW, trackH);
+
+      const progW = (curTime / 200.0) * trackW;
+      ctx.fillStyle = '#00f5d4';
+      ctx.fillRect(trackX, trackY, progW, trackH);
+
+      // Stage Dividers on Track
+      const stages = [
+        { ms: 10, label: 'USB' },
+        { ms: 40, label: 'DNS' },
+        { ms: 75, label: 'TLS' },
+        { ms: 125, label: 'HTTP/2' },
+        { ms: 175, label: 'DOM' },
+        { ms: 200, label: 'GPU' }
+      ];
+      stages.forEach(s => {
+        const sx = trackX + (s.ms / 200.0) * trackW;
+        ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+        ctx.beginPath(); ctx.moveTo(sx, trackY); ctx.lineTo(sx, trackY + trackH); ctx.stroke();
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '10px monospace';
+        ctx.fillText(s.label, sx - 10, trackY + 28);
+      });
+
+      // Stage Dynamic Visualization
+      const stageY = 130;
+      if (curTime < 10) {
+        // Keystroke & Hardware
+        ctx.fillStyle = '#fde047';
+        ctx.font = 'bold 15px monospace';
+        ctx.fillText('STAGE 1: HARDWARE KEYSTROKE & USB INTERRUPT (0ms - 10ms)', 40, stageY);
+
+        ctx.strokeStyle = '#38bdf8';
+        ctx.strokeRect(60, stageY + 30, 240, 160);
+        ctx.fillStyle = '#f8fafc';
+        ctx.font = 'bold 13px monospace';
+        ctx.fillText('MECHANICAL SWITCH', 80, stageY + 60);
+        ctx.fillText('Status: Closed Circuit (ENTER)', 80, stageY + 90);
+        ctx.fillText('Debounce Timer: 2.1 ms', 80, stageY + 120);
+        ctx.fillText('USB HID Packet: Fire!', 80, stageY + 150);
+
+        ctx.strokeRect(360, stageY + 30, 380, 160);
+        ctx.fillText('OS KERNEL & BROWSER UI THREAD', 380, stageY + 60);
+        ctx.fillText('• Interrupt Service Routine (IRQ 1)', 380, stageY + 90);
+        ctx.fillText('• KeyDown Event Dispatch to Chrome', 380, stageY + 120);
+        ctx.fillText('• HSTS Preload Check: Enforce HTTPS', 380, stageY + 150);
+      } else if (curTime < 40) {
+        // DNS Anycast
+        ctx.fillStyle = '#38bdf8';
+        ctx.font = 'bold 15px monospace';
+        ctx.fillText('STAGE 2: BGP ROUTING & RECURSIVE ANYCAST DNS (10ms - 40ms)', 40, stageY);
+
+        ctx.strokeStyle = '#00f5d4';
+        ctx.strokeRect(60, stageY + 30, 680, 180);
+        ctx.fillStyle = '#00f5d4';
+        ctx.font = 'bold 13px monospace';
+        ctx.fillText('DNS HIERARCHY RESOLUTION IN 15ms VIA ANYCAST', 80, stageY + 60);
+        ctx.fillStyle = '#f8fafc';
+        ctx.fillText('1. Local Browser Cache: MISS', 80, stageY + 95);
+        ctx.fillText('2. ISP Recursive Resolver -> Query Root Servers (.)', 80, stageY + 125);
+        ctx.fillText('3. Authoritative Nameserver (ns1.google.com): HIT -> 2607:f8b0:4005:805::200e', 80, stageY + 155);
+        ctx.fillText('4. BGP Autonomous System (AS15169) directs to closest edge edge router', 80, stageY + 185);
+      } else if (curTime < 75) {
+        // TLS 1.3
+        ctx.fillStyle = '#00f5d4';
+        ctx.font = 'bold 15px monospace';
+        ctx.fillText('STAGE 3: TCP 3-WAY HANDSHAKE + TLS 1.3 1-RTT (40ms - 75ms)', 40, stageY);
+
+        ctx.strokeStyle = '#f43f5e';
+        ctx.strokeRect(60, stageY + 30, 680, 180);
+        ctx.fillStyle = '#f43f5e';
+        ctx.font = 'bold 13px monospace';
+        ctx.fillText('1-RTT CRYPTOGRAPHIC KEY EXCHANGE', 80, stageY + 60);
+        ctx.fillStyle = '#f8fafc';
+        ctx.fillText('• Packet 1: TCP SYN + TLS ClientHello + KeyShare (X25519)', 80, stageY + 95);
+        ctx.fillText('• Packet 2: TCP SYN-ACK + TLS ServerHello + Finished', 80, stageY + 125);
+        ctx.fillText('• Symmetric Session Keys Derived: AES-GCM-256', 80, stageY + 155);
+        ctx.fillText('• Zero Round-Trip Resumption: Pipe Locked in 28ms!', 80, stageY + 185);
+      } else if (curTime < 125) {
+        // HTTP/2 & GFE
+        ctx.fillStyle = '#fde047';
+        ctx.font = 'bold 15px monospace';
+        ctx.fillText('STAGE 4: HTTP/2 MULTIPLEXING & GOOGLE FRONTEND REVERSE PROXY (75ms - 125ms)', 40, stageY);
+
+        ctx.strokeStyle = '#fde047';
+        ctx.strokeRect(60, stageY + 30, 680, 180);
+        ctx.fillStyle = '#fde047';
+        ctx.font = 'bold 13px monospace';
+        ctx.fillText('BINARY FRAMES & IN-MEMORY SEARCH INDEX', 80, stageY + 60);
+        ctx.fillStyle = '#f8fafc';
+        ctx.fillText('• HTTP/2 Stream 1: GET / HTTP/2 (HPACK Compressed Headers)', 80, stageY + 95);
+        ctx.fillText('• GFE Reverse Proxy terminates TLS in memory', 80, stageY + 125);
+        ctx.fillText('• Distributed Search Index query executed in 12ms', 80, stageY + 155);
+        ctx.fillText('• First HTML chunk streamed over transoceanic fiber back to client', 80, stageY + 185);
+      } else if (curTime < 175) {
+        // DOM / CSSOM
+        ctx.fillStyle = '#38bdf8';
+        ctx.font = 'bold 15px monospace';
+        ctx.fillText('STAGE 5: BROWSER ENGINE: DOM, CSSOM & LAYOUT TREE (125ms - 175ms)', 40, stageY);
+
+        ctx.strokeStyle = '#38bdf8';
+        ctx.strokeRect(60, stageY + 30, 680, 180);
+        ctx.fillStyle = '#38bdf8';
+        ctx.font = 'bold 13px monospace';
+        ctx.fillText('DOCUMENT OBJECT MODEL CONSTRUCTION & GEOMETRY', 80, stageY + 60);
+        ctx.fillStyle = '#f8fafc';
+        ctx.fillText('• Tokenization: Raw Bytes -> Characters -> Tokens -> DOM Nodes', 80, stageY + 95);
+        ctx.fillText('• CSSOM: Parse stylesheets, compute cascade specificity', 80, stageY + 125);
+        ctx.fillText('• Render Tree: Intersect DOM + CSSOM (ignore display: none)', 80, stageY + 155);
+        ctx.fillText('• Layout Phase: Compute exact pixel width, height & (x, y) box coordinates', 80, stageY + 185);
+      } else {
+        // GPU Raster & VSYNC
+        ctx.fillStyle = '#00f5d4';
+        ctx.font = 'bold 15px monospace';
+        ctx.fillText('STAGE 6: GPU LAYER COMPOSITING & 120Hz VSYNC FLIP (175ms - 200ms)', 40, stageY);
+
+        ctx.strokeStyle = '#00f5d4';
+        ctx.strokeRect(60, stageY + 30, 680, 180);
+        ctx.fillStyle = '#00f5d4';
+        ctx.font = 'bold 13px monospace';
+        ctx.fillText('GPU HARDWARE ACCELERATION & DISPLAY FLIP', 80, stageY + 60);
+        ctx.fillStyle = '#f8fafc';
+        ctx.fillText('• Paint Phase: Convert layout boxes into Skia drawing command lists', 80, stageY + 95);
+        ctx.fillText('• GPU Tiling: Rasterize vector glyphs into raw pixel bitmaps in VRAM', 80, stageY + 125);
+        ctx.fillText('• Compositor Thread synchronizes with display refresh (120Hz = 8.33ms budget)', 80, stageY + 155);
+        ctx.fillText('• VSYNC Signal: Front buffer flips to screen! Search page fully illuminated!', 80, stageY + 185);
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    draw();
+  </script>
+</body>
+</html>

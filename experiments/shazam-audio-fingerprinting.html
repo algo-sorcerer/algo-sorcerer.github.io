@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shazam Audio Fingerprinting & Time-Offset Histogram Lab | AlgoSorcerer</title>
+  <style>
+    :root {
+      --bg: #030712;
+      --card-bg: rgba(15, 23, 42, 0.85);
+      --border: rgba(56, 189, 248, 0.25);
+      --cyan: #00f5d4;
+      --sky: #38bdf8;
+      --pink: #f43f5e;
+      --yellow: #fde047;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
+      padding: 24px;
+      line-height: 1.5;
+    }
+    .header {
+      max-width: 1200px;
+      margin: 0 auto 20px auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+    }
+    .title h1 {
+      font-size: 24px;
+      color: var(--sky);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .badge {
+      background: rgba(0, 245, 212, 0.15);
+      border: 1px solid var(--cyan);
+      color: var(--cyan);
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 20px;
+    }
+    .stage-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+    }
+    canvas {
+      width: 100%;
+      height: 480px;
+      background: #020617;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.08);
+      display: block;
+    }
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .control-group {
+      background: rgba(30, 41, 59, 0.5);
+      border: 1px solid rgba(255,255,255,0.05);
+      padding: 12px;
+      border-radius: 8px;
+    }
+    .control-group label {
+      font-size: 12px;
+      color: var(--sky);
+      font-weight: bold;
+      display: block;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--cyan);
+    }
+    .btn {
+      background: linear-gradient(135deg, #0284c7, #0369a1);
+      color: #fff;
+      border: none;
+      padding: 10px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 13px;
+      transition: all 0.2s;
+      width: 100%;
+      margin-top: 6px;
+    }
+    .btn:hover {
+      background: linear-gradient(135deg, #0ea5e9, #0284c7);
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.4);
+    }
+    .btn-pink {
+      background: linear-gradient(135deg, #e11d48, #be123c);
+    }
+    .btn-pink:hover {
+      background: linear-gradient(135deg, #f43f5e, #e11d48);
+      box-shadow: 0 0 12px rgba(244, 63, 94, 0.4);
+    }
+    .stat-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin-bottom: 4px;
+    }
+    .stat-val {
+      font-family: monospace;
+      font-weight: bold;
+      color: var(--cyan);
+    }
+    .hash-list {
+      max-height: 140px;
+      overflow-y: auto;
+      font-family: monospace;
+      font-size: 11px;
+      background: #020617;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .hash-item {
+      padding: 3px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      color: var(--yellow);
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="title">
+      <h1>🎵 Shazam Audio Fingerprinting Lab</h1>
+      <span class="badge">Avery Wang Algorithm</span>
+    </div>
+    <div style="font-size: 12px; color: var(--text-muted);">
+      Interactive Systems Lab by <strong style="color: var(--sky);">AlgoSorcerer</strong>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="stage-card">
+      <canvas id="shazamCanvas" width="820" height="480"></canvas>
+      <div style="display: flex; justify-content: space-between; margin-top: 12px; font-size: 11px; color: var(--text-muted);">
+        <span>Stage 1: Raw Waveform & Noise</span>
+        <span>Stage 2: 2D FFT Spectrogram</span>
+        <span>Stage 3: Constellation Peaks</span>
+        <span>Stage 4: Combinatorial Hashes</span>
+        <span>Stage 5: Time-Offset Spike</span>
+      </div>
+    </div>
+
+    <div class="controls">
+      <div class="control-group">
+        <label>Noise Injection (Bar Ambience)</label>
+        <input type="range" id="noiseSlider" min="0" max="100" value="45">
+        <div class="stat-row" style="margin-top: 6px;">
+          <span>SNR (Signal-to-Noise):</span>
+          <span class="stat-val" id="snrVal">-8.5 dB</span>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label>Simulation View Mode</label>
+        <button class="btn" onclick="setViewMode(0)">1. Raw Waveform Failure</button>
+        <button class="btn" onclick="setViewMode(1)">2. 2D FFT Spectrogram</button>
+        <button class="btn" onclick="setViewMode(2)">3. Constellation Peaks</button>
+        <button class="btn" onclick="setViewMode(3)">4. Combinatorial Hashing</button>
+        <button class="btn btn-pink" onclick="setViewMode(4)">5. Time-Offset Histogram</button>
+      </div>
+
+      <div class="control-group">
+        <label>Live Avery Wang Telemetry</label>
+        <div class="stat-row">
+          <span>Target Song:</span>
+          <span class="stat-val" style="color: #f43f5e;">Midnight Cyber Symphony</span>
+        </div>
+        <div class="stat-row">
+          <span>Constellation Stars:</span>
+          <span class="stat-val" id="starCount">34 Peaks</span>
+        </div>
+        <div class="stat-row">
+          <span>Peak Time Offset:</span>
+          <span class="stat-val">+42.45 sec</span>
+        </div>
+        <div class="stat-row">
+          <span>Match Confidence:</span>
+          <span class="stat-val" style="color: #6ee7b7;">99.98% (LOCK)</span>
+        </div>
+        <div class="stat-row">
+          <span>Lookup Latency:</span>
+          <span class="stat-val">42.1 ms</span>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <label>Sample Generated Hashes [F1:F2:ΔT]</label>
+        <div class="hash-list">
+          <div class="hash-item">[820Hz : 1420Hz : +0.35s] -> 0x3F8A12</div>
+          <div class="hash-item">[820Hz : 650Hz : +0.82s] -> 0x9B1C44</div>
+          <div class="hash-item">[820Hz : 1890Hz : +1.20s] -> 0xE25D89</div>
+          <div class="hash-item">[1420Hz : 2100Hz : +0.48s] -> 0x7A4C19</div>
+          <div class="hash-item">[650Hz : 1100Hz : +0.65s] -> 0x11D89F</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('shazamCanvas');
+    const ctx = canvas.getContext('2d');
+    let viewMode = 4;
+    let t = 0;
+    const noiseSlider = document.getElementById('noiseSlider');
+
+    function setViewMode(m) {
+      viewMode = m;
+    }
+
+    noiseSlider.addEventListener('input', () => {
+      const v = noiseSlider.value;
+      const snr = (20 - (v * 0.35)).toFixed(1);
+      document.getElementById('snrVal').innerText = snr + ' dB';
+    });
+
+    function draw() {
+      t += 0.03;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      const W = canvas.width;
+      const H = canvas.height;
+      const noise = noiseSlider.value / 100.0;
+
+      if (viewMode === 0) {
+        // Waveform View
+        ctx.fillStyle = '#38bdf8';
+        ctx.font = 'bold 16px monospace';
+        ctx.fillText('1. RAW AUDIO WAVEFORM CORRELATION (FAILS IN NOISE)', 20, 32);
+
+        // Clean
+        ctx.fillStyle = '#00f5d4';
+        ctx.font = '12px monospace';
+        ctx.fillText('ORIGINAL STUDIO MASTER (Clean Waveform)', 20, 70);
+        ctx.strokeStyle = '#00f5d4';
+        ctx.lineWidth = 2.0;
+        ctx.beginPath();
+        for (let x = 0; x < W - 40; x += 3) {
+          const y = 130 + Math.sin(x * 0.04 + t * 4) * 35 + Math.sin(x * 0.08 + t * 6) * 15;
+          if (x === 0) ctx.moveTo(20 + x, y); else ctx.lineTo(20 + x, y);
+        }
+        ctx.stroke();
+
+        // Noisy Mic
+        ctx.fillStyle = '#f43f5e';
+        ctx.fillText('LOUD BAR MICROPHONE (With +18dB Background Chatter)', 20, 240);
+        ctx.strokeStyle = '#f43f5e';
+        ctx.lineWidth = 1.8;
+        ctx.beginPath();
+        for (let x = 0; x < W - 40; x += 3) {
+          const s1 = Math.sin(x * 0.04 + t * 4) * 20;
+          const n = (Math.sin(x * 0.35 + t * 12) + Math.cos(x * 0.72 - t * 8)) * (35 * noise);
+          const y = 320 + s1 + n;
+          if (x === 0) ctx.moveTo(20 + x, y); else ctx.lineTo(20 + x, y);
+        }
+        ctx.stroke();
+
+        // Footer alert
+        ctx.fillStyle = '#fca5a5';
+        ctx.font = 'bold 13px monospace';
+        ctx.fillText('CROSS CORRELATION MATCH: ' + (14 - noise * 10).toFixed(1) + '% (UNUSABLE IN REALITY)', 20, 440);
+      } else if (viewMode === 1) {
+        // Spectrogram View
+        ctx.fillStyle = '#38bdf8';
+        ctx.font = 'bold 16px monospace';
+        ctx.fillText('2. 2D FFT SPECTROGRAM (TIME vs FREQUENCY HEATMAP)', 20, 32);
+
+        const cols = 40;
+        const rows = 16;
+        const cW = (W - 80) / cols;
+        const rH = 340 / rows;
+
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            const freq = (rows - 1 - r);
+            const harmonic = Math.sin(freq * 1.5 + (c + t * 4) * 0.5);
+            const val = Math.max(0, Math.min(1, (harmonic + 1) * 0.5 + (Math.random() * noise * 0.4)));
+            let col;
+            if (val > 0.85) col = '#ffffff';
+            else if (val > 0.65) col = '#fde047';
+            else if (val > 0.45) col = '#f43f5e';
+            else if (val > 0.25) col = '#0284c7';
+            else col = '#0f172a';
+
+            ctx.fillStyle = col;
+            ctx.fillRect(40 + c * cW, 60 + r * rH, cW - 1, rH - 1);
+          }
+        }
+      } else if (viewMode === 2) {
+        // Constellation Map
+        ctx.fillStyle = '#38bdf8';
+        ctx.font = 'bold 16px monospace';
+        ctx.fillText('3. CONSTELLATION MAP: EXTRACTING LOCAL ENERGY MAXIMA', 20, 32);
+
+        const starSeeds = [
+          [0.10, 0.75], [0.15, 0.35], [0.22, 0.55], [0.28, 0.85],
+          [0.35, 0.25], [0.40, 0.60], [0.48, 0.40], [0.55, 0.80],
+          [0.62, 0.30], [0.68, 0.70], [0.75, 0.50], [0.82, 0.20],
+          [0.88, 0.65], [0.94, 0.45], [0.18, 0.90], [0.52, 0.15],
+        ];
+
+        starSeeds.forEach((s, idx) => {
+          const sx = 40 + s[0] * (W - 80);
+          const sy = 60 + s[1] * 340;
+          ctx.fillStyle = (idx % 2 === 0) ? '#fde047' : '#00f5d4';
+          ctx.beginPath();
+          ctx.arc(sx, sy, 7 + Math.sin(t * 3 + idx) * 2, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.strokeStyle = '#fff';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(sx - 12, sy); ctx.lineTo(sx + 12, sy);
+          ctx.moveTo(sx, sy - 12); ctx.lineTo(sx, sy + 12);
+          ctx.stroke();
+        });
+      } else if (viewMode === 3) {
+        // Combinatorial Hashing
+        ctx.fillStyle = '#38bdf8';
+        ctx.font = 'bold 16px monospace';
+        ctx.fillText('4. COMBINATORIAL HASHING: ANCHOR PEAKS & TARGET ZONES', 20, 32);
+
+        const ax = 180, ay = 220;
+        ctx.fillStyle = '#fde047';
+        ctx.beginPath(); ctx.arc(ax, ay, 12, 0, Math.PI * 2); ctx.fill();
+        ctx.fillText('ANCHOR (t1, f1)', ax - 50, ay - 20);
+
+        // Target box
+        ctx.strokeStyle = '#38bdf8';
+        ctx.lineWidth = 1.5;
+        ctx.strokeRect(ax + 40, ay - 90, 340, 180);
+        ctx.fillStyle = 'rgba(56, 189, 248, 0.1)';
+        ctx.fillRect(ax + 40, ay - 90, 340, 180);
+
+        const targets = [
+          { tx: ax + 110, ty: ay - 40, f2: '1420Hz', dt: '+0.35s' },
+          { tx: ax + 210, ty: ay + 50, f2: '650Hz', dt: '+0.82s' },
+          { tx: ax + 290, ty: ay - 10, f2: '1890Hz', dt: '+1.20s' },
+        ];
+
+        targets.forEach(tg => {
+          ctx.strokeStyle = '#00f5d4';
+          ctx.lineWidth = 2;
+          ctx.beginPath(); ctx.moveTo(ax, ay); ctx.lineTo(tg.tx, tg.ty); ctx.stroke();
+
+          ctx.fillStyle = '#00f5d4';
+          ctx.beginPath(); ctx.arc(tg.tx, tg.ty, 8, 0, Math.PI * 2); ctx.fill();
+          ctx.fillText(tg.f2 + ' (' + tg.dt + ')', tg.tx - 25, tg.ty - 14);
+        });
+      } else if (viewMode === 4) {
+        // Time Offset Histogram
+        ctx.fillStyle = '#38bdf8';
+        ctx.font = 'bold 16px monospace';
+        ctx.fillText('5. TIME-OFFSET HISTOGRAM: NOISE SCATTERS, TRUE SONG SPIKES', 20, 32);
+
+        // Left: Scatter
+        ctx.strokeStyle = '#475569';
+        ctx.strokeRect(40, 60, 340, 340);
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '12px monospace';
+        ctx.fillText('SCATTER PLOT: (t_song - t_sample)', 80, 85);
+
+        // Random dots
+        ctx.fillStyle = 'rgba(148, 163, 184, 0.35)';
+        for (let i = 0; i < 70; i++) {
+          const rx = 50 + ((i * 47) % 320);
+          const ry = 95 + ((i * 31) % 290);
+          ctx.beginPath(); ctx.arc(rx, ry, 2.5, 0, Math.PI * 2); ctx.fill();
+        }
+
+        // True vertical column at +42s
+        ctx.fillStyle = '#00f5d4';
+        for (let j = 0; j < 30; j++) {
+          ctx.beginPath(); ctx.arc(210, 95 + j * 9.5, 3.5, 0, Math.PI * 2); ctx.fill();
+        }
+        ctx.fillText('Offset = +42.4s', 160, 420);
+
+        // Right: Histogram
+        ctx.strokeStyle = '#475569';
+        ctx.strokeRect(420, 60, 360, 340);
+        ctx.fillStyle = '#fb7185';
+        ctx.fillText('HISTOGRAM SPIKE (MATCH COUNT)', 480, 85);
+
+        for (let b = 0; b < 14; b++) {
+          const bx = 445 + b * 24;
+          let bh = (b === 7) ? 220 + Math.sin(t * 4) * 12 : (6 + (b % 3) * 6);
+          let col = (b === 7) ? '#f43f5e' : '#475569';
+          ctx.fillStyle = col;
+          ctx.fillRect(bx, 380 - bh, 18, bh);
+        }
+        ctx.fillStyle = '#f43f5e';
+        ctx.font = 'bold 12px monospace';
+        ctx.fillText('COUNT: 38 MATCHES!', 560, 130);
+      }
+
+      requestAnimationFrame(draw);
+    }
+
+    draw();
+  </script>
+</body>
+</html>

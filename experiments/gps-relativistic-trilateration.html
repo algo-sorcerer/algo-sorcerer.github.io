@@ -1,0 +1,294 @@
+---
+layout: default
+title: "How Does GPS Actually Work? Relativistic 4-Sphere Trilateration Playground — AlgoSorcerer"
+description: "Interactive visual simulator for GPS positioning: 31 passive MEO satellites, 4-sphere geometric trilateration, solving receiver clock bias, and Einstein's General & Special Relativity corrections (+38 μs/day)."
+---
+
+<section class="youtube-section" style="padding-top: 118px; padding-bottom: 80px;">
+  <div class="section-container">
+    <div class="section-header">
+      <div class="section-tag tag-cyan">SATELLITE SYSTEMS &amp; RELATIVISTIC NAVIGATION // ALGOSORCERER</div>
+      <h1 class="section-title" style="font-size: clamp(2rem, 4.4vw, 3.2rem);">
+        The GPS Satellite Mystery: <span class="gradient-gold">Trilateration, Einstein's Relativity &amp; Zero Uplink.</span>
+      </h1>
+      <p class="section-sub">
+        Your phone has no transmitter to space; GPS satellites have zero idea you exist. Explore the pure one-way broadcast math: 4 intersecting spheres, speed-of-light time-of-flight delays, receiver clock bias solving, and Einstein's $+38.7\,\mu\text{s}/\text{day}$ relativistic time dilation.
+      </p>
+    </div>
+
+    <!-- Lexicon Grid -->
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin: 36px 0;">
+      <div style="background: rgba(15,23,42,0.8); border: 1px solid rgba(56,189,248,0.25); border-radius: 12px; padding: 22px;">
+        <h3 style="color:#38bdf8; font-size:1.15rem; margin-bottom:8px;">🛰️ 100% Passive Receiver</h3>
+        <p style="color:#94a3b8; font-size:0.92rem; line-height:1.6;">
+          Your phone has zero uplink to space. Satellites broadcast only two data fields: their current ephemeris orbital location and atomic timestamp ($t_{\text{send}}$). Your handset purely listens like an FM radio.
+        </p>
+      </div>
+      <div style="background: rgba(15,23,42,0.8); border: 1px solid rgba(245,158,11,0.25); border-radius: 12px; padding: 22px;">
+        <h3 style="color:#f59e0b; font-size:1.15rem; margin-bottom:8px;">⏱️ 4-Sphere Trilateration</h3>
+        <p style="color:#94a3b8; font-size:0.92rem; line-height:1.6;">
+          Three satellites intersect at two points in space. But cheap phone quartz clocks have drift ($\Delta t$). A <strong>fourth satellite</strong> provides the fourth algebraic equation, solving $(x, y, z)$ and internal clock bias simultaneously.
+        </p>
+      </div>
+      <div style="background: rgba(15,23,42,0.8); border: 1px solid rgba(236,72,153,0.25); border-radius: 12px; padding: 22px;">
+        <h3 style="color:#ec4899; font-size:1.15rem; margin-bottom:8px;">🌌 Einstein's Relativity (+38 μs)</h3>
+        <p style="color:#94a3b8; font-size:0.92rem; line-height:1.6;">
+          Special Relativity slows satellite clocks by $-7.2\,\mu\text{s}/\text{day}$ due to speed. General Relativity speeds them up by $+45.9\,\mu\text{s}/\text{day}$ due to weaker gravity. Net drift is **$+38.7\,\mu\text{s}/\text{day}$** ($11.6\text{ km}$ error without Einstein!).
+        </p>
+      </div>
+      <div style="background: rgba(15,23,42,0.8); border: 1px solid rgba(16,185,129,0.25); border-radius: 12px; padding: 22px;">
+        <h3 style="color:#10b981; font-size:1.15rem; margin-bottom:8px;">📻 CDMA &amp; PRN Gold Codes</h3>
+        <p style="color:#94a3b8; font-size:0.92rem; line-height:1.6;">
+          All 31 satellites broadcast on the exact same 1575.42 MHz (L1) frequency without colliding. Each satellite modulates a unique orthogonal 1023-bit Gold Code, extracted from noise via autocorrelation.
+        </p>
+      </div>
+    </div>
+
+    <!-- Interactive Simulation Box -->
+    <div style="background: #020617; border: 1px solid #1e293b; border-radius: 16px; padding: 20px; box-shadow: 0 20px 40px rgba(0,0,0,0.6);">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+        <div style="font-weight:bold; color:#f8fafc; font-size:1.1rem; display:flex; align-items:center; gap:8px;">
+          <span>🛰️ ORBITAL CONSTELLATION &amp; 4-SPHERE TRILATERATION LAB</span>
+        </div>
+        <div style="display:flex; gap:16px; font-size:0.85rem; font-family:monospace;">
+          <span style="color:#38bdf8;">● GPS Satellite (MEO 20,200km)</span>
+          <span style="color:#00f5d4;">● Range Sphere Intersection</span>
+          <span style="color:#fee440;">● Receiver Phone (Ground)</span>
+        </div>
+      </div>
+
+      <div style="border-radius:12px; overflow:hidden; position:relative; background:#070b19;">
+        <canvas id="gpsCanvas" width="960" height="520" style="width:100%; height:auto; display:block; cursor:crosshair;"></canvas>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-top:16px; flex-wrap:wrap; gap:12px;">
+        <div style="display:flex; gap:10px; align-items:center;">
+          <button id="btnToggleRelativity" style="background:#0284c7; color:#fff; border:none; padding:10px 20px; border-radius:8px; font-weight:bold; cursor:pointer;">
+            🌌 Toggle Einstein Relativity
+          </button>
+          <button id="btnAddSat" style="background:#1e293b; color:#94a3b8; border:1px solid #334155; padding:10px 16px; border-radius:8px; cursor:pointer;">
+            ➕ Cycle Satellites (1 to 4)
+          </button>
+          <button id="btnResetDrift" style="background:#1e293b; color:#94a3b8; border:1px solid #334155; padding:10px 16px; border-radius:8px; cursor:pointer;">
+            🔄 Reset Drift
+          </button>
+        </div>
+        <div id="relativityStatus" style="color:#00f5d4; font-size:0.85rem; font-family:monospace; font-weight:bold;">
+          Einstein Relativity: ENABLED (+38.7 μs/day pre-compensated)
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function() {
+    const canvas = document.getElementById('gpsCanvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    let relativityEnabled = true;
+    let activeSatsCount = 4;
+    let accumulatedDriftMeters = 0;
+
+    let satellites = [
+      { id: 'PRN-01', angle: 0.4, r: 210, col: '#38bdf8' },
+      { id: 'PRN-07', angle: 1.8, r: 210, col: '#00f5d4' },
+      { id: 'PRN-14', angle: 3.2, r: 210, col: '#a855f7' },
+      { id: 'PRN-22', angle: 4.8, r: 210, col: '#f59e0b' }
+    ];
+
+    document.getElementById('btnToggleRelativity').onclick = () => {
+      relativityEnabled = !relativityEnabled;
+      const stat = document.getElementById('relativityStatus');
+      if (relativityEnabled) {
+        stat.style.color = '#00f5d4';
+        stat.innerText = 'Einstein Relativity: ENABLED (+38.7 μs/day pre-compensated)';
+      } else {
+        stat.style.color = '#ef4444';
+        stat.innerText = 'Einstein Relativity: DISABLED (Drifting +485 meters / hour!)';
+      }
+    };
+
+    document.getElementById('btnAddSat').onclick = () => {
+      activeSatsCount = (activeSatsCount % 4) + 1;
+    };
+
+    document.getElementById('btnResetDrift').onclick = () => {
+      accumulatedDriftMeters = 0;
+    };
+
+    let lastT = performance.now();
+    function render(now) {
+      const dt = Math.min((now - lastT) / 1000, 0.1);
+      lastT = now;
+      const t = now / 1000;
+
+      if (!relativityEnabled) {
+        accumulatedDriftMeters += 134 * dt; // drifts ~485m per hour in fast sim
+      }
+
+      ctx.fillStyle = '#070b19';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      const cx = canvas.width * 0.5;
+      const cy = canvas.height * 0.52;
+
+      // Draw Earth in Center
+      const earthR = 68;
+      const grad = ctx.createRadialGradient(cx, cy, 10, cx, cy, earthR * 1.5);
+      grad.addColorStop(0, '#0284c7');
+      grad.addColorStop(0.7, '#0369a1');
+      grad.addColorStop(1, '#082f49');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(cx, cy, earthR, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Earth latitude / longitude
+      ctx.strokeStyle = 'rgba(56, 189, 248, 0.25)';
+      ctx.lineWidth = 1;
+      for (let i = -2; i <= 2; i++) {
+        ctx.beginPath();
+        ctx.ellipse(cx, cy + i * 18, Math.sqrt(Math.max(0, earthR*earthR - i*i*324)), 10, 0, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+
+      // Orbital Track Ring (MEO 20,200 km)
+      const orbitR = 210;
+      ctx.strokeStyle = 'rgba(56, 189, 248, 0.2)';
+      ctx.lineWidth = 1.2;
+      ctx.setLineDash([6, 6]);
+      ctx.beginPath();
+      ctx.arc(cx, cy, orbitR, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Receiver Phone on Ground Surface
+      const phoneAngle = -Math.PI * 0.5;
+      const truePhoneX = cx + earthR * Math.cos(phoneAngle);
+      const truePhoneY = cy + earthR * Math.sin(phoneAngle);
+      const phoneX = truePhoneX + (relativityEnabled ? 0 : Math.min(180, accumulatedDriftMeters * 0.2));
+      const phoneY = truePhoneY;
+
+      // Draw Satellites and Range Spheres
+      satellites.slice(0, activeSatsCount).forEach((sat, idx) => {
+        const curAngle = sat.angle + t * 0.08;
+        const sx = cx + sat.r * Math.cos(curAngle);
+        const sy = cy + sat.r * Math.sin(curAngle);
+
+        // Range Sphere (circle from sat to phone)
+        const dist = Math.hypot(sx - phoneX, sy - phoneY);
+        ctx.strokeStyle = `rgba(${idx === 0 ? '56,189,248' : idx === 1 ? '0,245,212' : idx === 2 ? '168,85,247' : '245,158,11'}, 0.35)`;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.arc(sx, sy, dist, 0, Math.PI * 2);
+        ctx.stroke();
+
+        // Downlink Signal Beam
+        ctx.strokeStyle = sat.col;
+        ctx.setLineDash([4, 4]);
+        ctx.lineWidth = 1.2;
+        ctx.beginPath();
+        ctx.moveTo(sx, sy);
+        ctx.lineTo(phoneX, phoneY);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Satellite Model (Solar wings + body)
+        ctx.save();
+        ctx.translate(sx, sy);
+        ctx.rotate(curAngle + Math.PI * 0.5);
+        ctx.fillStyle = '#0f172a';
+        ctx.strokeStyle = sat.col;
+        ctx.lineWidth = 1.5;
+        ctx.fillRect(-6, -6, 12, 12);
+        ctx.strokeRect(-6, -6, 12, 12);
+
+        // Solar panels
+        ctx.fillStyle = '#0284c7';
+        ctx.fillRect(-22, -4, 14, 8);
+        ctx.fillRect(8, -4, 14, 8);
+        ctx.restore();
+
+        // Label
+        ctx.fillStyle = sat.col;
+        ctx.font = '10px monospace';
+        ctx.textAlign = 'center';
+        ctx.fillText(`${sat.id}`, sx, sy - 14);
+      });
+
+      // User Pinpoint Dot on Phone
+      ctx.fillStyle = relativityEnabled ? '#00f5d4' : '#ef4444';
+      ctx.beginPath();
+      ctx.arc(phoneX, phoneY, 5 + Math.sin(t * 8) * 1.5, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Telemetry Left
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
+      ctx.strokeStyle = '#1e293b';
+      ctx.fillRect(15, 15, 260, 150);
+      ctx.strokeRect(15, 15, 260, 150);
+
+      ctx.fillStyle = '#38bdf8';
+      ctx.font = 'bold 11px monospace';
+      ctx.textAlign = 'left';
+      ctx.fillText('TRILATERATION TELEMETRY', 25, 34);
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '10px sans-serif';
+      ctx.fillText('Active Satellites:', 25, 54);
+      ctx.fillStyle = '#f8fafc';
+      ctx.fillText(`${activeSatsCount} of 4 Locked`, 145, 54);
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.fillText('Geometric Solution:', 25, 74);
+      ctx.fillStyle = activeSatsCount === 4 ? '#00f5d4' : (activeSatsCount === 3 ? '#f59e0b' : '#ef4444');
+      ctx.fillText(activeSatsCount === 4 ? 'Pinpoint (X,Y,Z,dt)' : (activeSatsCount === 3 ? '2 Points (Needs 4th)' : 'Ambiguous Ring'), 145, 74);
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.fillText('Receiver Uplink:', 25, 94);
+      ctx.fillStyle = '#00f5d4';
+      ctx.fillText('0 bps (Pure Passive)', 145, 94);
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.fillText('Relativistic Error:', 25, 114);
+      ctx.fillStyle = relativityEnabled ? '#00f5d4' : '#ef4444';
+      ctx.fillText(relativityEnabled ? '0.00 m (Corrected)' : `+${Math.round(accumulatedDriftMeters)} m DRIFT`, 145, 114);
+
+      // Relativity Card Right
+      ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
+      ctx.strokeStyle = '#1e293b';
+      ctx.fillRect(canvas.width - 285, 15, 270, 150);
+      ctx.strokeRect(canvas.width - 285, 15, 270, 150);
+
+      ctx.fillStyle = '#ec4899';
+      ctx.font = 'bold 11px monospace';
+      ctx.fillText("EINSTEIN'S RELATIVITY DRIFT", canvas.width - 272, 34);
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '10px sans-serif';
+      ctx.fillText('Special Relativity (Speed):', canvas.width - 272, 54);
+      ctx.fillStyle = '#38bdf8';
+      ctx.fillText('-7.2 μs / day (Slower)', canvas.width - 135, 54);
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.fillText('General Relativity (Gravity):', canvas.width - 272, 74);
+      ctx.fillStyle = '#f59e0b';
+      ctx.fillText('+45.9 μs / day (Faster)', canvas.width - 135, 74);
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.fillText('Net Daily Time Shift:', canvas.width - 272, 94);
+      ctx.fillStyle = '#00f5d4';
+      ctx.fillText('+38.7 μs / day', canvas.width - 135, 94);
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.fillText('Without Einstein Math:', canvas.width - 272, 114);
+      ctx.fillStyle = '#ef4444';
+      ctx.fillText('11.6 km / day Error!', canvas.width - 135, 114);
+
+      requestAnimationFrame(render);
+    }
+    requestAnimationFrame(render);
+  })();
+</script>

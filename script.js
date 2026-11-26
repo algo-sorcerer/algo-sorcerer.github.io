@@ -1322,6 +1322,16 @@
   const dialogueTakeaway = document.getElementById('dialogue-takeaway-text');
 
   const dialogueTranscripts = {
+    jvm_fielddata_oom: {
+      topic: 'OpenSearch Reliability & Circuit Breakers',
+      takeaway: 'Never aggregate or sort on analyzed text fields; rely on off-heap keyword doc_values, <=31GB JVM heap, and 95% Parent Circuit Breakers.',
+      turns: [
+        { speaker: 'maya', name: '🌸 MAYA', roleClass: 'rose', text: 'Alex, one dashboard sort query froze Node 3 for twelve seconds—and FollowersChecker kicked it straight out of the cluster!' },
+        { speaker: 'acharya', name: '🔍 ALEX', roleClass: 'gold', text: 'Classic trap, Maya! Sorting analyzed text forced OpenSearch to uninvert massive fielddata strings straight onto the tiny JVM Heap—like dumping five hundred encyclopedias on a coffee desk.' },
+        { speaker: 'maya', name: '🌸 MAYA', roleClass: 'rose', text: 'So switching to non-analyzed keyword fields stores columnar doc_values off-heap on disk, AND the 95% Parent Memory Circuit Breaker throws CircuitBreakingException before a GC freeze?' },
+        { speaker: 'acharya', name: '🔍 ALEX', roleClass: 'gold', text: 'Exactly! Combine keyword doc_values, active 95% memory breakers, and a 31GB compressed-oops JVM cap so half your RAM stays in OS Page Cache.' }
+      ]
+    },
     opensearch_cluster: {
       topic: 'OpenSearch Sharding & Inverted Index',
       takeaway: 'Inverted indexes accelerate term lookups, while hash-routed primary shards and replica failover give OpenSearch horizontal throughput and high availability.',

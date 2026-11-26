@@ -97,6 +97,48 @@
           </div>
         </div>
       </div>
+
+      <!-- Maya Portrait & Dossier -->
+      <div class="char-dossier maya-dossier">
+        <div class="dossier-hero-row">
+          <div class="dossier-portrait-showcase">
+            <div class="portrait-ambient-glow rose-glow"></div>
+            <div class="portrait-card rose-border">
+              <img src="{{ site.data.characters.maya.avatar | relative_url }}"
+                   alt="{{ site.data.characters.maya.name }}"
+                   class="full-character-img"
+                   onerror="this.src='{{ site.data.characters.maya.vector_avatar | relative_url }}'">
+              <span class="portrait-sub-tag">RELIABILITY CO-HOST</span>
+            </div>
+          </div>
+
+          <div class="dossier-header-meta">
+            <div class="dossier-pill rose">{{ site.data.characters.maya.badge }}</div>
+            <h3 class="dossier-name">{{ site.data.characters.maya.name }}</h3>
+            <span class="dossier-role">{{ site.data.characters.maya.role }}</span>
+            <blockquote class="dossier-quote rose-quote">
+              <span class="quote-mark">“</span>
+              <p>{{ site.data.characters.maya.quote }}</p>
+            </blockquote>
+          </div>
+        </div>
+
+        <div class="dossier-body">
+          <p class="dossier-bio">{{ site.data.characters.maya.bio }}</p>
+
+          <div class="dossier-domains">
+            <span class="domains-title">RELIABILITY &amp; RESILIENCE FOCUS:</span>
+            <div class="domain-tags">
+              {% for d in site.data.characters.maya.domains %}
+              <div class="domain-chip rose-chip" title="{{ d.desc }}">
+                <strong>{{ d.title }}</strong>
+                <span class="chip-desc">{{ d.desc }}</span>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Interactive Dialogue Console: Mentor & Engineer Discussion -->
@@ -126,6 +168,8 @@
           <div class="turn-speaker-badge">
             {% if turn.speaker == 'acharya' %}
             <span class="speaker-tag gold">🔍 ALEX</span>
+            {% elsif turn.speaker == 'maya' %}
+            <span class="speaker-tag rose">🌸 MAYA</span>
             {% else %}
             <span class="speaker-tag cyan">⚡ SAM</span>
             {% endif %}

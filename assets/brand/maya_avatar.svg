@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="240" height="240">
+  <defs>
+    <radialGradient id="mayaAura" cx="50%" cy="48%" r="52%">
+      <stop offset="0%" stop-color="#f472b6" stop-opacity="0.34"/>
+      <stop offset="58%" stop-color="#1e1233" stop-opacity="0.88"/>
+      <stop offset="100%" stop-color="#030712" stop-opacity="1"/>
+    </radialGradient>
+    <linearGradient id="mayaJacket" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6d28d9"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="mayaHair" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e1b4b"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background Circle -->
+  <circle cx="120" cy="120" r="115" fill="url(#mayaAura)" stroke="#f472b6" stroke-width="2" stroke-opacity="0.55"/>
+
+  <!-- Subtle Halo Dashed Orbit -->
+  <circle cx="120" cy="100" r="56" fill="none" stroke="#f472b6" stroke-width="1.2" stroke-dasharray="6 5" stroke-opacity="0.45"/>
+
+  <!-- Flowing Back Hair Behind Shoulders -->
+  <path d="M 86 92 C 74 120, 74 166, 88 186 Q 104 176, 108 152 L 132 152 Q 136 176, 152 186 C 166 166, 166 120, 154 92 Z" fill="url(#mayaHair)"/>
+  <path d="M 83 122 Q 80 152, 91 176" fill="none" stroke="#f472b6" stroke-width="1.5" opacity="0.4"/>
+  <path d="M 157 122 Q 160 152, 149 176" fill="none" stroke="#f472b6" stroke-width="1.5" opacity="0.4"/>
+
+  <!-- Developer Jacket -->
+  <path d="M 46 218 Q 80 162, 120 168 Q 160 162, 194 218 Z" fill="url(#mayaJacket)" stroke="#f472b6" stroke-width="1.2" stroke-opacity="0.45"/>
+  <path d="M 92 195 L 120 172 L 148 195" fill="none" stroke="#f472b6" stroke-width="2" opacity="0.75"/>
+
+  <!-- Neck & Collar -->
+  <rect x="110" y="132" width="20" height="24" rx="4" fill="#eab07e"/>
+
+  <!-- Rose Pearl Earrings -->
+  <circle cx="91" cy="112" r="2.6" fill="#f472b6"/>
+  <circle cx="149" cy="112" r="2.6" fill="#f472b6"/>
+
+  <!-- Sculpted Head -->
+  <ellipse cx="120" cy="100" rx="27" ry="31" fill="#fbd3ad"/>
+
+  <!-- Swept Side-Parted Bangs -->
+  <path d="M 91 96 C 88 64, 152 62, 149 96 Q 134 77, 112 80 Q 98 81, 91 96 Z" fill="url(#mayaHair)"/>
+  <path d="M 99 78 Q 120 68, 139 81" fill="none" stroke="#f472b6" stroke-width="1.6" opacity="0.5"/>
+
+  <!-- Expressive Eyes & Eyelash Wings -->
+  <ellipse cx="110" cy="99" rx="3.8" ry="4.2" fill="#0f172a"/>
+  <circle cx="111.2" cy="97.5" r="1.3" fill="#ffffff"/>
+  <path d="M 105 97 Q 103 95, 101.5 93.5" fill="none" stroke="#0f172a" stroke-width="1.5" stroke-linecap="round"/>
+
+  <ellipse cx="130" cy="99" rx="3.8" ry="4.2" fill="#0f172a"/>
+  <circle cx="131.2" cy="97.5" r="1.3" fill="#ffffff"/>
+  <path d="M 135 97 Q 137 95, 138.5 93.5" fill="none" stroke="#0f172a" stroke-width="1.5" stroke-linecap="round"/>
+
+  <!-- Sleek Rose-Quartz Studio Headset + Mic Boom -->
+  <path d="M 90 98 Q 120 58, 150 98" fill="none" stroke="#475569" stroke-width="2.8"/>
+  <rect x="85" y="92" width="8" height="16" rx="4" fill="#0f172a" stroke="#f472b6" stroke-width="1.6"/>
+  <rect x="147" y="92" width="8" height="16" rx="4" fill="#0f172a" stroke="#f472b6" stroke-width="1.6"/>
+  <path d="M 90 107 Q 98 117, 111 115" fill="none" stroke="#64748b" stroke-width="1.8"/>
+  <circle cx="112" cy="115" r="2.2" fill="#f472b6"/>
+
+  <!-- Confident Warm Smile -->
+  <path d="M 114 114 Q 120 119, 126 114" fill="none" stroke="#9d174d" stroke-width="1.9" stroke-linecap="round"/>
+
+  <!-- Floating Breaker Guard Tag -->
+  <rect x="155" y="54" width="54" height="22" rx="6" fill="#0f172a" stroke="#f472b6" stroke-width="1.1"/>
+  <text x="182" y="69" font-family="'Courier New', monospace" font-size="9.5" font-weight="bold" fill="#f9a8d4" text-anchor="middle">95% OK</text>
+
+  <!-- Name Badge Pill -->
+  <rect x="34" y="210" width="172" height="24" rx="12" fill="#0f172a" stroke="#f472b6" stroke-width="1.5"/>
+  <text x="120" y="226" font-family="'Cinzel', 'Outfit', sans-serif" font-size="10.5" font-weight="bold" fill="#f9a8d4" text-anchor="middle" letter-spacing="1.6">MAYA • RELIABILITY</text>
+</svg>

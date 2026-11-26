@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="20 14 200 246" width="200" height="246">
+  <defs>
+    <radialGradient id="mayaBustGlow" cx="50%" cy="38%" r="55%">
+      <stop offset="0%" stop-color="#f472b6" stop-opacity="0.22"/>
+      <stop offset="100%" stop-color="#0f172a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="mayaHoodie" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#5b21b6"/>
+      <stop offset="60%" stop-color="#3b0764"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </linearGradient>
+    <linearGradient id="mayaLocks" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#1e1b4b"/>
+      <stop offset="100%" stop-color="#090d16"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Subtle Aura Behind Head -->
+  <circle cx="120" cy="108" r="102" fill="url(#mayaBustGlow)"/>
+
+  <!-- Flowing Back Hair Behind Shoulders -->
+  <path d="M 66 86 C 46 132, 46 198, 68 232 Q 92 214, 98 175 L 142 175 Q 148 214, 172 232 C 194 198, 194 132, 174 86 Z" fill="url(#mayaLocks)" stroke="#090d16" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M 60 132 Q 55 174, 72 212" fill="none" stroke="#f472b6" stroke-width="2" opacity="0.4"/>
+  <path d="M 180 132 Q 185 174, 168 212" fill="none" stroke="#f472b6" stroke-width="2" opacity="0.4"/>
+
+  <!-- Jacket / Hoodie Bust -->
+  <path d="M 28 258 C 36 188, 76 164, 120 166 C 164 164, 204 188, 212 258 Z" fill="url(#mayaHoodie)" stroke="#090d16" stroke-width="4.5" stroke-linejoin="round"/>
+  <path d="M 88 170 L 120 218 L 152 170" fill="#1e1b4b" stroke="#f472b6" stroke-width="2.5" stroke-linejoin="round"/>
+  <!-- Hoodie collar strings -->
+  <line x1="106" y1="196" x2="106" y2="230" stroke="#f9a8d4" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="134" y1="196" x2="134" y2="230" stroke="#f9a8d4" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Neck & Collarbone -->
+  <rect x="103" y="132" width="34" height="38" rx="10" fill="#e0a374" stroke="#090d16" stroke-width="3.5"/>
+
+  <!-- Rose-Pearl Earrings -->
+  <circle cx="71" cy="112" r="4.5" fill="#f472b6" stroke="#090d16" stroke-width="2"/>
+  <circle cx="169" cy="112" r="4.5" fill="#f472b6" stroke="#090d16" stroke-width="2"/>
+
+  <!-- Head & Jawline -->
+  <path d="M 120 30 C 162 30, 174 62, 170 98 C 168 128, 146 150, 120 152 C 94 150, 72 128, 70 98 C 66 62, 78 30, 120 30 Z" fill="#f5c69c" stroke="#090d16" stroke-width="4.5" stroke-linejoin="round"/>
+
+  <!-- Sleek Studio Headphones -->
+  <path d="M 65 92 C 66 28, 174 28, 175 92" fill="none" stroke="#1e293b" stroke-width="8" stroke-linecap="round"/>
+  <path d="M 65 92 C 66 28, 174 28, 175 92" fill="none" stroke="#f472b6" stroke-width="2.2" opacity="0.7" stroke-linecap="round"/>
+  <rect x="57" y="76" width="14" height="32" rx="7" fill="#0f172a" stroke="#f472b6" stroke-width="3"/>
+  <rect x="169" y="76" width="14" height="32" rx="7" fill="#0f172a" stroke="#f472b6" stroke-width="3"/>
+
+  <!-- Top Hair & Side-Swept Bangs -->
+  <path d="M 68 88 C 64 26, 176 24, 172 88 C 150 56, 122 54, 96 68 C 80 76, 72 82, 68 88 Z" fill="url(#mayaLocks)" stroke="#090d16" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M 88 56 Q 120 42, 152 62" fill="none" stroke="#f472b6" stroke-width="2.4" stroke-linecap="round" opacity="0.55"/>
+
+  <!-- Expressive Eyebrows -->
+  <path d="M 88 78 Q 98 72, 108 77" fill="none" stroke="#090d16" stroke-width="3.2" stroke-linecap="round"/>
+  <path d="M 132 77 Q 142 72, 152 78" fill="none" stroke="#090d16" stroke-width="3.2" stroke-linecap="round"/>
+
+  <!-- Large Stylized Expressive Eyes + Lashes -->
+  <ellipse cx="99" cy="95" rx="8.5" ry="9.5" fill="#ffffff" stroke="#090d16" stroke-width="2.5"/>
+  <circle cx="101" cy="95" r="5" fill="#1e293b"/>
+  <circle cx="103" cy="92.5" r="2" fill="#ffffff"/>
+  <path d="M 89 91 Q 85 88, 82 84" fill="none" stroke="#090d16" stroke-width="2.6" stroke-linecap="round"/>
+
+  <ellipse cx="141" cy="95" rx="8.5" ry="9.5" fill="#ffffff" stroke="#090d16" stroke-width="2.5"/>
+  <circle cx="143" cy="95" r="5" fill="#1e293b"/>
+  <circle cx="145" cy="92.5" r="2" fill="#ffffff"/>
+  <path d="M 151 91 Q 155 88, 158 84" fill="none" stroke="#090d16" stroke-width="2.6" stroke-linecap="round"/>
+
+  <!-- Nose & Warm Confident Smile -->
+  <path d="M 120 98 Q 124 109, 118 111" fill="none" stroke="#b47549" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M 108 124 Q 120 133, 132 124" fill="none" stroke="#9d174d" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Mic Boom -->
+  <path d="M 64 106 Q 82 126, 102 124" fill="none" stroke="#475569" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="104" cy="124" r="4" fill="#f472b6" stroke="#090d16" stroke-width="1.5"/>
+
+  <!-- Foreground Compact Laptop Silhouette at bottom center like Sam -->
+  <path d="M 64 256 L 76 218 L 164 218 L 176 256 Z" fill="#334155" stroke="#090d16" stroke-width="3.5" stroke-linejoin="round"/>
+  <circle cx="120" cy="238" r="6" fill="none" stroke="#f472b6" stroke-width="2"/>
+  <circle cx="120" cy="238" r="2" fill="#f472b6"/>
+</svg>

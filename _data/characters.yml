@@ -36,7 +36,40 @@ anvay:
   color: "#64e8ff"
   color_glow: "rgba(100, 232, 255, 0.4)"
 
+maya:
+  name: "Maya"
+  role: "Reliability & Resilience Co-Host"
+  badge: "RELIABILITY HOST 🌸"
+  avatar: "/assets/characters/maya/base/maya_character.svg"
+  vector_avatar: "/assets/brand/maya_avatar.svg"
+  voice: "en-US-AvaMultilingualNeural (Expressive, Warm, Analytical)"
+  quote: "Never bet cluster survival on luck—design circuit breakers, backpressure, and off-heap paths that fail fast cleanly."
+  bio: "Site reliability specialist and co-host of AlgoSorcerer. Teams up with Alex and Sam to dissect JVM heap stalls, circuit breaker state machines, off-heap doc_values, and fault-tolerant systems from incident war stories."
+  domains:
+    - title: "Fault Tolerance & Breakers"
+      desc: "95% Parent Memory Circuit Breakers, sliding failure windows, and half-open canaries."
+    - title: "JVM & Storage Internals"
+      desc: "Fielddata OOM protection, off-heap doc_values, 31GB compressed oops, and GC pauses."
+    - title: "Cluster Observability"
+      desc: "FollowersChecker timeouts, yellow/red shard forensics, and cascading failure guardrails."
+  color: "#f472b6"
+  color_glow: "rgba(244, 114, 182, 0.4)"
+
 dialogues:
+  - id: "jvm_fielddata_oom"
+    title: "JVM Heap 99%: Fielddata vs Doc Values"
+    topic: "OpenSearch Reliability & Circuit Breakers"
+    turns:
+      - speaker: "maya"
+        text: "Alex, one dashboard sort query froze Node 3 for twelve seconds—and FollowersChecker kicked it straight out of the cluster!"
+      - speaker: "acharya"
+        text: "Classic trap, Maya! Sorting analyzed text forced OpenSearch to uninvert massive fielddata strings straight onto the tiny JVM Heap—like dumping five hundred encyclopedias on a coffee desk."
+      - speaker: "maya"
+        text: "So switching to non-analyzed keyword fields stores columnar doc_values off-heap on disk, AND the 95% Parent Memory Circuit Breaker throws CircuitBreakingException before a GC freeze?"
+      - speaker: "acharya"
+        text: "Exactly! Combine keyword doc_values, active 95% memory breakers, and a 31GB compressed-oops JVM cap so half your RAM stays in OS Page Cache."
+    takeaway: "Never aggregate or sort on analyzed text fields; rely on off-heap keyword doc_values, <=31GB JVM heap, and 95% Parent Circuit Breakers."
+
   - id: "opensearch_cluster"
     title: "OpenSearch Sharding & Inverted Index"
     topic: "Distributed Search System Design"

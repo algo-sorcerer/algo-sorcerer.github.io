@@ -1,5 +1,5 @@
 - id: "bfcNMiAgh-0"
-  title: "How Payment Apps Never Charge You Twice: Idempotency Keys & Ledger Locks (Alex & Maya)"
+  title: "How Payment Apps Prevent Double Charges on Retries"
   series: "Distributed Resilience & Production War Stories"
   format: "16:9 Full Video"
   badge: "ALEX & MAYA STORY"
@@ -12,7 +12,7 @@
   tags: ["Payments", "Idempotency", "SystemDesign", "DistributedSystems", "ACID"]
 
 - id: "3ZMnTuOpSYg"
-  title: "Recursion & Call Stacks Explained: Base Cases, Stack Overflow & Iteration"
+  title: "Recursion Crashes at 8MB: Call Stack vs Loops"
   series: "Core Algorithms, Memory & Systems Engineering"
   format: "16:9 Full Video"
   badge: "ALEX & SAM STORY"
@@ -25,7 +25,7 @@
   tags: ["Recursion", "CallStack", "Algorithms", "Memory", "SystemDesign"]
 
 - id: "Qvov0NVxGyw"
-  title: "Binary Search Deep Dive: 1 Billion Items in 30 Steps, Overflow Bug & Git Bisect"
+  title: "Binary Search: 1 Billion Items in 30 Steps (+ Bug)"
   series: "Core Algorithms, Memory & Systems Engineering"
   format: "16:9 Full Video"
   badge: "ALEX & SAM STORY"
@@ -38,7 +38,7 @@
   tags: ["BinarySearch", "Algorithms", "GitBisect", "CodingInterview", "SystemDesign"]
 
 - id: "_kLwpHn4IQ8"
-  title: "Garbage Collection & Memory Leaks Explained: GC Roots, Listeners & STW Pauses (Maya & Sam)"
+  title: "Why Memory Leaks Happen Even With Garbage Collection"
   series: "Core Algorithms, Memory & Systems Engineering"
   format: "16:9 Full Video"
   badge: "MAYA & SAM STORY"
@@ -51,7 +51,7 @@
   tags: ["GarbageCollection", "MemoryLeaks", "JVM", "Performance", "Backend"]
 
 - id: "9GQpS3p5nSY"
-  title: "Distributed Service Graphs: Cascading Failures, Blast Radius & Isolation (Maya & Sam)"
+  title: "How 1 Slow Microservice Takes Down the Whole Graph"
   series: "Core Algorithms, Memory & Systems Engineering"
   format: "16:9 Full Video"
   badge: "MAYA & SAM STORY"
@@ -64,7 +64,7 @@
   tags: ["ServiceMesh", "GraphTheory", "Resilience", "CircuitBreaker", "DistributedSystems"]
 
 - id: "qnIOaI_VC5I"
-  title: "Dynamic Programming Explained: O(2^N) Recursion Freeze to O(N) Memoization"
+  title: "Dynamic Programming: Turning O(2^N) Freezes Into 1ms"
   series: "Core Algorithms, Memory & Systems Engineering"
   format: "16:9 Full Video"
   badge: "ALEX & SAM STORY"
@@ -77,7 +77,7 @@
   tags: ["DynamicProgramming", "Memoization", "Algorithms", "BigO", "CodingInterview"]
 
 - id: "ubFwYi2_ELs"
-  title: "Sorting Algorithms Explained: Bubble O(N^2), QuickSort Pivots & TimSort"
+  title: "Sorting Speed: Bubble O(N^2), QuickSort & TimSort"
   series: "Core Algorithms, Memory & Systems Engineering"
   format: "16:9 Full Video"
   badge: "ALEX & SAM STORY"
@@ -90,7 +90,7 @@
   tags: ["Sorting", "QuickSort", "TimSort", "Algorithms", "SystemDesign"]
 
 - id: "PRDesbLQLiU"
-  title: "ECDSA Cryptography Failures: Weak RNG, Nonce Reuse & 1ms Key Recovery (Alex & Maya)"
+  title: "How Reused ECDSA Nonces Leak Keys in 1 Millisecond"
   series: "Core Algorithms, Memory & Systems Engineering"
   format: "16:9 Full Video"
   badge: "ALEX & MAYA STORY"
@@ -103,7 +103,7 @@
   tags: ["Cryptography", "ECDSA", "Security", "RFC6979", "InfoSec"]
 
 - id: "bUcJ6Hg7P1I"
-  title: "Worker Reuse & Memory Corruption: How OOM Aborts Poison Shared Processes (Alex & Maya)"
+  title: "How One OOM Crash Poisons Shared Worker Memory"
   series: "Core Algorithms, Memory & Systems Engineering"
   format: "16:9 Full Video"
   badge: "ALEX & MAYA STORY"
@@ -116,7 +116,7 @@
   tags: ["Security", "MemorySafety", "AppSec", "Containers", "Backend"]
 
 - id: "O7Z7vYc1RzA"
-  title: "OpenSearch Write Storms & HTTP 429: Thread Pools, Refresh & Async Translog (Maya & Sam)"
+  title: "Fixing HTTP 429 Bulk Storms in OpenSearch"
   series: "OpenSearch Internals"
   format: "16:9 Full Video"
   badge: "MAYA & SAM STORY"
@@ -129,7 +129,7 @@
   tags: ["OpenSearch", "BulkIngest", "ThreadPool", "SystemDesign", "Backpressure"]
 
 - id: "TnwKVlhnuVo"
-  title: "OpenSearch Vector & Hybrid AI Search: HNSW Graphs, Quantization & RRF (Alex & Maya)"
+  title: "Vector AI Search: HNSW, 32x Quantization & RRF"
   series: "OpenSearch Internals"
   format: "16:9 Full Video"
   badge: "ALEX & MAYA STORY"
@@ -142,7 +142,7 @@
   tags: ["OpenSearch", "VectorSearch", "HNSW", "Quantization", "HybridSearch"]
 
 - id: "O4bjp9deg6s"
-  title: "Why Deleting 10M OpenSearch Docs Freed ZERO Disk: Tombstones, Merging & ISM (Maya & Sam)"
+  title: "Deleted 10M OpenSearch Docs... 0 GB Freed?!"
   series: "OpenSearch Internals"
   format: "16:9 Full Video"
   badge: "MAYA & SAM STORY"
@@ -155,7 +155,7 @@
   tags: ["OpenSearch", "Lucene", "SegmentMerge", "ISM", "ForceMerge"]
 
 - id: "vphu_EB19Rc"
-  title: "Why Does a Phone Call Ring on Your Mobile Phone Only? | Cellular Network System Design"
+  title: "How Mobile Calls Find Your Phone Across 8B Devices"
   series: "How Everyday Tech Actually Works"
   format: "16:9 Full Video"
   badge: "DEEP DIVE"
@@ -168,7 +168,7 @@
   tags: ["Cellular", "Telecom", "Networking", "SystemDesign", "DistributedSystems"]
 
 - id: "CdX4bymkz7Q"
-  title: "How Does GPS Actually Work? The Passive Satellite Mystery & Einstein's Relativity"
+  title: "How GPS Pinpoints You Using Einstein's Relativity"
   series: "How Everyday Tech Actually Works"
   format: "16:9 Full Video"
   badge: "DEEP DIVE"
@@ -181,7 +181,7 @@
   tags: ["GPS", "Relativity", "Trilateration", "SystemDesign", "Physics"]
 
 - id: "Nzvr6vqeIXY"
-  title: "How Shazam Actually Works: Audio Spectrograms, Constellation Hashes & Time-Offset Histograms"
+  title: "How Shazam Identifies Songs in 3 Seconds of Noise"
   series: "How Everyday Tech Actually Works"
   format: "16:9 Full Video"
   badge: "DEEP DIVE"
@@ -194,7 +194,7 @@
   tags: ["Shazam", "AudioProcessing", "FFT", "Hashing", "Algorithms"]
 
 - id: "-CCRkLB80dA"
-  title: "200ms When You Press Enter on google.com: BGP, DNS Anycast, TLS 1.3 & GPU Rasterization"
+  title: "What Happens in 200ms When You Load google.com"
   series: "How Everyday Tech Actually Works"
   format: "16:9 Full Video"
   badge: "DEEP DIVE"
@@ -207,7 +207,7 @@
   tags: ["BrowserInternals", "Networking", "TLS13", "DNS", "SystemDesign"]
 
 - id: "Pn_FEzBEU8Q"
-  title: "Why OpenSearch JVM Heap Hit 99%: Fielddata, Doc Values & Circuit Breakers (Maya & Alex Story)"
+  title: "Why JVM Heap Hit 99%: Fielddata vs Doc Values"
   series: "OpenSearch Internals"
   format: "16:9 Full Video"
   badge: "ALEX & MAYA STORY"
@@ -220,7 +220,7 @@
   tags: ["OpenSearch", "JVM", "Fielddata", "DocValues", "CircuitBreaker"]
 
 - id: "1AinOJ_9KMY"
-  title: "OpenSearch Shard Allocation, Fault Detection & Recovery Explained"
+  title: "How OpenSearch Recovers Dead Shards Without Storms"
   series: "OpenSearch Internals"
   format: "16:9 Full Video"
   badge: "SYSTEM DESIGN STORY"
@@ -233,7 +233,7 @@
   tags: ["OpenSearch", "ShardAllocation", "FailureDetection", "PeerRecovery", "SystemDesign"]
 
 - id: "FLzTGTBgtxs"
-  title: "Why Systems Crash (Explained with a Cafe Story!) | Queues, Backoff, Bulkheads & Circuit Breakers"
+  title: "Why Systems Crash Under Load (Queues & Bulkheads)"
   series: "Resilience & Consensus Stories"
   format: "16:9 Full Video"
   badge: "MAYA & SAM STORY"
@@ -246,7 +246,7 @@
   tags: ["SystemDesign", "Resilience", "CircuitBreaker", "Bulkhead", "DistributedSystems"]
 
 - id: "adiiwI8wTtE"
-  title: "Circuit Breakers Deep Dive: Sliding Windows, Half-Open Stampedes & Fallbacks"
+  title: "How Circuit Breakers Stop Retry Storms in 1ms"
   series: "Resilience & Consensus Stories"
   format: "16:9 Full Video"
   badge: "DEEP DIVE STORY"
@@ -259,7 +259,7 @@
   tags: ["CircuitBreaker", "SystemDesign", "Microservices", "Resilience", "DistributedSystems"]
 
 - id: "FESm_AIDas0"
-  title: "Master Election & Quorum Loss Explained: Term Fencing, Split Votes & Recovery"
+  title: "Split-Brain Leaders: Master Election & Quorum Loss"
   series: "Resilience & Consensus Stories"
   format: "16:9 Full Video"
   badge: "DEEP DIVE STORY"
@@ -272,7 +272,7 @@
   tags: ["MasterElection", "QuorumLoss", "Raft", "OpenSearch", "DistributedSystems"]
 
 - id: "Xxv578lMtTI"
-  title: "Distributed Search Explained: Beginner to Expert Story (Inverted Index, Shards, CAP & HNSW)"
+  title: "Distributed Search Explained: 1K Rows to 1B Queries"
   series: "Beginner to Expert Masterclass"
   format: "16:9 Full Video"
   badge: "BEGINNER -> EXPERT"
@@ -285,7 +285,7 @@
   tags: ["OpenSearch", "SystemDesign", "BeginnerToExpert", "DistributedSystems", "VectorSearch"]
 
 - id: "rR-Tub8XNTY"
-  title: "100 vs 98: The Distributed Split-Brain Disaster | CAP Theorem, Quorum & WAL Explained"
+  title: "Split-Brain Disaster: Why Two Nodes Showed 100 vs 98"
   series: "The AlgoSorcerer's Grimoire"
   format: "16:9 Full Video"
   badge: "BOOK STORY"
@@ -298,7 +298,7 @@
   tags: ["CAPTheorem", "Quorum", "SplitBrain", "SystemDesign", "DistributedSystems"]
 
 - id: "3bpZtQZNhmk"
-  title: "How OpenSearch Searches 1 Billion Docs in 2ms (Full System Design)"
+  title: "How OpenSearch Searches 1 Billion Docs in 2ms"
   series: "Distributed Systems"
   format: "16:9 Full Video"
   badge: "FULL DEEP DIVE"
@@ -311,7 +311,7 @@
   tags: ["OpenSearch", "SystemDesign", "DistributedSystems", "Lucene", "VectorSearch"]
 
 - id: "WffI3WSlp6w"
-  title: "How OpenSearch Searches 1 Billion Docs in 2ms! #shorts"
+  title: "1 Billion Docs in 2ms (OpenSearch Trick) #shorts"
   series: "System Design Shorts"
   format: "9:16 Short"
   badge: "YOUTUBE SHORT"
@@ -324,7 +324,7 @@
   tags: ["Shorts", "OpenSearch", "InvertedIndex", "SystemDesign", "Backend"]
 
 - id: "C5fHfRRGrSc"
-  title: "The 3 AM OpenSearch Outage: How from=50000 Crashed Every Node! #shorts"
+  title: "How from=50000 Crashed OpenSearch at 3 AM #shorts"
   series: "OpenSearch War Stories"
   format: "9:16 Short"
   badge: "INCIDENT STORY"
@@ -337,7 +337,7 @@
   tags: ["OpenSearch", "OutageStory", "Pagination", "SystemDesign", "Shorts"]
 
 - id: "YOXmbxjdCko"
-  title: "The JSON Bug That Froze OpenSearch (100,000 Fields Story)! #shorts"
+  title: "The 100,000-Field JSON Bug That Froze Cluster #shorts"
   series: "OpenSearch War Stories"
   format: "9:16 Short"
   badge: "INCIDENT STORY"
@@ -350,7 +350,7 @@
   tags: ["OpenSearch", "MappingExplosion", "ClusterState", "DevOps", "Shorts"]
 
 - id: "UWqKfFPbthU"
-  title: "Why 4 Shards Slept While 1 OpenSearch Node Caught Fire! #shorts"
+  title: "Why 4 Shards Slept While 1 Node Caught Fire #shorts"
   series: "OpenSearch War Stories"
   format: "9:16 Short"
   badge: "INCIDENT STORY"
@@ -363,7 +363,7 @@
   tags: ["OpenSearch", "HotShard", "Sharding", "DistributedSystems", "Shorts"]
 
 - id: "eiE_a47rJjY"
-  title: "If a Wizard Library Used OpenSearch: Search 1 Billion Spells in 2ms! #shorts"
+  title: "How Search Engines Index 1 Billion Records in 2ms #shorts"
   series: "Arcane System Parables"
   format: "9:16 Short"
   badge: "FANTASY STORY"
